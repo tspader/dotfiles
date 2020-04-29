@@ -8,7 +8,10 @@
 
 general {
         colors = true
+		color_good = "#60e65c"
+		color_bad = "#d1525e"
         interval = 1
+		separator = "="
 }
 
 order += "wireless _first_"
@@ -21,17 +24,17 @@ order += "memory"
 order += "tztime local"
 
 wireless _first_ {
-        format_up = "%quality at %essid [%ip]"
-        format_down = "W: down"
+        format_up = "wireless: %quality // %essid"
+        format_down = "wireless: down"
 }
 
 ethernet _first_ {
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+        format_up = "ethernet: %ip (%speed)"
+        format_down = "ethernet: down"
 }
 
 battery all {
-        format = "%status %percentage %remaining"
+        format = "%status // %percentage // %remaining"
 		low_threshold = 11
 		threshold_type = percentage
 		last_full_capacity = true
@@ -40,25 +43,25 @@ battery all {
 }
 
 disk "/" {
-        format = "%avail"
+        format = "disk: %avail"
 }
 
 cpu_usage {
-        format = "%usage"
+        format = "cpu: %usage"
 }
 
 memory {
-        format = "%used"
+        format = "ram: %used"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+        format = "%H:%M:%S %m/%d/%Y"
 }
 
 cpu_temperature 0 {
-	format = "%degrees°C"
+	format = "temp: %degrees°C"
 	path = "/sys/class/thermal/thermal_zone0/temp"
 	max_threshold = 95
 }
