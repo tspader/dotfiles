@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --no-fehbg --bg-fill '/home/spader/Pictures/tower.jpg' 
+feh --no-fehbg --bg-fill ~/.backgrounds/current
