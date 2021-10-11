@@ -1,3 +1,10 @@
 .emacs.d/auto-save-list/
 .emacs.d/elpa/
 .emacs.d/config.el
+.config/Code - OSS/
+.config/dconf
+.config/discord
+.config/obs-studio
+.config/pavucontrol.ini
+.config/pulse
+.config/aseprite
