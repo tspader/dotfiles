@@ -75,8 +75,7 @@ blocks in org mode.
 		org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
 		org-agenda-files (list "/Users/thspader/agenda.org"))
   :ensure org-plus-contrib
-  :defer t
-  :pin fuck-emacs)
+  :defer t)
 #+END_SRC
  
 Have to manually override some global keybindings for org-mode, and set a few others
@@ -124,75 +123,6 @@ Make org-babel load languages, and a
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 #+END_SRC
 
-** clang-format
-#+BEGIN_SRC emacs-lisp
-(use-package clang-format
-  :defer t)
-#+END_SRC
-** autofill
-#+BEGIN_SRC emacs-lisp
-(setq-default fill-column 80)
-
-(defun unfill-paragraph ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-(defun unfill-region ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-region (region-beginning) (region-end) nil)))
-#+END_SRC
-** shr
-#+BEGIN_SRC emacs-lisp
-(load-library "shr.el")
-#+END_SRC
-** dired-sidebar
-#+BEGIN_SRC emacs-lisp
-(use-package dired-sidebar
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :ensure t
-  :defer t
-  :commands (dired-sidebar-toggle-sidebar)
-  :config
-  (setq dired-sidebar-subtree-line-prefix "..")
-  (setq dired-sidebar-theme 'nerd))
-
-(define-key global-map (kbd "C-c s") 'dired-sidebar-show-sidebar)
-#+END_SRC
-** web-mode
-#+BEGIN_SRC emacs-lisp
-(use-package web-mode)
-(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.xml?\\'" . web-mode))
-
-(setq web-mode-content-types-alist
-  '(("xml"  . "\\.config\\'")))
-#+END_SRC
-** VisualLineMode
-#+BEGIN_SRC emacs-lisp
-(add-hook 'text-mode-hook 'visual-line-mode)
-(add-hook 'prog-mode-hook 'visual-line-mode)
-#+END_SRC
-#+BEGIN_SRC emacs-lisp
-(use-package ggtags)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-              (ggtags-mode 1))))
-
-(define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
-(define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
-(define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
-(define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
-(define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
-(define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
-
-(define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
-#+END_SRC
 ** helm
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -221,10 +151,6 @@ Stylistic stuff
  (setq indent-tabs-mode nil)
  (setq python-indent 4)
  (setq python-inden-offset 4)))
-#+END_SRC
-** HTML
-#+BEGIN_SRC emacs-lisp
-(add-hook 'html-mode-hook 'turn-off-auto-fill)
 #+END_SRC
 ** C
 #+BEGIN_SRC emacs-lisp
@@ -299,14 +225,10 @@ some convenient stuff to hide and show blocks
 (define-key c++-mode-map (kbd "C-;") 'clang-format-region)
 (define-key c++-mode-map (kbd "M-j") 'backward-word) ; bound to newline in c-mode
 #+END_SRC
-** C#
+** Lua
 #+BEGIN_SRC emacs-lisp
-  (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
-  (setq auto-mode-alist
-     (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
+(setq lua-indent-level 2)
 #+END_SRC
-** JS
-** 
 * Visual
 Point emacs to our pre-installed themes
 #+BEGIN_SRC emacs-lisp

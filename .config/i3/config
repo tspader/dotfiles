@@ -44,6 +44,8 @@ bindsym $mod+Return exec kitty
 # kill focused window
 bindsym $mod+q kill
 
+bindsym --release Print exec "scrot -s '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/pictures/screenshots'"
+
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
 # There also is the (new) i3-dmenu-desktop which only displays applications
