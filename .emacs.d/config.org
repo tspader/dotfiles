@@ -75,8 +75,7 @@ blocks in org mode.
 		org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
 		org-agenda-files (list "/Users/thspader/agenda.org"))
   :ensure org-plus-contrib
-  :defer t
-  :pin fuck-emacs)
+  :defer t)
 #+END_SRC
  
 Have to manually override some global keybindings for org-mode, and set a few others
@@ -124,20 +123,6 @@ Make org-babel load languages, and a
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 #+END_SRC
 
-** autofill
-#+BEGIN_SRC emacs-lisp
-(setq-default fill-column 80)
-
-(defun unfill-paragraph ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-(defun unfill-region ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-region (region-beginning) (region-end) nil)))
-#+END_SRC
 ** helm
 #+BEGIN_SRC emacs-lisp
 (use-package helm
@@ -243,12 +228,6 @@ some convenient stuff to hide and show blocks
 ** Lua
 #+BEGIN_SRC emacs-lisp
 (setq lua-indent-level 2)
-#+END_SRC
-** GLSL
-#+BEGIN_SRC emacs-lisp
-(autoload 'glsl-mode "glsl-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.vs\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.fs\\'" . glsl-mode))
 #+END_SRC
 * Visual
 Point emacs to our pre-installed themes

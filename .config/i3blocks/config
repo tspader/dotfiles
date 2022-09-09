@@ -9,11 +9,6 @@
 # Global properties
 separator=true
 
-[logo]
-full_text=
-align=left
-
-
 [disk]
 command=~/.config/i3blocks/disk
 interval=30
@@ -29,11 +24,6 @@ T_CRIT=80
 command=~/.config/i3blocks/memory
 label=MEM 
 interval=30
-
-[battery_bar]
-command=~/.config/i3blocks/battery_bar
-markup=pango
-interval=1
 
 [time]
 command=date '+%I:%M:%S'

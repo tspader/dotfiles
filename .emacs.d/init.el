@@ -20,10 +20,7 @@
   (require 'package)
   (package-initialize)
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
-  (add-to-list 'package-archives '("elpa" . "http://tromey.com/elpa/") t)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  (add-to-list 'package-archives  '("fuck-emacs"   . "http://elpa.emacs-china.org/org/") t)
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   )
 
 ;;; Bootstrap use-package
@@ -51,12 +48,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files
-   (quote
-	("c:/Users/dboon/jobs.org" "c:/Users/dboon/school.org")))
  '(package-selected-packages
-   (quote
-	(nyx-theme spacemacs-theme tide tabbar csharp-mode racket-mode web-mode helm company tern neotree all-the-icons-dired dired-sidebar lua-mode rjsx-mode racer rust-mode dumb-jump auto-complete-clang use-package pabbrev org-plus-contrib cyberpunk-theme cmake-mode))))
+   '(lua-mode nyx-theme spacemacs-theme tide tabbar csharp-mode racket-mode web-mode helm company tern neotree all-the-icons-dired dired-sidebar rjsx-mode racer rust-mode dumb-jump auto-complete-clang use-package pabbrev org-plus-contrib cyberpunk-theme cmake-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
