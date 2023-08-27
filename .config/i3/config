@@ -93,6 +93,10 @@ bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
 
+workspace 1 output DP-4
+workspace 2 output DP-2
+workspace 3 output HDMI-0
+
 # reload the configuration file
 bindsym $mod+r reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -113,4 +117,3 @@ gaps inner 10
 smart_gaps on
 
 exec ~/.fehbg
-exec ~/.config/local/i3
