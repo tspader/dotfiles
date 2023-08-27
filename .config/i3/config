@@ -30,6 +30,10 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym $mod+Return exec kitty
 
 bindsym $mod+q kill
+
+bindsym --release Print exec "scrot -s '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/pictures/screenshots'"
+
+# start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
 bindsym --release Print exec "scrot -s '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/pictures/screenshots'"
 
@@ -116,4 +120,6 @@ bar {
 gaps inner 10
 smart_gaps on
 
-exec ~/.fehbg
+ ~/.fehbg
+exec ~/.config/local/i3
+
