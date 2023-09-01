@@ -49,7 +49,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(lua-mode nyx-theme spacemacs-theme tide tabbar csharp-mode racket-mode web-mode helm company tern neotree all-the-icons-dired dired-sidebar rjsx-mode racer rust-mode dumb-jump auto-complete-clang use-package pabbrev org-plus-contrib cyberpunk-theme cmake-mode)))
+   '(lua-mode spacemacs-theme helm racer rust-mode dumb-jump auto-complete-clang use-package pabbrev cmake-mode linum)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

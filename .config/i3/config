@@ -6,7 +6,7 @@ font pango:ttf-inconsolata mono 12
 
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #db4d60 #db4d60 #ffffff #2e9ef4   #db4d60
+client.focused          #666677 #666677 #ffffff #2e9ef4   #666677
 client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
@@ -30,8 +30,6 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym $mod+Return exec kitty
 
 bindsym $mod+q kill
-
-bindsym --release Print exec "scrot -s '%Y:%m:%d:%H:%M:%S.png' -e 'mv $f ~/pictures/screenshots'"
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
@@ -120,6 +118,8 @@ bar {
 gaps inner 10
 smart_gaps on
 
- ~/.fehbg
+focus_follows_mouse no
+
+exec ~/.fehbg
 exec ~/.config/local/i3
 

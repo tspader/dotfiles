@@ -21,14 +21,13 @@ modes, small aesthetic changes, etc
 
 (setq-default cursor-type 'bar)
 
-(setq backup-directory-alist
-      `((".*" . ,"~/.saves")))
-
 (setq message-log-max nil)
 
 (setq mac-command-modifier 'control)
 (setq mac-option-modifier 'meta)
 (setq make-backup-files nil)
+(setq auto-save-default nil)
+(setq create-lockfiles nil)
 #+END_SRC
 
 Configuring linum mode
@@ -72,9 +71,7 @@ blocks in org mode.
 		org-src-tab-acts-natively t
 		org-clock-persist 'history
 		org-duration-format (quote h:mm)
-		org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
-		org-agenda-files (list "/Users/thspader/agenda.org"))
-  :ensure org-plus-contrib
+		org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t)))
   :defer t)
 #+END_SRC
  
@@ -161,40 +158,6 @@ Stylistic stuff
 
 (setq c-basic-offset 4)
 (setq c-hungry-delete-key -1)
-
-(setq build-script "build.bat")
-(setq run-script "run.bat")			;
-
-(defun find-project-directory-recursive ()
-  "Recursively search for a makefile."
-  (interactive)
-  (if (file-exists-p build-script) t
-      (cd "../")
-	  (find-project-directory-recursive)))
-
-(defun find-project-directory ()
-  "Find the project directory."
-  (interactive)
-  (switch-to-buffer-other-window "*compilation*")
-  (find-project-directory-recursive)
-  (setq last-compilation-directory default-directory))
-
-(defun make-without-asking ()
-  "Make the current build."
-  (interactive)
-  (setq old-default default-directory)
-  (when (find-project-directory) (compile build-script))
-  (cd old-default))
-
-(defun run ()
-  "Looks for run.bat and executes it"
-  (interactive)
-  (setq old-default default-directory)
-  (when (find-project-directory) (compile run-script))
-  (cd old-default))
-
-(define-key global-map (kbd "<f7>") 'make-without-asking)
-(define-key global-map (kbd "<f5>") 'run)
 #+END_SRC
 ** C++
 #+BEGIN_SRC emacs-lisp
@@ -229,6 +192,15 @@ some convenient stuff to hide and show blocks
 #+BEGIN_SRC emacs-lisp
 (setq lua-indent-level 2)
 #+END_SRC
+** Rust
+#+BEGIN_SRC emacs-lisp
+(add-hook 'rust-mode-hook
+          (lambda ()
+			(setq indent-tabs-mode nil)
+			(display-line-numbers-mode)))
+
+(setq rust-format-on-save t)
+#+END_SRC
 * Visual
 Point emacs to our pre-installed themes
 #+BEGIN_SRC emacs-lisp
@@ -238,7 +210,7 @@ Point emacs to our pre-installed themes
 Set our default font
 #+BEGIN_SRC emacs-lisp
 ;;(set-frame-font "PxPlus IBM VGA8-11")
-(set-frame-font "Inconsolata-16")
+(set-frame-font "Inconsolata-12")
 #+END_SRC
 ** Cyberpunk
 #+BEGIN_SRC emacs-lisp
