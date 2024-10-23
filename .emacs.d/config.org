@@ -1,11 +1,3 @@
-+TITLE: My Emacs Configuration!
-#+AUTHOR: Thomas Spader
-
-* Personal Info
-#+BEGIN_SRC emacs-lisp
-(setq user-full-name "Thomas Spader"
-      user-mail-address "thomas.spader@gmail.com")
-#+END_SRC
 * Config
 All my miscellaneous, short configurations go here -- enabling some basic minor
 modes, small aesthetic changes, etc
@@ -29,12 +21,7 @@ modes, small aesthetic changes, etc
 (setq mac-command-modifier 'control)
 (setq mac-option-modifier 'meta)
 (setq make-backup-files nil)
-#+END_SRC
-
-Configuring linum mode
-#+BEGIN_SRC emacs-lisp
-;(use-package linum)
-;(global-linum-mode t)
+(global-visual-line-mode t)
 #+END_SRC
 
 This configuration seems to give a nice scrolling 
@@ -69,21 +56,12 @@ blocks in org mode.
 		org-src-window-setup 'current-window
 		org-src-strip-leading-and-trailing-blank-lines t
 		org-src-preserve-indentation t
-		org-src-tab-acts-natively t
-		org-clock-persist 'history
-		org-duration-format (quote h:mm)
-		org-time-clocksum-format (quote (:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
-		org-agenda-files (list "/Users/thspader/agenda.org"))
-  :ensure org-plus-contrib
+		org-src-tab-acts-natively t)
   :defer t)
 #+END_SRC
  
 Have to manually override some global keybindings for org-mode, and set a few others
 #+BEGIN_SRC emacs-lisp
-(define-key org-mode-map (kbd "C-c i") 'org-clock-in)
-(define-key org-mode-map (kbd "C-c o") 'org-clock-out)
-(define-key org-mode-map (kbd "C-c g") 'org-clock-report)
-
 (define-key org-mode-map (kbd "C-1") 'other-window)
 (define-key org-mode-map (kbd "C-j") 'backward-char)
 (define-key org-mode-map (kbd "C-k") 'next-line)
@@ -91,20 +69,7 @@ Have to manually override some global keybindings for org-mode, and set a few ot
 
 (setq org-replace-disputed-keys t)
 #+END_SRC
-
-Modify some variables for the the clock
-#+BEGIN_SRC emacs-lisp
-(org-clock-persistence-insinuate)
-#+END_SRC
-
-Finally, tell org that our agenda lives in todo.org, and that we want to use
-fill mode whenever we use org
-#+BEGIN_SRC emacs-lisp
-(setq )
-(add-hook 'org-load-hook 'autofill-mode)
-#+END_SRC
 *** org-babel
-
 Make org-babel load languages, and a
 #+BEGIN_SRC emacs-lisp
 (org-babel-do-load-languages
@@ -135,15 +100,7 @@ Make org-babel load languages, and a
 (helm-mode 1)
 #+END_SRC
 * Languages
-** Text
-#+BEGIN_SRC emacs-lisp
-(setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
-#+END_SRC
 ** Python
-#+BEGIN_SRC emacs-lisp
-(setq gud-pdb-command-name "python -m pdb")
-#+END_SRC
-
 Stylistic stuff
 #+BEGIN_SRC emacs-lisp
 (add-hook 'python-mode-hook '(lambda () 
@@ -161,45 +118,10 @@ Stylistic stuff
 
 (setq c-basic-offset 4)
 (setq c-hungry-delete-key -1)
-
-(setq build-script "build.bat")
-(setq run-script "run.bat")			;
-
-(defun find-project-directory-recursive ()
-  "Recursively search for a makefile."
-  (interactive)
-  (if (file-exists-p build-script) t
-      (cd "../")
-	  (find-project-directory-recursive)))
-
-(defun find-project-directory ()
-  "Find the project directory."
-  (interactive)
-  (switch-to-buffer-other-window "*compilation*")
-  (find-project-directory-recursive)
-  (setq last-compilation-directory default-directory))
-
-(defun make-without-asking ()
-  "Make the current build."
-  (interactive)
-  (setq old-default default-directory)
-  (when (find-project-directory) (compile build-script))
-  (cd old-default))
-
-(defun run ()
-  "Looks for run.bat and executes it"
-  (interactive)
-  (setq old-default default-directory)
-  (when (find-project-directory) (compile run-script))
-  (cd old-default))
-
-(define-key global-map (kbd "<f7>") 'make-without-asking)
-(define-key global-map (kbd "<f5>") 'run)
 #+END_SRC
 ** C++
 #+BEGIN_SRC emacs-lisp
-(use-package cc-mode
-  )
+(use-package cc-mode)
 #+END_SRC
 
 Hide/Show; dumb jump; formatting
@@ -238,7 +160,7 @@ Point emacs to our pre-installed themes
 Set our default font
 #+BEGIN_SRC emacs-lisp
 ;;(set-frame-font "PxPlus IBM VGA8-11")
-(set-frame-font "Inconsolata-16")
+(set-frame-font "Inconsolata-10")
 #+END_SRC
 ** Cyberpunk
 #+BEGIN_SRC emacs-lisp
@@ -300,23 +222,8 @@ Set our default font
 
 #+END_SRC
 
-Prevents file from showing up in buffer tab
-#+BEGIN_SRC emacs-lisp
-(defun make-buffer-uninteresting ()
-  "rename the current buffer to begin with a space"
-  (interactive)
-  (unless (string-match-p "^ " (buffer-name))
-    (rename-buffer (concat " " (buffer-name)))))
-
-
-#+END_SRC
-
 Editing functions
 #+BEGIN_SRC emacs-lisp
-(defun revert-buffer-no-confirm ()
-  "Revert buffer without confirmation."
-  (interactive) (revert-buffer t t))
-
 (defun copy-whole-word ()
   "Copies the entire word."
   (interactive)
@@ -351,20 +258,12 @@ Movement functions
   (interactive)
   (scroll-down 10))
 #+END_SRC
-
-Lua dialogue thing for tdengine
-#+BEGIN_SRC emacs-lisp
-(fset 'dialogue
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([123 return 116 101 120 116 32 61 32 34 34 44 return 116 101 114 109 105 110 97 108 32 45 32 backspace backspace 61 32 102 97 108 115 101 59 backspace 44 return 114 101 115 112 111 110 115 101 115 32 61 32 123 125 44 return 99 104 105 108 100 114 101 110 32 61 32 123 125 return 125] 0 "%d")) arg)))
-
-#+END_SRC
 * Global Keybinds
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-/") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-w") 'cut-whole-word)
 (global-set-key (kbd "M-w") 'copy-whole-word)
 (global-set-key (kbd "C-W") 'replace-word-with-yank)
-(global-set-key (kbd "M-r") 'revert-buffer-no-confirm)
 (global-set-key (kbd "C-x k") 'kill-buffer)
 (global-set-key (kbd "C-x C-r") 'rename-file-and-buffer)
 
