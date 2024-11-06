@@ -2,9 +2,11 @@
 All my miscellaneous, short configurations go here -- enabling some basic minor
 modes, small aesthetic changes, etc
 #+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+
 (show-paren-mode t)
 (global-font-lock-mode t) 
-(setq-default tab-width 4)
+(setq-default tab-width 2)
 (electric-indent-mode 1)
 
 (cua-mode t)
@@ -153,7 +155,9 @@ some convenient stuff to hide and show blocks
 #+END_SRC
 ** Lua
 #+BEGIN_SRC emacs-lisp
-(setq lua-indent-level 2)
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
 #+END_SRC
 ** Rust
 #+BEGIN_SRC emacs-lisp
@@ -163,6 +167,15 @@ some convenient stuff to hide and show blocks
 			(display-line-numbers-mode)))
 
 (setq rust-format-on-save t)
+#+END_SRC
+** GLSL
+#+BEGIN_SRC emacs-lisp
+(autoload 'glsl-mode "glsl-mode" "GLSL mode" t)
+
+(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.vertex\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.fragment\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.compute\\'" . glsl-mode))
 #+END_SRC
 * Visual
 Point emacs to our pre-installed themes
@@ -324,5 +337,4 @@ One liners
 #+BEGIN_SRC emacs-lisp
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq ring-bell-function 'ignore)
-(setq indent-tabs-mode nil) ; do i need this
 #+END_SRC

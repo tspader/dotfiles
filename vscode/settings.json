@@ -1,0 +1,23 @@
+{
+    "extensions.ignoreRecommendations": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "editor.minimap.enabled": false,
+    "window.zoomLevel": -1,
+    "editor.tabSize": 2,
+    "[lua]": {
+        "editor.defaultFormatter": "sumneko.lua"
+    },
+    "editor.renderLineHighlight": "all",
+    "workbench.colorCustomizations": {
+        "editor.lineHighlightBackground": "#00000000",
+        "editor.lineHighlightBorder": "#0000ff"
+    },
+    "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?_",
+    "files.associations": {
+        "*.vertex": "glsl",
+        "*.fragment": "glsl",
+        "*.glsl": "glsl"
+    }
+}

@@ -1,6 +1,7 @@
-.emacs.d/auto-save-list/
-.emacs.d/elpa/
-.emacs.d/config.el
+emacs/.emacs.d/auto-save-list/
+emacs/.emacs.d/elpa/
+emacs/.emacs.d/config.el
+emacs/.emacs.d/url
 .config/chromium
 .config/Code - OSS/
 .config/dconf
