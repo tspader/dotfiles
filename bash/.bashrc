@@ -15,5 +15,3 @@ if [ -f $bash_local ]; then
 fi
 
 alias ll="ls -la"
-
-preexec() { print -Pn "\e]0;$1\a" }
