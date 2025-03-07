@@ -1,48 +1,55 @@
 {
-  "extensions.ignoreRecommendations": true,
-  "security.workspace.trust.untrustedFiles": "open",
-  "git.confirmSync": false,
-  "git.enableSmartCommit": true,
-  "editor.minimap.enabled": false,
-  "window.zoomLevel": -1,
-  "editor.tabSize": 2,
-  "[lua]": {
-      "editor.defaultFormatter": "sumneko.lua"
-  },
-  "editor.renderLineHighlight": "all",
-  "workbench.colorCustomizations": {
-      "editor.lineHighlightBackground": "#00000000",
-      "editor.lineHighlightBorder": "#0000ff"
-  },
-  "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?_",
-  "files.associations": {
-      "*.vertex": "glsl",
-      "*.fragment": "glsl",
-      "*.glsl": "glsl"
-  },
-  "C_Cpp.dimInactiveRegions": false,
-  "explorer.confirmDragAndDrop": false,
-  "git.openRepositoryInParentFolders": "never",
-  "debug.onTaskErrors": "abort",
-  "terminal.integrated.defaultProfile.linux": "bash",
-  "terminal.external.windowsExec": "D:\\Programs\\w64devkit\\bin\\sh.exe -l",
-  "terminal.integrated.profiles.windows": {
-      "w64devkit": {
-          "path": "D:\\Programs\\w64devkit\\bin\\sh.exe",
-          "args": ["-l"],
-          "env": {
-              "ENV": "~/.bashrc"
-          }
-      }
-  },
-  "terminal.integrated.defaultProfile.windows": "PowerShell",
-  "cmake.showOptionsMovedNotification": false,
-  "cmake.pinnedCommands": [
-      "workbench.action.tasks.configureTaskRunner",
-      "workbench.action.tasks.runTask"
-  ],
-  "editor.indentSize": "tabSize",
-  "editor.detectIndentation": false,
-  "python.createEnvironment.trigger": "off",
-  "pylint.enabled": true,
+    "extensions.ignoreRecommendations": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "editor.minimap.enabled": false,
+    "window.zoomLevel": -1,
+    "editor.tabSize": 2,
+    "[lua]": {
+        "editor.defaultFormatter": "sumneko.lua"
+    },
+    "editor.renderLineHighlight": "all",
+    "workbench.colorCustomizations": {
+        "editor.lineHighlightBackground": "#00000000",
+        "editor.lineHighlightBorder": "#0000ff"
+    },
+    "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?_",
+    "files.associations": {
+        "*.vertex": "glsl",
+        "*.fragment": "glsl",
+        "*.glsl": "glsl"
+    },
+    "C_Cpp.dimInactiveRegions": false,
+    "explorer.confirmDragAndDrop": false,
+    "git.openRepositoryInParentFolders": "never",
+    "debug.onTaskErrors": "abort",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.external.windowsExec": "D:\\Programs\\w64devkit\\bin\\sh.exe -l",
+    "terminal.integrated.profiles.windows": {
+        "w64devkit": {
+            "path": "D:\\Programs\\w64devkit\\bin\\sh.exe",
+            "args": ["-l"],
+            "env": {
+                "ENV": "~/.bashrc"
+            }
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "cmake.showOptionsMovedNotification": false,
+    "cmake.pinnedCommands": [
+        "workbench.action.tasks.configureTaskRunner",
+        "workbench.action.tasks.runTask"
+		],
+    "editor.indentSize": "tabSize",
+    "editor.detectIndentation": false,
+    "python.createEnvironment.trigger": "off",
+    "pylint.enabled": true,
+    "terminal.integrated.fontSize": 18,
+    "editor.cursorStyle": "block",
+    "terminal.integrated.cursorBlinking": true,
+    "editor.find.seedSearchStringFromSelection": "never",
+    "terminal.integrated.tabs.defaultIcon": "chevron-right",
+    "workbench.statusBar.visible": false,
+    "workbench.activityBar.location": "top",
 }
