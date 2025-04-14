@@ -10,6 +10,9 @@ symlinks = {
   'vscode': {
     'keybindings.json': os.path.join(appdata, 'Code', 'User'),
     'settings.json': os.path.join(appdata, 'Code', 'User')
+  },
+  'cmd.exe': {
+    '.cmd.bat': os.path.expanduser('~'),
   }
 }
 
