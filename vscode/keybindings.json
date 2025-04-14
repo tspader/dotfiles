@@ -4520,5 +4520,20 @@
   "key": "escape",
   "command": "removeSecondaryCursors",
   "when": "multiCursorModifier"
+},
+{
+  "key": "ctrl+g",
+  "command": "workbench.action.closeQuickOpen",
+  "when": "inQuickOpen"
+},
+{
+  "key": "shift+escape",
+  "command": "-workbench.action.closeQuickOpen",
+  "when": "inQuickOpen"
+},
+{
+  "key": "enter",
+  "command": "acceptSelectedSuggestion",
+  "when": "acceptSuggestionOnEnter && suggestWidgetHasFocusedSuggestion && suggestWidgetVisible && suggestionMakesTextEdit && textInputFocus"
 }
 ]
