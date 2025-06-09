@@ -1,0 +1,86 @@
+{
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema",
+  "actions": [],
+  "copyFormatting": "none",
+  "copyOnSelect": false,
+  "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+  "keybindings": 
+  [
+      {
+          "id": "Terminal.CopyToClipboard",
+          "keys": "ctrl+c"
+      },
+      {
+          "id": "Terminal.FindText",
+          "keys": "ctrl+shift+f"
+      },
+      {
+          "id": "Terminal.PasteFromClipboard",
+          "keys": "ctrl+v"
+      },
+      {
+          "id": "Terminal.DuplicatePaneAuto",
+          "keys": "alt+shift+d"
+      }
+  ],
+  "newTabMenu": 
+  [
+      {
+          "type": "remainingProfiles"
+      }
+  ],
+  "profiles": 
+  {
+      "defaults": 
+      {
+          "colorScheme": "Dark+",
+          "font": 
+          {
+              "face": "Inconsolata",
+              "size": 14,
+              "weight": "semi-bold"
+          }
+      },
+      "list": 
+      [
+          {
+              "commandline": "pwsh.exe -nologo",
+              "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+              "hidden": false,
+              "name": "PowerShell",
+              "source": "Windows.Terminal.PowershellCore"
+          },
+          {
+              "colorScheme": "Campbell",
+              "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+              "elevate": true,
+              "guid": "{fdcc6784-e523-40c9-895f-616085bdd623}",
+              "hidden": false,
+              "icon": "ms-appx:///ProfileIcons/pwsh.png",
+              "name": "PowerShell [Admin]",
+              "startingDirectory": "%USERPROFILE%"
+          },
+          {
+              "guid": "{a14b7fdd-0346-5ff7-aa17-b6b381ff74bc}",
+              "hidden": false,
+              "name": "PowerShell [VS2022]",
+              "source": "Windows.Terminal.VisualStudio"
+          },
+          {
+              "commandline": "%SystemRoot%\\System32\\cmd.exe",
+              "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+              "hidden": false,
+              "name": "Command Prompt"
+          },
+          {
+              "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
+              "hidden": true,
+              "name": "Visual Studio Debug Console",
+              "source": "VSDebugConsole"
+          }
+      ]
+  },
+  "schemes": [],
+  "themes": []
+}
