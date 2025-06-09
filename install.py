@@ -8,14 +8,14 @@ appdata = os.getenv('APPDATA')
 caret = '-> '
 
 symlinks = {
-  'bash': {
-    '.bashrc': os.path.expanduser('~'),
-    '.profile': os.path.expanduser('~')
-  },
-  'vscode': {
-    'keybindings.json': os.path.join(appdata, 'Code', 'User'),
-    'settings.json': os.path.join(appdata, 'Code', 'User')
-  },
+  # 'bash': {
+  #   '.bashrc': os.path.expanduser('~'),
+  #   '.profile': os.path.expanduser('~')
+  # },
+  # 'vscode': {
+  #   'keybindings.json': os.path.join(appdata, 'Code', 'User'),
+  #   'settings.json': os.path.join(appdata, 'Code', 'User')
+  # },
   'cmd.exe': {
     '.cmd.bat': os.path.expanduser('~'),
   },
