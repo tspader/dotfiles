@@ -1,0 +1,340 @@
+* Config
+All my miscellaneous, short configurations go here -- enabling some basic minor
+modes, small aesthetic changes, etc
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path (expand-file-name "packages" user-emacs-directory))
+
+(show-paren-mode t)
+(global-font-lock-mode t) 
+(setq-default tab-width 2)
+(electric-indent-mode 1)
+
+(cua-mode t)
+(setq x-select-enable-clipboard t)
+(delete-selection-mode 1)
+
+(setq-default cursor-type 'bar)
+
+(setq message-log-max nil)
+
+(setq mac-command-modifier 'control)
+(setq mac-option-modifier 'meta)
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+(setq create-lockfiles nil)
+#+END_SRC
+
+Configuring linum mode
+#+BEGIN_SRC emacs-lisp
+;(use-package linum)
+;(global-linum-mode t)
+#+END_SRC
+
+This configuration seems to give a nice scrolling 
+#+BEGIN_SRC emacs-lisp
+;; scroll one line at a time (less "jumpy" than defaults). note: this may not do anything
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 2))) ;; 2 lines at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq scroll-conservatively 101) ;; move minimum when cursor exits view, instead of recentering
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+
+#+END_SRC
+* Packages
+** pabbrev
+#+BEGIN_SRC emacs-lisp
+(use-package pabbrev
+  :init
+  (setq pabbrev-idle-timer-verbose nil
+		pabbrev-read-only-error nil))
+
+(define-key pabbrev-mode-map [tab] 'pabbrev-expand-maybe)
+(add-hook 'text-mode-hook (lambda () (pabbrev-mode)))
+(add-hook 'prog-mode-hook 'pabbrev-mode)
+#+END_SRC
+** org
+This little block lets you have syntax highlighting on inlined source code
+blocks in org mode.
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :init
+  (setq org-src-fontify-natively t
+		org-src-window-setup 'current-window
+		org-src-strip-leading-and-trailing-blank-lines t
+		org-src-preserve-indentation t
+		org-src-tab-acts-natively t)
+  :defer t)
+#+END_SRC
+ 
+Have to manually override some global keybindings for org-mode, and set a few others
+#+BEGIN_SRC emacs-lisp
+(define-key org-mode-map (kbd "C-1") 'other-window)
+(define-key org-mode-map (kbd "C-j") 'backward-char)
+(define-key org-mode-map (kbd "C-k") 'next-line)
+(define-key org-mode-map (kbd "C-c a") 'org-agenda)
+
+(setq org-replace-disputed-keys t)
+#+END_SRC
+*** org-babel
+Make org-babel load languages, and a
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (C . t)
+   (calc . t)
+   (lisp . t)
+   (js . t)))
+
+(defun my-org-confirm-babel-evaluate (lang body)
+  "Do not confirm evaluation for these languages."
+  (not (or (string= lang "C")
+           (string= lang "python")
+           (string= lang "emacs-lisp"))))
+(setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+#+END_SRC
+
+** helm
+#+BEGIN_SRC emacs-lisp
+(use-package helm
+  :ensure t
+)
+
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(helm-mode 1)
+#+END_SRC
+* Languages
+** Python
+Stylistic stuff
+#+BEGIN_SRC emacs-lisp
+(add-hook 'python-mode-hook '(lambda () 
+ (setq python-guess-indent nil)
+ (setq indent-tabs-mode nil)
+ (setq python-indent 4)
+ (setq python-inden-offset 4)))
+#+END_SRC
+** C
+#+BEGIN_SRC emacs-lisp
+(add-hook 'c-mode-hook
+  (lambda ()
+   (hs-minor-mode)
+   ))
+
+(setq c-basic-offset 4)
+(setq c-hungry-delete-key -1)
+#+END_SRC
+** C++
+#+BEGIN_SRC emacs-lisp
+(use-package cc-mode)
+#+END_SRC
+
+Hide/Show; dumb jump; formatting
+#+BEGIN_SRC emacs-lisp
+(define-key c-mode-map (kbd "C-.") 'dumb-jump-go)
+(define-key c-mode-map (kbd "C-,") 'dumb-jump-back)
+(define-key c-mode-map (kbd "C-c l") 'hs-show-block)
+(define-key c-mode-map (kbd "C-c j") 'hs-hide-block) 
+(define-key c-mode-map (kbd "C-d") 'delete-backward-char)
+(define-key c-mode-map (kbd "C-;") 'clang-format-region)
+(define-key c-mode-map (kbd "M-j") 'backward-word) ; bound to newline in c-mode
+(define-key c-mode-map (kbd "C-c f") 'beginning-of-defun)
+#+END_SRC
+
+Again, gotta do some overriding so that modes play nice with keybindings, plus
+some convenient stuff to hide and show blocks
+#+BEGIN_SRC emacs-lisp
+(define-key c-mode-map (kbd "C-.") 'dumb-jump-go)
+(define-key c-mode-map (kbd "C-,") 'dumb-jump-back)
+(define-key c++-mode-map (kbd "C-c l") 'hs-show-block)
+(define-key c++-mode-map (kbd "C-c j") 'hs-hide-block) 
+(define-key c++-mode-map (kbd "C-d") 'delete-backward-char)
+(define-key c++-mode-map (kbd "C-;") 'clang-format-region)
+(define-key c++-mode-map (kbd "M-j") 'backward-word) ; bound to newline in c-mode
+#+END_SRC
+** Lua
+#+BEGIN_SRC emacs-lisp
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+#+END_SRC
+** Rust
+#+BEGIN_SRC emacs-lisp
+(add-hook 'rust-mode-hook
+          (lambda ()
+			(setq indent-tabs-mode nil)
+			(display-line-numbers-mode)))
+
+(setq rust-format-on-save t)
+#+END_SRC
+** GLSL
+#+BEGIN_SRC emacs-lisp
+(autoload 'glsl-mode "glsl-mode" "GLSL mode" t)
+
+(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.vertex\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.fragment\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.compute\\'" . glsl-mode))
+#+END_SRC
+* Visual
+Point emacs to our pre-installed themes
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+#+END_SRC
+
+Set our default font
+#+BEGIN_SRC emacs-lisp
+;;(set-frame-font "PxPlus IBM VGA8-11")
+(set-frame-font "Inconsolata-10")
+#+END_SRC
+** Cyberpunk
+#+BEGIN_SRC emacs-lisp
+;; (use-package cyberpunk-theme
+;;   :if (window-system)
+;;   :ensure t
+;;   :init
+;;   (progn
+;;     (load-theme 'cyberpunk t)
+;;     (set-face-attribute `mode-line nil
+;;                         :box nil)
+;;     (set-face-attribute `mode-line-inactive nil
+;;                         :box nil)))
+#+END_SRC
+** spacemacs-theme
+#+BEGIN_SRC emacs-lisp
+;; (use-package spacemacs-common
+;;   :if (window-system)
+;;   :ensure spacemacs-theme
+;;   :init
+;;   (progn
+;;     (load-theme 'spacemacs-dark t)))
+#+END_SRC
+** nyx-theme
+#+BEGIN_SRC emacs-lisp
+;; (use-package nyx-theme
+;;   :if (window-system)
+;;   :ensure nyx-theme
+;;   :init
+;;   (progn
+;;     (load-theme 'nyx t)))
+#+END_SRC
+** gruvbox-dark-hard
+#+BEGIN_SRC emacs-lisp
+(use-package gruvbox-theme
+  :if (window-system)
+  :ensure t
+  :init
+  (progn
+	(load-theme 'gruvbox-dark-hard t)))
+#+END_SRC
+* Functions
+#+BEGIN_SRC emacs-lisp
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
+
+
+#+END_SRC
+
+Editing functions
+#+BEGIN_SRC emacs-lisp
+(defun copy-whole-word ()
+  "Copies the entire word."
+  (interactive)
+  (save-excursion
+(backward-word nil)
+(mark-word nil)
+(kill-ring-save (region-beginning) (region-end))))
+
+(defun cut-whole-word ()
+  "Cuts the entire word."
+  (interactive)
+  (save-excursion
+(backward-word nil)
+(mark-word nil)
+(kill-region (region-beginning) (region-end))))
+
+(defun replace-word-with-yank ()
+"Replaces the word under the cursor with the last kill."
+(interactive)
+(cut-whole-word)
+(yank 2)
+(copy-whole-word))
+#+END_SRC
+
+Movement functions
+#+BEGIN_SRC emacs-lisp
+(defun boon-scroll-down ()
+  (interactive)
+  (scroll-up 10))
+
+(defun boon-scroll-up ()
+  (interactive)
+  (scroll-down 10))
+#+END_SRC
+* Global Keybinds
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-/") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-w") 'cut-whole-word)
+(global-set-key (kbd "M-w") 'copy-whole-word)
+(global-set-key (kbd "C-W") 'replace-word-with-yank)
+(global-set-key (kbd "C-x k") 'kill-buffer)
+(global-set-key (kbd "C-x C-r") 'rename-file-and-buffer)
+
+(global-set-key (kbd "C-3") 'next-buffer)
+(global-set-key (kbd "C-2") 'previous-buffer)
+(global-set-key (kbd "C-1") 'other-window)
+
+(global-set-key (kbd "C-f") 'delete-char)
+(global-set-key (kbd "C-d") 'delete-backward-char)
+(global-set-key (kbd "M-d") 'backward-kill-word)
+(global-set-key (kbd "M-f") 'kill-word)
+(global-set-key (kbd "M-D") 'kill-whole-line)
+
+(define-key input-decode-map (kbd "C-i") (kbd "H-i"))
+(global-set-key (kbd "H-i") 'previous-line)
+(global-set-key (kbd "C-j") 'backward-char)
+(global-set-key (kbd "C-k") 'next-line)
+(global-set-key (kbd "C-l") 'forward-char)
+
+(global-set-key (kbd "M-i") 'backward-paragraph)
+(global-set-key (kbd "M-k") 'forward-paragraph)
+(global-set-key (kbd "M-l") 'forward-word)
+(global-set-key (kbd "M-j") 'backward-word)
+
+(global-set-key (kbd "M-h") 'backward-sexp)
+(global-set-key (kbd "M-n") 'forward-sexp)
+
+(global-set-key (kbd "C-q") 'query-replace)
+
+(global-set-key [(control down)] 'boon-scroll-down)
+(global-set-key [(control up)]   'boon-scroll-up)
+#+END_SRC
+
+* Disabling Default Functionality
+This guy removes Completions from buffer after you've opened a file.
+#+BEGIN_SRC emacs-lisp
+(add-hook 'minibuffer-exit-hook
+      '(lambda ()
+         (let ((buffer "*Completions*"))
+           (and (get-buffer buffer)
+                (kill-buffer buffer)))))
+#+END_SRC
+
+One liners
+#+BEGIN_SRC emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq ring-bell-function 'ignore)
+#+END_SRC
