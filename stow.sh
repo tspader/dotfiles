@@ -1,4 +1,5 @@
 stow alacritty
+stow bash
 stow backgrounds
 stow emacs
 stow feh

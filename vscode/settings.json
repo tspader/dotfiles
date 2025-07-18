@@ -89,5 +89,8 @@
     },
     "diffEditor.renderSideBySide": false,
     "diffEditor.experimental.useTrueInlineView": true,
-    "editor.accessibilitySupport": "off"
+    "editor.accessibilitySupport": "off",
+    "yaml.schemas": {
+      "file:///c%3A/Users/ts185327/.vscode/extensions/atlassian.atlascode-3.8.6/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    }
   }
