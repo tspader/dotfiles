@@ -8,6 +8,6 @@ fi
 
 mesg n 2> /dev/null || true
 
-if [-f "$HOME/.local/bin/env" ]; then
+if [ -f "$HOME/.local/bin/env" ]; then
   . "$HOME/.local/bin/env"
 fi
