@@ -289,7 +289,6 @@ bind '"\e[B": history-search-forward'
 
 # Use Ctrl+R for reverse history search (usually default)
 bind '"\C-r": reverse-search-history'
-bind '"\C-n": reverse-search-history'
 
 # ============================================
 # FZF HISTORY SEARCH
@@ -350,12 +349,6 @@ export LESS='-R -F -X -i -P %lt-%lb/%L [%f]'
 # Set default editor (change to your preference)
 export EDITOR='nano'
 export VISUAL='nano'
-
-# ============================================
-# CUSTOM BOOKMARKS (OPTIONAL)
-# ============================================
-# Add your frequently used directories here
-export CDPATH=".:~:~/projects:~/Documents"
 
 # ============================================
 # LOCAL CUSTOMIZATIONS

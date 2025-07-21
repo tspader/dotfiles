@@ -89,5 +89,7 @@
     },
     "diffEditor.renderSideBySide": false,
     "diffEditor.experimental.useTrueInlineView": true,
-    "editor.accessibilitySupport": "off"
+    "editor.accessibilitySupport": "off",
+    "accessibility.dimUnfocused.enabled": true,
+    "accessibility.dimUnfocused.opacity": 0.5
   }
