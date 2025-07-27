@@ -81,9 +81,6 @@ set_prompt() {
         PS1+="${LIGHT_RED}[${EXIT}]${RESET} "
     fi
     
-    # Time
-    PS1+="${BLACK}[\t]${RESET} "
-    
     # User@host
     if [[ ${EUID} == 0 ]]; then
         PS1+="${GREEN}\u@\h${RESET}"
@@ -98,7 +95,7 @@ set_prompt() {
     PS1+="${YELLOW}$(git_branch)${RESET}"
     
     # Prompt symbol
-    PS1+="\n\$ "
+    PS1+=" > "
 }
 
 # Set PROMPT_COMMAND to update prompt
