@@ -139,7 +139,7 @@ alias ~='cd ~'
 alias -- -='cd -'
 
 # Quick directory listing
-alias tree='tree -C'  # Colorized tree (if available)
+alias tree='tree -a -C'  # Colorized tree (if available)
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
 alias duf='du -sh .* * | sort -h'  # Include hidden files
 
