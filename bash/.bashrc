@@ -218,24 +218,16 @@ path() {
     echo -e ${PATH//:/\\n}
 }
 
-# cd into directory and list contents
-cdl() {
-    cd "$1" && ls -la
-}
-
-# Search history more efficiently
-histg() {
-    history | grep -i "$1" | grep -v histg
-}
-
-# Quick calculator
 calc() {
     echo "scale=3; $*" | bc -l
 }
 
-# Show most used commands
-most_used() {
-    history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl | head -n20
+clip() {
+   pbcopy < "$1"
+}
+
+hex() {
+    printf "#%02x%02x%02x\n" "$1" "$2" "$3"
 }
 
 # ============================================
@@ -361,3 +353,6 @@ export CDPATH=".:~:~/projects:~/Documents"
 if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
