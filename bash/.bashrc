@@ -136,7 +136,7 @@ alias ~='cd ~'
 alias -- -='cd -'
 
 # Quick directory listing
-alias tree='tree -C'  # Colorized tree (if available)
+alias tree='tree -a -C'  # Colorized tree (if available)
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
 alias duf='du -sh .* * | sort -h'  # Include hidden files
 
@@ -159,10 +159,6 @@ alias myip='curl -s ifconfig.me'
 alias meminfo='free -h'
 alias cpuinfo='lscpu'
 alias diskinfo='df -h'
-
-# Quick edits
-alias bashrc='${EDITOR:-nano} ~/.bashrc && source ~/.bashrc'
-alias sourcebash='source ~/.bashrc'
 
 # Timestamps
 alias now='date +"%Y-%m-%d %H:%M:%S"'
@@ -278,7 +274,6 @@ bind '"\e[B": history-search-forward'
 
 # Use Ctrl+R for reverse history search (usually default)
 bind '"\C-r": reverse-search-history'
-bind '"\C-n": reverse-search-history'
 
 # ============================================
 # FZF HISTORY SEARCH
@@ -337,14 +332,8 @@ export LESS='-R -F -X -i -P %lt-%lb/%L [%f]'
 # EDITOR CONFIGURATION
 # ============================================
 # Set default editor (change to your preference)
-export EDITOR='nano'
-export VISUAL='nano'
-
-# ============================================
-# CUSTOM BOOKMARKS (OPTIONAL)
-# ============================================
-# Add your frequently used directories here
-export CDPATH=".:~:~/projects:~/Documents"
+export EDITOR='vi'
+export VISUAL='vi'
 
 # ============================================
 # LOCAL CUSTOMIZATIONS

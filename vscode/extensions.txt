@@ -1,0 +1,9 @@
+anthropic.claude-code
+ericmccarthy.vs-code-mark-point
+jmfirth.vsc-space-block-jumper
+ms-python.vscode-python-envs
+ms-vscode-remote.remote-ssh
+ms-vscode-remote.remote-wsl
+ms-vscode-remote.vscode-remote-extensionpack
+ms-vscode.cpptools
+tauri-apps.tauri-vscode
