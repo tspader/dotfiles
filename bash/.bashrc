@@ -104,12 +104,6 @@ PROMPT_COMMAND="set_prompt${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 # ============================================
 # USEFUL ALIASES
 # ============================================
-# Safety aliases
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias ln='ln -i'
-
 # Better defaults
 alias mkdir='mkdir -pv'
 alias grep='grep --color=auto'
@@ -218,12 +212,80 @@ calc() {
     echo "scale=3; $*" | bc -l
 }
 
+get_os_type() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "macos"
+    elif [[ -n "$WSL_DISTRO_NAME" ]] && command -v clip.exe >/dev/null 2>&1; then
+        echo "wsl"
+    elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+        echo "windows"
+    else
+        echo "linux"
+    fi
+}
+
 clip() {
-   pbcopy < "$1"
+    local os_type=$(get_os_type)
+    
+    case "$os_type" in
+        "macos")
+            pbcopy
+            ;;
+        "wsl")
+            clip.exe
+            ;;
+        "windows")
+            clip.exe
+            ;;
+        "linux")
+            if command -v xclip >/dev/null 2>&1; then
+                xclip -selection clipboard
+            elif command -v xsel >/dev/null 2>&1; then
+                xsel --clipboard --input
+            else
+                echo "Error: No clipboard utility found. Install xclip or xsel." >&2
+                return 1
+            fi
+            ;;
+        *)
+            echo "Error: Unsupported OS type: $os_type" >&2
+            return 1
+            ;;
+    esac
+}
+
+paste() {
+    local os_type=$(get_os_type)
+    
+    case "$os_type" in
+        "macos")
+            pbpaste
+            ;;
+        "wsl")
+            powershell.exe -command "Get-Clipboard" 2>/dev/null
+            ;;
+        "windows")
+            powershell.exe -command "Get-Clipboard" 2>/dev/null
+            ;;
+        "linux")
+            if command -v xclip >/dev/null 2>&1; then
+                xclip -selection clipboard -o
+            elif command -v xsel >/dev/null 2>&1; then
+                xsel --clipboard --output
+            else
+                echo "Error: No clipboard utility found. Install xclip or xsel." >&2
+                return 1
+            fi
+            ;;
+        *)
+            echo "Error: Unsupported OS type: $os_type" >&2
+            return 1
+            ;;
+    esac
 }
 
 hex() {
-    printf "#%02x%02x%02x\n" "$1" "$2" "$3"
+    printf "#%02x%02x%02x" "$1" "$2" "$3"
 }
 
 # ============================================
