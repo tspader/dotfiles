@@ -1,0 +1,33 @@
+C-i     forward-char
+C-j     left-char
+C-k     down-char
+C-l     right-char
+C-a     line-start
+C-e     line-end
+C-q     query-replace
+C-w     panel-close
+C-r     search-backward
+C-s     search-forward
+C-f     peek-definition
+C-z     undo
+C-c     copy
+C-v     paste
+C-1     next-group
+C-2     previous-editor
+C-3     next-editor
+C-space set-mark
+C-x h   select-all
+C-x o   open-file
+C-x C-o open-folder
+C-x s   save-files
+C-x C-s save-file
+C-x g   jump-line
+C-x C-n new-file
+C-x C-r rename-file
+C-x C-x cut
+M-<     file-start
+M->     file-end
+M-i     up-block
+M-j     left-word
+M-k     down-block
+M-l     right-word
