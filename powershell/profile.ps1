@@ -5,22 +5,20 @@ function prompt {
   $cwd = Get-Location
 
   # Apply colors
-  $green = [System.ConsoleColor]::Green
-  $blue = [System.ConsoleColor]::Blue
+  $green = [System.ConsoleColor]::DarkGreen
+  $blue = [System.ConsoleColor]::DarkCyan
   $white = [System.ConsoleColor]::White
 
   # Format prompt
-  Write-Host "${username}:${hostname}:" -ForegroundColor ${green} -NoNewline
+  Write-Host "${username}@${hostname}:" -ForegroundColor ${green} -NoNewline
   Write-Host "${cwd}" -ForegroundColor ${blue} -NoNewline
   Write-Host " >" -ForegroundColor $white -NoNewline
-  return " "  # Ensures proper input spacing
+  return " "
 }
-# Import the Chocolatey Profile that contains the necessary code to enable
-# tab-completions to function for `choco`.
-# Be aware that if you are missing these lines from your profile, tab completion
-# for `choco` will not function.
-# See https://ch0.co/tab-completion for details.
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-if (Test-Path($ChocolateyProfile)) {
-Import-Module "$ChocolateyProfile"
+
+function vs {
+  & {
+    Import-Module "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"; 
+    Enter-VsDevShell 661b5f87 -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"
+  }
 }

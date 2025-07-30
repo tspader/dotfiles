@@ -4,8 +4,12 @@ import argparse
 
 from typing import List
 
-appdata = os.getenv('APPDATA')
 caret = '-> '
+
+local_appdata = os.getenv('LOCALAPPDATA')
+appdata = os.getenv('APPDATA')
+home = os.getenv('USERPROFILE')
+powershell = os.path.join(home, 'Documents', 'WindowsPowerShell', 'Modules')
 
 symlinks = {
   'bash': {
@@ -44,17 +48,17 @@ def main(dry_run = False, force = False):
     for target_file, link_path in program_map.items():
       target_path = os.path.normpath(os.path.join(dotfiles, program, target_file))
       link_path = os.path.normpath(os.path.join(link_path, target_file))
-      print(f'Linking {target_path} -> {link_path}')
 
       if os.path.islink(link_path):
         if force:
-          print(f'{caret}Link already exists at link path, but it will be unlinked because of --force')
+          print(f'Force linking {target_path} -> {link_path}')
           unlink.append(UnlinkItem(link_path))
           link.append(LinkItem(target_path, link_path))
-          print(f'{caret}Link already exists at link path, skipping.')
+        else:
+          print(f'Skipping {target_path} -> {link_path}')
       else:
-          print(f'{caret}Link does not exist at path; adding.')
-          link.append(LinkItem(target_path, link_path))
+          print(f'Linking {target_path} -> {link_path}')
+          link.append(LinkItem(target_path, link_path)) 
 
   if not dry_run:
     for item in unlink:
