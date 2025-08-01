@@ -1,35 +1,58 @@
+import argparse
+import json
+import platform
 import os
 import subprocess
-import argparse
 
 from typing import List
 
-caret = '-> '
-
-local_appdata = os.getenv('LOCALAPPDATA')
-appdata = os.getenv('APPDATA')
-home = os.getenv('USERPROFILE')
-powershell = os.path.join(home, 'Documents', 'WindowsPowerShell', 'Modules')
-
-symlinks = {
-  'bash': {
-    '.bashrc': os.path.expanduser('~'),
-    '.profile': os.path.expanduser('~')
-  },
-  'vscode': {
-    'keybindings.json': os.path.join(appdata, 'Code', 'User'),
-    'settings.json': os.path.join(appdata, 'Code', 'User')
-  },
-  'cmd.exe': {
-    '.cmd.bat': os.path.expanduser('~'),
-  },
-  'powershell': {
-    'profile.ps1': os.path.dirname(subprocess.run(["powershell.exe", "-Command", "$profile"], capture_output=True, text=True).stdout.strip())
-  }
-}
-
 dotfiles = os.path.normpath(os.path.dirname(os.path.abspath(__file__)))
-vscode = os.path.normpath(os.path.join(dotfiles, 'vscode'))
+
+def build_macos_vscode():
+  with open(os.path.join(dotfiles, 'vscode', 'keybindings.json'), 'r') as file:
+    keybindings = json.load(file)
+
+    for keybinding in keybindings:
+      if 'ctrl' in keybinding['key']:
+        keybinding['key'] = keybinding['key'].replace('ctrl', 'cmd')
+
+    keybindings_path = os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'Code', 'User', 'keybindings.json')
+    print(f'Copying keybindings to {keybindings_path}')
+    with open(keybindings_path, 'w') as file:
+      json.dump(keybindings, file, indent=2)
+
+if platform.system == 'Windows':
+  local_appdata = os.getenv('LOCALAPPDATA')
+  appdata = os.getenv('APPDATA')
+  home = os.getenv('USERPROFILE')
+  powershell = os.path.join(home, 'Documents', 'WindowsPowerShell', 'Modules')
+
+  symlinks = {
+    'bash': {
+      '.bashrc': os.path.expanduser('~'),
+      '.profile': os.path.expanduser('~')
+    },
+    'vscode': {
+      'keybindings.json': os.path.join(appdata, 'Code', 'User'),
+      'settings.json': os.path.join(appdata, 'Code', 'User')
+    },
+    'cmd.exe': {
+      '.cmd.bat': os.path.expanduser('~'),
+    },
+    'powershell': {
+      'profile.ps1': os.path.dirname(subprocess.run(["powershell.exe", "-Command", "$profile"], capture_output=True, text=True).stdout.strip())
+    }
+  }
+  
+  functions = []
+else:
+  symlinks = {
+    'vscode': {
+      'settings.json': os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'Code', 'User')
+    }
+  }
+
+  functions = [build_macos_vscode]
 
 class UnlinkItem():
   def __init__(self, target):
@@ -61,6 +84,9 @@ def main(dry_run = False, force = False):
           link.append(LinkItem(target_path, link_path)) 
 
   if not dry_run:
+    for function in functions:
+      function()
+      
     for item in unlink:
       os.unlink(item.target)
 

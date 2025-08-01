@@ -21,15 +21,6 @@
     "git.openRepositoryInParentFolders": "never",
     "debug.onTaskErrors": "abort",
     "terminal.integrated.defaultProfile.linux": "bash",
-    "terminal.external.windowsExec": "D:\\Programs\\w64devkit\\bin\\sh.exe -l",
-    "terminal.integrated.profiles.windows": {
-        "w64devkit": {
-            "path": "D:\\Programs\\w64devkit\\bin\\sh.exe",
-            "args": [
-              "-l"
-            ]
-        }
-    },
     "terminal.integrated.defaultProfile.windows": "PowerShell",
     "cmake.showOptionsMovedNotification": false,
     "cmake.pinnedCommands": [
@@ -56,14 +47,6 @@
     "editor.autoClosingDelete": "never",
     "editor.minimap.enabled": false,
     "chat.commandCenter.enabled": false,
-    "amp.url": "https://ampcode.com/",
-    "amp.commands.allowlist": [
-      "msbuild",
-      "MSBuild.exe",
-      "*/MSBuild.exe",
-      "\"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe\"",
-      "*"
-    ],
     "diffEditor.renderSideBySide": false,
     "diffEditor.experimental.useTrueInlineView": true,
     "editor.accessibilitySupport": "off",
@@ -84,6 +67,5 @@
       "*.sdb": "${capture}.${extname}-*",
       "*.s3db": "${capture}.${extname}-*"
     },
-    "window.customMenuBarAltFocus": false,
-    "editor.experimental.treeSitterTelemetry": true
+    "window.customMenuBarAltFocus": false
   }
