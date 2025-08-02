@@ -110,6 +110,7 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
+alias bashrc='source ~/.bashrc'
 
 # ls aliases with color
 alias ls='ls --color=auto'
@@ -131,6 +132,7 @@ alias -- -='cd -'
 
 # Quick directory listing
 alias tree='tree -a -C'  # Colorized tree (if available)
+alias tree3='tree -a -C -L 3'
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
 alias duf='du -sh .* * | sort -h'  # Include hidden files
 
@@ -408,3 +410,6 @@ fi
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 . "$HOME/.cargo/env"
+
+# uv
+export PATH="/Users/spader/.local/bin:$PATH"

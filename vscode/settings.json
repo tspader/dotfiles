@@ -67,5 +67,8 @@
       "*.sdb": "${capture}.${extname}-*",
       "*.s3db": "${capture}.${extname}-*"
     },
-    "window.customMenuBarAltFocus": false
+    "window.customMenuBarAltFocus": false,
+    "remote.SSH.remotePlatform": {
+      "aral": "windows"
+    }
   }
