@@ -49,6 +49,9 @@ else:
   symlinks = {
     'vscode': {
       'settings.json': os.path.join(os.getenv('HOME'), 'Library', 'Application Support', 'Code', 'User')
+    },
+    'macos': {
+      'com.local.LaunchAgent.plist': os.path.join(os.getenv('HOME'), 'Library', 'LaunchAgents')
     }
   }
 

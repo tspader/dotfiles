@@ -19,6 +19,10 @@ vim.opt.relativenumber = true  -- Show relative line numbers
 vim.opt.expandtab = true       -- Use spaces instead of tabs
 vim.opt.shiftwidth = 2         -- Indent by 2 spaces
 vim.opt.tabstop = 2            -- Tab width is 2 spaces
+vim.opt.fillchars = { 
+  vert = '│',
+  horiz = '─',
+}
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -29,8 +33,23 @@ require("lazy").setup({
       "LunarVim/darkplus.nvim",
       config = function()
         vim.cmd.colorscheme("darkplus")
+        vim.cmd('highlight StatusLine guifg=#ffffff guibg=#444444')
+        vim.cmd('highlight StatusLineNC guifg=#888888 guibg=#222222')
       end
-    }  
+    },
+    {
+      "nvim-telescope/telescope.nvim",
+      dependencies = {"nvim-lua/plenary.nvim"},
+      config = function()
+        local builtin = require('telescope.builtin')
+        vim.keymap.set('n', '<M-p>', function()
+          builtin.find_files({
+            hidden = true
+          })
+        end)
+        vim.keymap.set('n', '<M-f>', builtin.live_grep)
+      end
+    },
   },
   install = { 
     colorscheme = { 
@@ -52,12 +71,9 @@ end
 
 vim.keymap.set(VIM_MODE_NORMAL, leader('a'),  'ggVG')
 vim.keymap.set(VIM_MODE_NORMAL, leader('s'),  '/')
+vim.keymap.set(VIM_MODE_NORMAL, leader('r'),  '?')
 vim.keymap.set(VIM_MODE_NORMAL, leader('q'),  ':%s/')
 vim.keymap.set(VIM_MODE_NORMAL, leader('fo'),  ':e')
 vim.keymap.set(VIM_MODE_NORMAL, leader('xs'), ':wa<CR>')
 vim.keymap.set(VIM_MODE_NORMAL, leader('xn'), ':enew<CR>')
 vim.keymap.set(VIM_MODE_NORMAL, leader('g'),  ':')
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-h>', '^') 
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-l>', '$') 
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-j>', '}') 
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-k>', '{') 

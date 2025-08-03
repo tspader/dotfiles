@@ -14,3 +14,4 @@ emacs/.emacs.d/url
 .config/UnityHub
 .config/unity3d
 .config/mimeapps.list
+.DS_Store

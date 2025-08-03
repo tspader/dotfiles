@@ -122,7 +122,6 @@ alias lh='ls -ld .??* --color=auto'  # Show hidden files only
 
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
-# Directory navigation
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -130,33 +129,23 @@ alias .....='cd ../../../..'
 alias ~='cd ~'
 alias -- -='cd -'
 
-# Quick directory listing
+alias n='nvim'
 alias tree='tree -a -C'  # Colorized tree (if available)
 alias tree3='tree -a -C -L 3'
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
 alias duf='du -sh .* * | sort -h'  # Include hidden files
-
-# History shortcuts
 alias h='history'
 alias hg='history | grep'
 alias hl='history | less'
-
-# Process management
 alias psa='ps aux'
 alias psg='ps aux | grep -v grep | grep'
 alias topmem='ps aux | sort -nrk 4 | head'  # Top memory consumers
 alias topcpu='ps aux | sort -nrk 3 | head'  # Top CPU consumers
-
-# Network
 alias ports='netstat -tulanp'
 alias myip='curl -s ifconfig.me'
-
-# System info
 alias meminfo='free -h'
 alias cpuinfo='lscpu'
 alias diskinfo='df -h'
-
-# Timestamps
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias today='date +"%Y-%m-%d"'
 
@@ -406,6 +395,7 @@ export VISUAL='vi'
 if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
