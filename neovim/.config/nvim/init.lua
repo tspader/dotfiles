@@ -50,11 +50,28 @@ require("lazy").setup({
         vim.keymap.set('n', '<M-f>', builtin.live_grep)
       end
     },
-  },
-  install = { 
-    colorscheme = { 
-      "habamax" 
-    } 
+    {
+      "nvim-treesitter/nvim-treesitter",
+      build = ":TSUpdate",
+      config = function()
+        require("nvim-treesitter.configs").setup({
+          ensure_installed = {
+            "c",
+            "cpp",
+            "lua",
+            "python",
+            "javascript",
+            "typescript" 
+          },
+          highlight = { 
+            enable = true 
+          },
+          indent = {
+            enable = true 
+          }
+        })
+      end
+    }
   },
   checker = { 
     enabled = true 
@@ -69,6 +86,10 @@ function leader(c)
   return '<leader>' .. c
 end
 
+function command(chord_key, command_key)
+  return string.format('<C-%s>%s', chord_key, command_key)
+end
+
 vim.keymap.set(VIM_MODE_NORMAL, leader('a'),  'ggVG')
 vim.keymap.set(VIM_MODE_NORMAL, leader('s'),  '/')
 vim.keymap.set(VIM_MODE_NORMAL, leader('r'),  '?')
@@ -77,3 +98,7 @@ vim.keymap.set(VIM_MODE_NORMAL, leader('fo'),  ':e')
 vim.keymap.set(VIM_MODE_NORMAL, leader('xs'), ':wa<CR>')
 vim.keymap.set(VIM_MODE_NORMAL, leader('xn'), ':enew<CR>')
 vim.keymap.set(VIM_MODE_NORMAL, leader('g'),  ':')
+vim.keymap.set(VIM_MODE_NORMAL, '<M-h>',  command('w', 'h'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-j>',  command('w', 'j'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-k>',  command('w', 'k'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-l>',  command('w', 'l'))
