@@ -396,10 +396,3 @@ if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-. "$HOME/.cargo/env"
-
-# uv
-export PATH="/Users/spader/.local/bin:$PATH"
