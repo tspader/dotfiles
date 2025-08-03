@@ -21,7 +21,7 @@ def build_macos_vscode():
     with open(keybindings_path, 'w') as file:
       json.dump(keybindings, file, indent=2)
 
-if platform.system == 'Windows':
+if platform.system() == 'Windows':
   local_appdata = os.getenv('LOCALAPPDATA')
   appdata = os.getenv('APPDATA')
   home = os.getenv('USERPROFILE')
@@ -41,6 +41,9 @@ if platform.system == 'Windows':
     },
     'powershell': {
       'profile.ps1': os.path.dirname(subprocess.run(["powershell.exe", "-Command", "$profile"], capture_output=True, text=True).stdout.strip())
+    },
+    'neovim': {
+      '.config/nvim/init.lua': os.path.join(local_appdata, 'nvim')
     }
   }
   
@@ -70,10 +73,11 @@ unlink: List[UnlinkItem] = []
 link: List[LinkItem] = []
 
 def main(dry_run = False, force = False):
+  print(f'Building for {platform.system()}')
   for program, program_map in symlinks.items():
     for target_file, link_path in program_map.items():
       target_path = os.path.normpath(os.path.join(dotfiles, program, target_file))
-      link_path = os.path.normpath(os.path.join(link_path, target_file))
+      link_path = os.path.normpath(os.path.join(link_path, os.path.basename(target_file)))
 
       if os.path.islink(link_path):
         if force:
