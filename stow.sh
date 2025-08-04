@@ -1,4 +1,6 @@
 stow alacritty
 stow bash
 stow opencode
-stow vscode
+stow neovim
+stow tmux
+stow ssh
