@@ -14,22 +14,54 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.opt.number = true          -- Show line numbers
-vim.opt.relativenumber = true  -- Show relative line numbers
-vim.opt.expandtab = true       -- Use spaces instead of tabs
-vim.opt.shiftwidth = 2         -- Indent by 2 spaces
-vim.opt.tabstop = 2            -- Tab width is 2 spaces
-vim.opt.softtabstop = 2            -- Tab width is 2 spaces
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.expandtab = true     
+vim.opt.shiftwidth = 2       
+vim.opt.tabstop = 2          
 vim.opt.fillchars = { 
   vert = '│',
   horiz = '─',
 }
+vim.opt.cursorline = true
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 require("lazy").setup({
   spec = {
+    {
+      'stevearc/oil.nvim',
+      opts = {
+        watch_for_changes = true,
+        view_options = {
+          show_hidden = true,
+          sort = {
+            { "type", "asc" },
+            { "name", "asc" }
+          }
+        },
+        keymaps = {
+          ["<Tab>"] = "actions.preview",
+          ["<CR>"] = "actions.select",
+          ["vs"] = { "actions.select", opts = { vertical = true } },
+          ["sp"] = { "actions.select", opts = { horizontal = true } },
+          ["h"] = { "actions.toggle_hidden", mode = "n" },
+        }
+      },
+      dependencies = {
+        {
+          "echasnovski/mini.icons",
+          opts = {} 
+        } 
+      },
+      lazy = false,
+    },
+    {
+      "lukas-reineke/indent-blankline.nvim",
+      main = "ibl",
+      opts = {},
+    },
     {
       "LunarVim/darkplus.nvim",
       config = function()
@@ -43,11 +75,7 @@ require("lazy").setup({
       dependencies = {"nvim-lua/plenary.nvim"},
       config = function()
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<M-p>', function()
-          builtin.find_files({
-            hidden = true
-          })
-        end)
+        vim.keymap.set('n', '<M-p>', builtin.find_files)
         vim.keymap.set('n', '<M-f>', builtin.live_grep)
       end
     },
@@ -85,6 +113,10 @@ require("lazy").setup({
   },
 })
 
+vim.cmd([[
+  highlight! link CursorLineNr Type
+]])
+
 
 VIM_MODE_NORMAL = 'n'
 VIM_MODE_VISUAL = 'v'
@@ -97,15 +129,11 @@ function command(chord_key, command_key)
   return string.format('<C-%s>%s', chord_key, command_key)
 end
 
-vim.keymap.set(VIM_MODE_NORMAL, leader('a'),  'ggVG')
-vim.keymap.set(VIM_MODE_NORMAL, leader('s'),  '/')
-vim.keymap.set(VIM_MODE_NORMAL, leader('r'),  '?')
-vim.keymap.set(VIM_MODE_NORMAL, leader('q'),  ':%s/')
-vim.keymap.set(VIM_MODE_NORMAL, leader('fo'),  ':e')
-vim.keymap.set(VIM_MODE_NORMAL, leader('xs'), ':wa<CR>')
-vim.keymap.set(VIM_MODE_NORMAL, leader('xn'), ':enew<CR>')
-vim.keymap.set(VIM_MODE_NORMAL, leader('g'),  ':')
-vim.keymap.set(VIM_MODE_NORMAL, '<M-h>',  command('w', 'h'))
-vim.keymap.set(VIM_MODE_NORMAL, '<M-j>',  command('w', 'j'))
-vim.keymap.set(VIM_MODE_NORMAL, '<M-k>',  command('w', 'k'))
-vim.keymap.set(VIM_MODE_NORMAL, '<M-l>',  command('w', 'l'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-h>',      command('w', 'h'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-j>',      command('w', 'j'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-k>',      command('w', 'k'))
+vim.keymap.set(VIM_MODE_NORMAL, '<M-l>',      command('w', 'l'))
+
+vim.keymap.set('n', leader('rc'), function()
+  vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
+end)
