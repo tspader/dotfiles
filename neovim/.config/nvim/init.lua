@@ -19,6 +19,7 @@ vim.opt.relativenumber = true  -- Show relative line numbers
 vim.opt.expandtab = true       -- Use spaces instead of tabs
 vim.opt.shiftwidth = 2         -- Indent by 2 spaces
 vim.opt.tabstop = 2            -- Tab width is 2 spaces
+vim.opt.softtabstop = 2            -- Tab width is 2 spaces
 vim.opt.fillchars = { 
   vert = '│',
   horiz = '─',
@@ -70,6 +71,12 @@ require("lazy").setup({
             enable = true 
           }
         })
+      end
+    },
+    {
+      "kdheepak/lazygit.nvim",
+      config = function()
+        vim.keymap.set('n', '<leader>gg', ':LazyGit<CR>')
       end
     }
   },
