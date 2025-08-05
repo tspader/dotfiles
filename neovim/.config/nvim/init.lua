@@ -30,6 +30,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "CursorMo
   command = "if mode() != 'c' | checktime | endif",
   pattern = { "*" },
 })
+vim.opt.iskeyword:remove({ '_', '-' })
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -114,6 +115,12 @@ require("lazy").setup({
             enable = true 
           }
         })
+      end
+    },
+    {
+      "kdheepak/lazygit.nvim",
+      config = function()
+        vim.keymap.set('n', '<leader>gg', ':LazyGit<CR>')
       end
     }
   },
