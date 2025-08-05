@@ -4,6 +4,7 @@ pacman -S --needed \
   cmake \
   curl \
   docker \
+  docker-compose \
   fzf \
   gdb \
   gnupg \
@@ -20,6 +21,7 @@ pacman -S --needed \
   tree \
   unzip
 
+# Dotfiles
 if [ ! -d "$HOME/.dotfiles" ]; then
   git clone https://github.com/spaderthomas/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles
@@ -32,9 +34,11 @@ if [ ! -d "$HOME/.dotfiles" ]; then
   git config --global user.email ""
 fi
 
+# SSH
 [ ! -f ~/.ssh/id_ed25519 ] && ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
 systemctl enable --now sshd
 
+# AUR
 if ! id "spader" &>/dev/null; then
     useradd -m -G wheel -s /bin/bash spader
     # Enable passwordless sudo for wheel group
@@ -51,5 +55,9 @@ if ! command -v yay &>/dev/null; then
     "
 fi
 
+# Tailscale
 systemctl enable --now tailscaled
 tailscale up
+
+# Docker
+systemctl enable --now docker
