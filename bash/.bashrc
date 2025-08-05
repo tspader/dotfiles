@@ -377,16 +377,12 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 # ============================================
-# BETTER LESS DEFAULTS
+# BETTER DEFAULTS
 # ============================================
 export LESS='-R -F -X -i -P %lt-%lb/%L [%f]'
-
-# ============================================
-# EDITOR CONFIGURATION
-# ============================================
-# Set default editor (change to your preference)
-export EDITOR='vi'
-export VISUAL='vi'
+export EDITOR='nvim'
+export VISUAL='nvim'
+export PYTHONDONTWRITEBYTECODE=1
 
 # ============================================
 # LOCAL CUSTOMIZATIONS

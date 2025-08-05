@@ -24,12 +24,27 @@ vim.opt.fillchars = {
   horiz = '─',
 }
 vim.opt.cursorline = true
+vim.o.autoread = true
+vim.o.updatetime = 250
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI", "FocusGained" }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = { "*" },
+})
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 require("lazy").setup({
   spec = {
+    {
+      "greggh/claude-code.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim", -- Required for git operations
+      },
+      config = function()
+        require("claude-code").setup()
+      end
+    },
     {
       'stevearc/oil.nvim',
       opts = {
@@ -110,7 +125,6 @@ require("lazy").setup({
 vim.cmd([[
   highlight! link CursorLineNr Type
 ]])
-
 
 VIM_MODE_NORMAL = 'n'
 VIM_MODE_VISUAL = 'v'
