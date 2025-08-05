@@ -24,6 +24,7 @@ vim.opt.fillchars = {
   horiz = '─',
 }
 vim.opt.cursorline = true
+vim.opt.iskeyword:remove({ '_', '-' })
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
