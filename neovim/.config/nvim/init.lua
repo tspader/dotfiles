@@ -163,10 +163,10 @@ function command(chord_key, command_key)
   return string.format('<C-%s>%s', chord_key, command_key)
 end
 
-vim.keymap.set(VIM_MODE_NORMAL, '<M-h>',      command('w', 'h'))
-vim.keymap.set(VIM_MODE_NORMAL, '<M-j>',      command('w', 'j'))
-vim.keymap.set(VIM_MODE_NORMAL, '<M-k>',      command('w', 'k'))
-vim.keymap.set(VIM_MODE_NORMAL, '<M-l>',      command('w', 'l'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-h>',      command('w', 'h'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-j>',      command('w', 'j'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-k>',      command('w', 'k'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-l>',      command('w', 'l'))
 
 vim.keymap.set('n', leader('rc'), function()
   vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
