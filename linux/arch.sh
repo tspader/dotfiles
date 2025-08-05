@@ -25,6 +25,31 @@ if [ ! -d "$HOME/.dotfiles" ]; then
   cd ~/.dotfiles
   ./stow.sh
   source ~/.bashrc
+
+  git remote set-url origin git@github.com:spaderthomas/dotfiles.git
+  git remote push.autoSetupRemote true
+  git config --global user.name "Thomas Spader"
+  git config --global user.email ""
 fi
 
 [ ! -f ~/.ssh/id_ed25519 ] && ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+systemctl enable --now sshd
+
+if ! id "spader" &>/dev/null; then
+    useradd -m -G wheel -s /bin/bash spader
+    # Enable passwordless sudo for wheel group
+    echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+fi
+
+if ! command -v yay &>/dev/null; then
+    su - spader -c "
+        if [ ! -d ~/yay ]; then
+            git clone https://aur.archlinux.org/yay.git ~/yay
+            cd ~/yay && makepkg -si --noconfirm
+            yay -S --noconfirm tailscale
+        fi
+    "
+fi
+
+systemctl enable --now tailscaled
+tailscale up
