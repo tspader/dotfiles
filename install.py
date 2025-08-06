@@ -44,6 +44,9 @@ if platform.system() == 'Windows':
     },
     'neovim': {
       '.config/nvim/init.lua': os.path.join(local_appdata, 'nvim')
+    },
+    'alacritty': {
+      '.config/alacritty': appdata 
     }
   }
   

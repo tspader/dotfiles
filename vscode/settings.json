@@ -70,5 +70,8 @@
     "window.customMenuBarAltFocus": false,
     "remote.SSH.remotePlatform": {
       "aral": "windows"
+    },
+    "yaml.schemas": {
+      "file:///c%3A/Users/ts185327/.vscode/extensions/atlassian.atlascode-3.8.8/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
     }
   }

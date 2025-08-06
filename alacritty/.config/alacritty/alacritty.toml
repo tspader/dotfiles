@@ -11,7 +11,7 @@ option_as_alt = "Both"
 TERM = "xterm-256color"
 
 [font]
-normal =      { family = "Inconsolata", style = "Regular"     }
+normal =      { family = "Inconsolata", style = "SemiBold"     }
 bold =        { family = "Inconsolata", style = "Bold"        }
 italic =      { family = "Inconsolata", style = "Italic"      }
 bold_italic = { family = "Inconsolata", style = "Bold Italic" }
