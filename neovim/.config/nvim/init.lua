@@ -90,11 +90,10 @@ require("lazy").setup({
       },
       opts = {},
       keys = {
-        { '<leader>ot', function() require('opencode').toggle() end, mode = VIM_MODE_NORMAL },
-        { '<leader>oa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
-        { '<leader>oa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
-        { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
-        { '<leader>on', function() require('opencode').command('session_new') end, desc = 'New session', },
+        { leader('ot'), function() require('opencode').toggle() end,               mode = { VIM_MODE_NORMAL                  } },
+        { leader('oa'), function() require('opencode').ask() end,                  mode = { VIM_MODE_NORMAL                  } },
+        { leader('on'), function() require('opencode').command('session_new') end, mode = { VIM_MODE_NORMAL                  } },
+        { leader('op'), function() require('opencode').select_prompt() end,        mode = { VIM_MODE_NORMAL, VIM_MODE_VISUAL } },
       },
     },
 
@@ -120,11 +119,11 @@ require("lazy").setup({
           }
         },
         keymaps = {
-          ["<Tab>"] = "actions.preview",
-          ["<CR>"] = "actions.select",
-          ["vs"] = { "actions.select", opts = { vertical = true } },
-          ["sp"] = { "actions.select", opts = { horizontal = true } },
-          ["h"] = { "actions.toggle_hidden", mode = "n" },
+          ["<Tab>"] = { "actions.preview" },
+          ["<CR>"]  = { "actions.select" },
+          ["vs"]    = { "actions.select", opts = { vertical = true } },
+          ["sp"]    = { "actions.select", opts = { horizontal = true } },
+          ["h"]     = { "actions.toggle_hidden", mode = VIM_MODE_NORMAL },
         }
       },
       dependencies = {
@@ -143,15 +142,20 @@ require("lazy").setup({
       "LunarVim/darkplus.nvim",
       config = function()
         vim.cmd.colorscheme("darkplus")
-        --vim.cmd('highlight StatusLine guifg=#ffffff guibg=#444444')
-        --vim.cmd('highlight StatusLineNC guifg=#888888 guibg=#222222')
+        vim.cmd([[
+          highlight! link CursorLineNr Type
+        ]])
+       end
+    },
+    {
+      'nvim-lualine/lualine.nvim',
+      dependencies = { 
+        'nvim-tree/nvim-web-devicons' 
+      },
+      config = function() 
+        require('lualine').setup()
       end
     },
-{
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-      config = function() require('lualine').setup() end
-},
     {
       "nvim-telescope/telescope.nvim",
       dependencies = {"nvim-lua/plenary.nvim"},
@@ -196,7 +200,3 @@ require("lazy").setup({
     enabled = true 
   },
 })
-
-vim.cmd([[
-  highlight! link CursorLineNr Type
-]])
