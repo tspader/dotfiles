@@ -66,6 +66,7 @@ function command(chord_key, command_key)
   return string.format('<C-%s>%s', chord_key, command_key)
 end
 
+
 vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-h>',      command('w', 'h'))
 vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-j>',      command('w', 'j'))
 vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-k>',      command('w', 'k'))
@@ -74,6 +75,7 @@ vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-l>',      command('w', 
 vim.keymap.set('n', leader('rc'), function()
   vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
 end)
+
 
 -- ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
 -- ██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║██╔════╝
@@ -142,9 +144,6 @@ require("lazy").setup({
       "LunarVim/darkplus.nvim",
       config = function()
         vim.cmd.colorscheme("darkplus")
-        vim.cmd([[
-          highlight! link CursorLineNr Type
-        ]])
        end
     },
     {
@@ -161,8 +160,11 @@ require("lazy").setup({
       dependencies = {"nvim-lua/plenary.nvim"},
       config = function()
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<M-p>', function() builtin.find_files({ find_command = {'rg', '--files', '--iglob', '!.git', '--hidden'} }) end)
-        vim.keymap.set('n', '<M-f>', builtin.live_grep)
+        vim.keymap.set('n', leader('ff'), function() builtin.find_files({ find_command = {'rg', '--files', '--iglob', '!.git', '--hidden'} }) end)
+        vim.keymap.set('n', leader('fg'), builtin.live_grep)
+        vim.keymap.set('n', leader('fb'), builtin.buffers)
+        vim.keymap.set('n', leader('fh'), builtin.help_tags)
+        vim.keymap.set('n', leader('fr'), builtin.oldfiles)
       end
     },
 
@@ -200,3 +202,7 @@ require("lazy").setup({
     enabled = true 
   },
 })
+
+vim.cmd([[
+  highlight! link CursorLineNr Type
+]])
