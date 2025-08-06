@@ -86,16 +86,31 @@ end)
 require("lazy").setup({
   spec = {
     {
+      'echasnovski/mini.bufremove',
+      version = '*',
+      keys = {
+        { leader('md'), function() require('mini.bufremove').unshow() end, mode = { VIM_MODE_NORMAL } }
+      },
+      config = function() 
+        require('mini.bufremove').setup()
+      end
+    },
+    {
+      'echasnovski/mini.pairs',
+      version = '*',
+      config = function() 
+        require('mini.pairs').setup()
+      end
+    },
+    {
       'NickvanDyke/opencode.nvim',
       dependencies = {
         'folke/snacks.nvim', 
       },
       opts = {},
       keys = {
-        { leader('ot'), function() require('opencode').toggle() end,               mode = { VIM_MODE_NORMAL                  } },
-        { leader('oa'), function() require('opencode').ask() end,                  mode = { VIM_MODE_NORMAL                  } },
-        { leader('on'), function() require('opencode').command('session_new') end, mode = { VIM_MODE_NORMAL                  } },
-        { leader('op'), function() require('opencode').select_prompt() end,        mode = { VIM_MODE_NORMAL, VIM_MODE_VISUAL } },
+        { leader('ct'), function() require('opencode').toggle() end, mode = { VIM_MODE_NORMAL } },
+        { leader('cc'), function() require('opencode').ask() end,    mode = { VIM_MODE_NORMAL } },
       },
     },
 
@@ -113,6 +128,12 @@ require("lazy").setup({
       'stevearc/oil.nvim',
       opts = {
         watch_for_changes = true,
+        skip_confirm_for_simple_edits = true,
+        constrain_cursor = 'editable',
+        columns = {
+          'size',
+          'mtime',
+        },
         view_options = {
           show_hidden = true,
           sort = {
@@ -120,16 +141,25 @@ require("lazy").setup({
             { "name", "asc" }
           }
         },
+        float = {
+          padding = 2,
+          max_width = 80,
+          max_height = 30,
+          border = 'rounded'
+        },
         keymaps = {
           ["<Tab>"] = { "actions.preview" },
           ["<CR>"]  = { "actions.select" },
-          ["vs"]    = { "actions.select", opts = { vertical = true } },
-          ["sp"]    = { "actions.select", opts = { horizontal = true } },
-          ["h"]     = { "actions.toggle_hidden", mode = VIM_MODE_NORMAL },
+          ["vs"]    = { "actions.select_vsplit" },
+          ["sp"]    = { "actions.select_split" },
+          ["h"]     = { "actions.toggle_hidden" },
         }
       },
       dependencies = {
         "echasnovski/mini.icons",
+      },
+      keys = {
+        { leader('fo'), function() require('oil').open_float() end, mode = { VIM_MODE_NORMAL } }
       },
       lazy = false,
     },
@@ -165,6 +195,9 @@ require("lazy").setup({
         vim.keymap.set('n', leader('fb'), builtin.buffers)
         vim.keymap.set('n', leader('fh'), builtin.help_tags)
         vim.keymap.set('n', leader('fr'), builtin.oldfiles)
+        vim.keymap.set('n', '<leader>fc', function()
+          require('telescope.builtin').find_files({ cwd = vim.fn.expand('%:p:h') })
+         end)
       end
     },
 
