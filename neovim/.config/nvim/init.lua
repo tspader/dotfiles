@@ -1,3 +1,9 @@
+-- ██╗      █████╗ ███████╗██╗   ██╗
+-- ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝
+-- ██║     ███████║  ███╔╝  ╚████╔╝ 
+-- ██║     ██╔══██║ ███╔╝    ╚██╔╝  
+-- ███████╗██║  ██║███████╗   ██║   
+-- ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -14,6 +20,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+-- ███████╗███████╗████████╗████████╗██╗███╗   ██╗ ██████╗ ███████╗
+-- ██╔════╝██╔════╝╚══██╔══╝╚══██╔══╝██║████╗  ██║██╔════╝ ██╔════╝
+-- ███████╗█████╗     ██║      ██║   ██║██╔██╗ ██║██║  ███╗███████╗
+-- ╚════██║██╔══╝     ██║      ██║   ██║██║╚██╗██║██║   ██║╚════██║
+-- ███████║███████╗   ██║      ██║   ██║██║ ╚████║╚██████╔╝███████║
+-- ╚══════╝╚══════╝   ╚═╝      ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.expandtab = true     
@@ -35,36 +48,66 @@ vim.opt.iskeyword:remove({ '_', '-' })
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+
+-- ██╗  ██╗███████╗██╗   ██╗██████╗ ██╗███╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗ ███████╗
+-- ██║ ██╔╝██╔════╝╚██╗ ██╔╝██╔══██╗██║████╗  ██║██╔══██╗██║████╗  ██║██╔════╝ ██╔════╝
+-- █████╔╝ █████╗   ╚████╔╝ ██████╔╝██║██╔██╗ ██║██║  ██║██║██╔██╗ ██║██║  ███╗███████╗
+-- ██╔═██╗ ██╔══╝    ╚██╔╝  ██╔══██╗██║██║╚██╗██║██║  ██║██║██║╚██╗██║██║   ██║╚════██║
+-- ██║  ██╗███████╗   ██║   ██████╔╝██║██║ ╚████║██████╔╝██║██║ ╚████║╚██████╔╝███████║
+-- ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+VIM_MODE_NORMAL = 'n'
+VIM_MODE_VISUAL = 'v'
+
+function leader(c)
+  return '<leader>' .. c
+end
+
+function command(chord_key, command_key)
+  return string.format('<C-%s>%s', chord_key, command_key)
+end
+
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-h>',      command('w', 'h'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-j>',      command('w', 'j'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-k>',      command('w', 'k'))
+vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-l>',      command('w', 'l'))
+
+vim.keymap.set('n', leader('rc'), function()
+  vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
+end)
+
+-- ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
+-- ██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║██╔════╝
+-- ██████╔╝██║     ██║   ██║██║  ███╗██║██╔██╗ ██║███████╗
+-- ██╔═══╝ ██║     ██║   ██║██║   ██║██║██║╚██╗██║╚════██║
+-- ██║     ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║███████║
+-- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
     {
-  'NickvanDyke/opencode.nvim',
-  dependencies = { 'folke/snacks.nvim', },
+      'NickvanDyke/opencode.nvim',
+      dependencies = {
+        'folke/snacks.nvim', 
+      },
+      opts = {},
+      keys = {
+        { '<leader>ot', function() require('opencode').toggle() end, mode = VIM_MODE_NORMAL },
+        { '<leader>oa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
+        { '<leader>oa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
+        { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
+        { '<leader>on', function() require('opencode').command('session_new') end, desc = 'New session', },
+      },
+    },
 
-  ---@type opencode.Config
-  opts = {
-    -- Your configuration, if any
-  },
-  keys = {
-    { '<leader>ot', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
-    { '<leader>oa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
-    { '<leader>oa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
-    { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
-    { '<leader>on', function() require('opencode').command('session_new') end, desc = 'New session', },
-    { '<leader>oy', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
-    { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
-    { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
-  },
-},
     {
       "greggh/claude-code.nvim",
       dependencies = {
-        "nvim-lua/plenary.nvim", -- Required for git operations
+        "nvim-lua/plenary.nvim"
       },
       config = function()
         require("claude-code").setup()
       end
     },
+
     {
       'stevearc/oil.nvim',
       opts = {
@@ -85,35 +128,40 @@ require("lazy").setup({
         }
       },
       dependencies = {
-        {
-          "echasnovski/mini.icons",
-          opts = {} 
-        } 
+        "echasnovski/mini.icons",
       },
       lazy = false,
     },
+    
     {
       "lukas-reineke/indent-blankline.nvim",
       main = "ibl",
       opts = {},
     },
+
     {
       "LunarVim/darkplus.nvim",
       config = function()
         vim.cmd.colorscheme("darkplus")
-        vim.cmd('highlight StatusLine guifg=#ffffff guibg=#444444')
-        vim.cmd('highlight StatusLineNC guifg=#888888 guibg=#222222')
+        --vim.cmd('highlight StatusLine guifg=#ffffff guibg=#444444')
+        --vim.cmd('highlight StatusLineNC guifg=#888888 guibg=#222222')
       end
     },
+{
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+      config = function() require('lualine').setup() end
+},
     {
       "nvim-telescope/telescope.nvim",
       dependencies = {"nvim-lua/plenary.nvim"},
       config = function()
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<M-p>', builtin.find_files)
+        vim.keymap.set('n', '<M-p>', function() builtin.find_files({ find_command = {'rg', '--files', '--iglob', '!.git', '--hidden'} }) end)
         vim.keymap.set('n', '<M-f>', builtin.live_grep)
       end
     },
+
     {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
@@ -136,6 +184,7 @@ require("lazy").setup({
         })
       end
     },
+
     {
       "kdheepak/lazygit.nvim",
       config = function()
@@ -151,23 +200,3 @@ require("lazy").setup({
 vim.cmd([[
   highlight! link CursorLineNr Type
 ]])
-
-VIM_MODE_NORMAL = 'n'
-VIM_MODE_VISUAL = 'v'
-
-function leader(c)
-  return '<leader>' .. c
-end
-
-function command(chord_key, command_key)
-  return string.format('<C-%s>%s', chord_key, command_key)
-end
-
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-h>',      command('w', 'h'))
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-j>',      command('w', 'j'))
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-k>',      command('w', 'k'))
-vim.keymap.set({ VIM_MODE_NORMAL, VIM_MODE_VISUAL }, '<M-l>',      command('w', 'l'))
-
-vim.keymap.set('n', leader('rc'), function()
-  vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
-end)

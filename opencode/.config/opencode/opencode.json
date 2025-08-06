@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "dark_plus",
   "formatter": {
     "ruff": {
       "command": ["ruff", "format", "$FILE"],
