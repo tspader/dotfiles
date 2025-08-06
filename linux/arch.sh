@@ -9,6 +9,7 @@ pacman -S --needed \
   gdb \
   gnupg \
   less \
+  lsof \
   luajit \
   neovim \
   nodejs \
