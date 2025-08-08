@@ -26,16 +26,10 @@ if [ ! -d "$HOME/.dotfiles" ]; then
   source ~/.bashrc
 fi
 
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv tool update-shell
+source ~/.bashrc
 
 # SSH
 [ ! -f ~/.ssh/id_ed25519 ] && ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
 systemctl enable --now ssh
-
-# Tailscale
-curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg | tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/jammy.list | tee /etc/apt/sources.list.d/tailscale.list
-apt update
-apt install -y tailscale
-systemctl enable --now tailscaled
-
-tailscale up
