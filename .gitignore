@@ -15,3 +15,4 @@ emacs/.emacs.d/url
 .config/unity3d
 .config/mimeapps.list
 .DS_Store
+secrets

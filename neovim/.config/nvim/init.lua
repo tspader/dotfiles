@@ -32,6 +32,7 @@ vim.opt.relativenumber = true
 vim.opt.expandtab = true     
 vim.opt.shiftwidth = 2       
 vim.opt.tabstop = 2          
+vim.opt.scrolloff = 8
 vim.opt.fillchars = { 
   vert = '│',
   horiz = '─',
@@ -83,7 +84,7 @@ require("lazy").setup({
       'echasnovski/mini.bufremove',
       version = '*',
       keys = {
-        { leader('md'), function() require('mini.bufremove').unshow() end, mode = { VIM_MODE_NORMAL } }
+        { leader('fd'), function() require('mini.bufremove').unshow() end, mode = { VIM_MODE_NORMAL } }
       },
       config = function() 
         require('mini.bufremove').setup()
@@ -153,11 +154,11 @@ require("lazy").setup({
         "echasnovski/mini.icons",
       },
       keys = {
-        { leader('fo'), function() require('oil').open_float() end, mode = { VIM_MODE_NORMAL } }
+        { leader('fo'), function() require('oil').open_float() end, mode = { VIM_MODE_NORMAL } },
       },
       lazy = false,
     },
-    
+
     {
       "lukas-reineke/indent-blankline.nvim",
       main = "ibl",
