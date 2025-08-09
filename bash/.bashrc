@@ -392,3 +392,6 @@ if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
 
+
+# uv
+export PATH="/Users/spader/.local/bin:$PATH"
