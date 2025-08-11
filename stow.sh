@@ -1,3 +1,4 @@
+rm ~/.bashrc ~/.profile
 stow alacritty
 stow bash
 stow opencode
