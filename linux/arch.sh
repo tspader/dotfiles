@@ -20,7 +20,8 @@ pacman -S --needed \
   stow \
   tmux \
   tree \
-  unzip
+  unzip \
+  xclip
 
 # Dotfiles
 if [ ! -d "$HOME/.dotfiles" ]; then

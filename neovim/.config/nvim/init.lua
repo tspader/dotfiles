@@ -81,6 +81,12 @@ end)
 require("lazy").setup({
   spec = {
     {
+      "NoahTheDuke/vim-just",
+      ft = { 
+        "just"
+      },
+    },
+    {
       'MeanderingProgrammer/render-markdown.nvim',
       dependencies = { 
         'nvim-treesitter/nvim-treesitter',
@@ -122,17 +128,6 @@ require("lazy").setup({
         { leader('cc'), function() require('opencode').ask() end,    mode = { VIM_MODE_NORMAL } },
       },
     },
-
-    {
-      "greggh/claude-code.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim"
-      },
-      config = function()
-        require("claude-code").setup()
-      end
-    },
-
     {
       'stevearc/oil.nvim',
       opts = {

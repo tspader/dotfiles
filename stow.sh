@@ -1,6 +1,12 @@
+[[ -f "$HOME/.bashrc" ]] && rm "$HOME/.bashrc" 
+
+[[ -f "$HOME/.profile" ]] && rm "$HOME/.profile"
+
 stow alacritty
 stow bash
-stow opencode
+stow gdb
 stow neovim
-stow tmux
+stow opencode
 stow ssh
+stow tmux
+stow --target / keyd
