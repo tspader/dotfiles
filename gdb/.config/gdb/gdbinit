@@ -1,0 +1,33 @@
+set debuginfod enabled off
+set history filename ~/.config/gdb/.gdb_history
+
+source ~/.config/gdb/dashboard.gdb
+
+dashboard -style style_low "38;5;239"
+dashboard -style style_high "38;5;220"
+dashboard -style style_critical "38;5;208"
+dashboard -style style_error "38;5;160"
+dashboard -style style_selected_1 "38;5;111"
+dashboard -style style_selected_2 "38;5;71"
+dashboard -style divider_fill_style_primary "38;5;239"
+dashboard -style divider_fill_style_secondary "38;5;236"
+dashboard -style divider_label_style_on_primary "38;5;44"
+dashboard -style divider_label_style_on_secondary "38;5;71"
+dashboard -style divider_label_style_off_primary "38;5;239"
+dashboard -style divider_label_style_off_secondary "38;5;236"
+dashboard -style syntax_highlighting "monokai"
+
+dashboard variables -style compact False
+dashboard variables -style align True
+dashboard variables -style sort True
+dashboard variables -style compact False
+
+dashboard stack -style compact False
+dashboard stack -style align True
+dashboard stack -style sort True
+dashboard stack -style compact False
+
+dashboard source -style height 30
+dashboard source -style highlight-line True
+
+dashboard -layout source breakpoints stack variables 

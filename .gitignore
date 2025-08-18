@@ -1,3 +1,4 @@
 .DS_Store
 secrets
 bash/.profile
+gdb/**/.gdb_history

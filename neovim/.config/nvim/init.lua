@@ -33,18 +33,28 @@ vim.opt.expandtab = true
 vim.opt.shiftwidth = 2       
 vim.opt.tabstop = 2          
 vim.opt.scrolloff = 8
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.fileformat = "unix"
+vim.opt.cursorline = true
+vim.opt.autoread = true
+vim.opt.updatetime = 250
+vim.opt.iskeyword:remove({ '_', '-' })
 vim.opt.fillchars = { 
   vert = '│',
   horiz = '─',
 }
-vim.opt.cursorline = true
-vim.o.autoread = true
-vim.o.updatetime = 250
+
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI", "FocusGained" }, {
   command = "if mode() != 'c' | checktime | endif",
   pattern = { "*" },
 })
-vim.opt.iskeyword:remove({ '_', '-' })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+ pattern = "*",
+ callback = function()
+   vim.cmd([[%s/\s\+$//e]])
+ end
+})
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -81,34 +91,57 @@ end)
 require("lazy").setup({
   spec = {
     {
-      'MeanderingProgrammer/render-markdown.nvim',
-      dependencies = { 
-        'nvim-treesitter/nvim-treesitter',
-        'echasnovski/mini.icons' 
+      'TaDaa/vimade',
+      tint = {
       },
-      opts = {
-        completions = {
-          lsp = {
-            enabled = true
+      config = function()
+        local Fade = require('vimade.style.fade').Fade
+        local animate = require('vimade.style.value.animate')
+        local ease = require('vimade.style.value.ease')
+
+        require('vimade').setup{
+          style = {
+            Fade {
+              value = animate.Number {
+                start = 1,
+                to = 0.4,
+                duration = 200,
+                ease = ease.OUT_CUBIC,
+              }
+            }
           }
         }
-      },
+      end
+    },
+    {
+      'echasnovski/mini.tabline',
+      version = '*',
+      config = function() 
+        require('mini.tabline').setup({
+          show_icons = true,
+          set_vim_settings = true,
+          tabpage_section = 'right'
+        })
+      end
     },
     {
       'echasnovski/mini.bufremove',
       version = '*',
       keys = {
-        { leader('fd'), function() require('mini.bufremove').unshow() end, mode = { VIM_MODE_NORMAL } }
+        { leader('fd'), function() require('mini.bufremove').delete() end, mode = { VIM_MODE_NORMAL } }
       },
       config = function() 
         require('mini.bufremove').setup()
       end
     },
     {
-      'echasnovski/mini.pairs',
-      version = '*',
-      config = function() 
-        require('mini.pairs').setup()
+      'windwp/nvim-autopairs',
+      event = "InsertEnter",
+      config = function()
+        require('nvim-autopairs').setup({
+          check_ts = true,  -- use treesitter to check for pairs
+          fast_wrap = {},   -- Alt-e to fast wrap
+        })
       end
     },
     {
@@ -122,17 +155,6 @@ require("lazy").setup({
         { leader('cc'), function() require('opencode').ask() end,    mode = { VIM_MODE_NORMAL } },
       },
     },
-
-    {
-      "greggh/claude-code.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim"
-      },
-      config = function()
-        require("claude-code").setup()
-      end
-    },
-
     {
       'stevearc/oil.nvim',
       opts = {
@@ -196,10 +218,19 @@ require("lazy").setup({
     },
     {
       "nvim-telescope/telescope.nvim",
-      dependencies = {"nvim-lua/plenary.nvim"},
+      dependencies = {
+        "nvim-lua/plenary.nvim"
+      },
+      opts = {
+        pickers = {
+          find_files = {
+            follow = true
+          }
+        }
+      },
       config = function()
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', leader('ff'), function() builtin.find_files({ find_command = {'rg', '--files', '--iglob', '!.git', '--hidden'} }) end)
+        vim.keymap.set('n', leader('ff'), function() builtin.find_files({ find_command = {'rg', '-L', '--files', '--iglob', '!.git', '--hidden'} }) end)
         vim.keymap.set('n', leader('fg'), builtin.live_grep)
         vim.keymap.set('n', leader('fb'), builtin.buffers)
         vim.keymap.set('n', leader('fh'), builtin.help_tags)
@@ -209,7 +240,6 @@ require("lazy").setup({
          end)
       end
     },
-
     {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
@@ -232,7 +262,6 @@ require("lazy").setup({
         })
       end
     },
-
     {
       "kdheepak/lazygit.nvim",
       config = function()
