@@ -75,25 +75,25 @@ git_branch() {
 set_prompt() {
     local EXIT="$?"
     PS1=""
-    
+
     # Show exit status if non-zero
     if [ $EXIT != 0 ]; then
         PS1+="${LIGHT_RED}[${EXIT}]${RESET} "
     fi
-    
+
     # User@host
     if [[ ${EUID} == 0 ]]; then
         PS1+="${GREEN}\u@\h${RESET}"
     else
         PS1+="${GREEN}\u@\h${RESET}"
     fi
-    
+
     # Working directory
     PS1+=":${CYAN}\w${RESET}"
-    
+
     # Git branch (if applicable)
     PS1+="${YELLOW}$(git_branch)${RESET}"
-    
+
     # Prompt symbol
     PS1+=" > "
 }
@@ -110,7 +110,15 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
-alias bashrc='source ~/.bashrc'
+alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
+
+if command -v trash >/dev/null 2>&1; then
+    alias rm='trash'
+fi
+
+if command -v lazygit >/dev/null 2>&1; then
+    alias lg='lazygit'
+fi
 
 # ls aliases with color
 alias ls='ls --color=auto'
@@ -217,7 +225,7 @@ get_os_type() {
 
 clip() {
     local os_type=$(get_os_type)
-    
+
     case "$os_type" in
         "macos")
             pbcopy
@@ -247,7 +255,7 @@ clip() {
 
 paste() {
     local os_type=$(get_os_type)
-    
+
     case "$os_type" in
         "macos")
             pbpaste
@@ -337,25 +345,25 @@ if command -v fzf >/dev/null 2>&1; then
     __fzf_history__() {
         local output
         output=$(
-            HISTTIMEFORMAT= history | 
+            HISTTIMEFORMAT= history |
             fzf --tac --no-sort --reverse --query "$READLINE_LINE" \
                 --preview 'echo {}' \
                 --preview-window down:3:wrap \
                 --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort' \
-                --scheme=history | 
+                --scheme=history |
             sed 's/^ *[0-9]* *//'
         ) || return
         READLINE_LINE="$output"
         READLINE_POINT=${#READLINE_LINE}
     }
-    
+
     # Bind Ctrl+R to fzf history search
     bind -x '"\C-r": __fzf_history__'
 
     # FZF default options for better appearance
     export FZF_DEFAULT_OPTS='
-        --height 75% 
-        --layout=reverse 
+        --height 75%
+        --layout=reverse
         --pointer=">"
         --info=hidden
         --color=fg:#c0c0c0,bg:-1,hl:#5f87af

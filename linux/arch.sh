@@ -29,11 +29,13 @@ pacman -S --needed \
   stow \
   tealdeer \
   tmux \
+  trash \
   tree \
   usbutils \
   uv \
   wget \
-  yazi \
+  yazi
+
 
 pacman -S --needed \
   plasma-meta
@@ -79,10 +81,10 @@ su spader bash -c "
          cd ~/yay && makepkg -si --noconfirm
      fi
   fi
-  
+
   yay -S --noconfirm \
     tailscale
-  
+
   # SSH
   [ ! -f ~/.ssh/id_ed25519 ] && ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N \"\"
 "
