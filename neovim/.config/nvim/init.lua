@@ -1,9 +1,9 @@
 -- ██╗      █████╗ ███████╗██╗   ██╗
 -- ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝
--- ██║     ███████║  ███╔╝  ╚████╔╝ 
--- ██║     ██╔══██║ ███╔╝    ╚██╔╝  
--- ███████╗██║  ██║███████╗   ██║   
--- ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   
+-- ██║     ███████║  ███╔╝  ╚████╔╝
+-- ██║     ██╔══██║ ███╔╝    ╚██╔╝
+-- ███████╗██║  ██║███████╗   ██║
+-- ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -29,9 +29,9 @@ vim.opt.rtp:prepend(lazypath)
 -- ╚══════╝╚══════╝   ╚═╝      ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.expandtab = true     
-vim.opt.shiftwidth = 2       
-vim.opt.tabstop = 2          
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
 vim.opt.scrolloff = 8
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.fileformat = "unix"
@@ -39,7 +39,7 @@ vim.opt.cursorline = true
 vim.opt.autoread = true
 vim.opt.updatetime = 250
 vim.opt.iskeyword:remove({ '_', '-' })
-vim.opt.fillchars = { 
+vim.opt.fillchars = {
   vert = '│',
   horiz = '─',
 }
@@ -90,6 +90,13 @@ end)
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
+{
+  'neovim/nvim-lspconfig',
+  config = function()
+    require('lspconfig').clangd.setup{}
+  end
+},
+
     {
       'TaDaa/vimade',
       tint = {
@@ -105,7 +112,7 @@ require("lazy").setup({
               value = animate.Number {
                 start = 1,
                 to = 0.4,
-                duration = 200,
+                duration = 10,
                 ease = ease.OUT_CUBIC,
               }
             }
@@ -113,10 +120,11 @@ require("lazy").setup({
         }
       end
     },
+
     {
       'echasnovski/mini.tabline',
       version = '*',
-      config = function() 
+      config = function()
         require('mini.tabline').setup({
           show_icons = true,
           set_vim_settings = true,
@@ -124,16 +132,18 @@ require("lazy").setup({
         })
       end
     },
+
     {
       'echasnovski/mini.bufremove',
       version = '*',
       keys = {
         { leader('fd'), function() require('mini.bufremove').delete() end, mode = { VIM_MODE_NORMAL } }
       },
-      config = function() 
+      config = function()
         require('mini.bufremove').setup()
       end
     },
+
     {
       'windwp/nvim-autopairs',
       event = "InsertEnter",
@@ -144,10 +154,11 @@ require("lazy").setup({
         })
       end
     },
+
     {
       'NickvanDyke/opencode.nvim',
       dependencies = {
-        'folke/snacks.nvim', 
+        'folke/snacks.nvim',
       },
       opts = {},
       keys = {
@@ -155,6 +166,7 @@ require("lazy").setup({
         { leader('cc'), function() require('opencode').ask() end,    mode = { VIM_MODE_NORMAL } },
       },
     },
+
     {
       'stevearc/oil.nvim',
       opts = {
@@ -207,15 +219,17 @@ require("lazy").setup({
         vim.cmd.colorscheme("darkplus")
        end
     },
+
     {
       'nvim-lualine/lualine.nvim',
-      dependencies = { 
-        'nvim-tree/nvim-web-devicons' 
+      dependencies = {
+        'nvim-tree/nvim-web-devicons'
       },
-      config = function() 
+      config = function()
         require('lualine').setup()
       end
     },
+
     {
       "nvim-telescope/telescope.nvim",
       dependencies = {
@@ -230,14 +244,77 @@ require("lazy").setup({
       },
       config = function()
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', leader('ff'), function() builtin.find_files({ find_command = {'rg', '-L', '--files', '--iglob', '!.git', '--hidden'} }) end)
+        local pickers = require('telescope.pickers')
+        local finders = require('telescope.finders')
+        local actions = require('telescope.actions')
+
+        -- Files
         vim.keymap.set('n', leader('fg'), builtin.live_grep)
+        vim.keymap.set('n', leader('fG'), function() builtin.live_grep { additional_args = { '--hidden', '--no-ignore' } } end)
         vim.keymap.set('n', leader('fb'), builtin.buffers)
         vim.keymap.set('n', leader('fh'), builtin.help_tags)
-        vim.keymap.set('n', leader('fr'), builtin.oldfiles)
-        vim.keymap.set('n', '<leader>fc', function()
-          require('telescope.builtin').find_files({ cwd = vim.fn.expand('%:p:h') })
-         end)
+        vim.keymap.set('n', leader('fs'), builtin.current_buffer_fuzzy_find)
+        vim.keymap.set('n', leader('fc'), function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end)
+        vim.keymap.set('n', leader('ff'), function() builtin.find_files({ find_command = {'rg', '-L', '--files', '--iglob', '!.git', '--hidden'} }) end)
+
+        -- LSP
+        vim.keymap.set('n', leader('ld'), builtin.lsp_definitions)
+        vim.keymap.set('n', leader('lt'), builtin.lsp_type_definitions)
+        vim.keymap.set('n', leader('lr'), builtin.lsp_references)
+        vim.keymap.set('n', leader('lc'), builtin.lsp_implementations)
+        vim.keymap.set('n', leader('li'), builtin.lsp_incoming_calls)
+        vim.keymap.set('n', leader('lo'), builtin.lsp_outgoing_calls)
+        vim.keymap.set('n', leader('lb'), builtin.diagnostics)
+        vim.keymap.set('n', leader('lg'), function() builtin.diagnostics({ bufnr = 0 }) end)
+        vim.keymap.set('n', leader('lp'), function() builtin.lsp_definitions({ jump_type = 'never' }) end)
+        vim.keymap.set('n', leader('lh'), function()
+          local diag = vim.diagnostic.get(0, { lnum = vim.fn.line('.') - 1 })
+          for _, d in ipairs(diag) do
+            print("Code:", d.code, "Message:", d.message)
+          end
+        end)
+        vim.keymap.set('n', leader('le'), function()
+          require('telescope.builtin').diagnostics({
+            severity = vim.diagnostic.severity.ERROR
+          })
+        end)
+
+        -- Makefile
+        vim.keymap.set('n', leader('mm'), function()
+          local targets = {}
+          local makefile = io.open('Makefile', 'r')
+          if not makefile then return end
+
+          for line in makefile:lines() do
+            local target = line:match('^([%w_-]+):')
+            if target and not target:match('^%.') then
+              table.insert(targets, target)
+            end
+          end
+
+          makefile:close()
+
+          local picker = pickers.new({}, {
+            prompt_title = 'Makefile',
+            finder = finders.new_table {
+              results = targets
+            },
+            sorter = require('telescope.config').values.generic_sorter({
+
+            }),
+            attach_mappings = function(buffer_index, map)
+              require('telescope.actions').select_default:replace(function()
+                require('telescope.actions').close(buffer_index)
+                local selection = require('telescope.actions.state').get_selected_entry()
+                vim.cmd('!make ' .. selection[1])
+              end)
+
+              return true
+            end,
+          })
+          picker:find()
+        end)
+
       end
     },
     {
@@ -251,13 +328,13 @@ require("lazy").setup({
             "lua",
             "python",
             "javascript",
-            "typescript" 
+            "typescript"
           },
-          highlight = { 
-            enable = true 
+          highlight = {
+            enable = true
           },
           indent = {
-            enable = true 
+            enable = true
           }
         })
       end
@@ -269,8 +346,8 @@ require("lazy").setup({
       end
     }
   },
-  checker = { 
-    enabled = true 
+  checker = {
+    enabled = true
   },
 })
 
