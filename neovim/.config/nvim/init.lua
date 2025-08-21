@@ -38,11 +38,6 @@ vim.opt.fileformat = "unix"
 vim.opt.cursorline = true
 vim.opt.autoread = true
 vim.opt.updatetime = 250
-vim.opt.iskeyword:remove({ '_', '-' })
-vim.opt.fillchars = {
-  vert = '│',
-  horiz = '─',
-}
 
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI", "FocusGained" }, {
   command = "if mode() != 'c' | checktime | endif",
@@ -77,7 +72,7 @@ function command(chord_key, command_key)
   return string.format('<C-%s>%s', chord_key, command_key)
 end
 
-vim.keymap.set('n', leader('rc'), function()
+vim.keymap.set(VIM_MODE_NORMAL, leader('rc'), function()
   vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
 end)
 
@@ -90,35 +85,20 @@ end)
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
-{
-  'neovim/nvim-lspconfig',
-  config = function()
-    require('lspconfig').clangd.setup{}
-  end
-},
+    {
+      'neovim/nvim-lspconfig',
+      config = function()
+        require('lspconfig').clangd.setup{}
+      end
+    },
 
     {
       'TaDaa/vimade',
-      tint = {
+      opts = {
+        enablefocusfading = true,
+        ncmode = 'buffers',
+        fadelevel = 0.7
       },
-      config = function()
-        local Fade = require('vimade.style.fade').Fade
-        local animate = require('vimade.style.value.animate')
-        local ease = require('vimade.style.value.ease')
-
-        require('vimade').setup{
-          style = {
-            Fade {
-              value = animate.Number {
-                start = 1,
-                to = 0.4,
-                duration = 10,
-                ease = ease.OUT_CUBIC,
-              }
-            }
-          }
-        }
-      end
     },
 
     {
