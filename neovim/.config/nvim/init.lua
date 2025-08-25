@@ -75,6 +75,15 @@ function leader(c)
   return '<leader>' .. c
 end
 
+function f(n, shift)
+  local id = 'F' .. tostring(n)
+  if shift then
+    id = 'S-' .. id
+  end
+  return '<' .. id .. '>'
+end
+
+
 function command(chord_key, command_key)
   return string.format('<C-%s>%s', chord_key, command_key)
 end
@@ -82,6 +91,22 @@ end
 vim.keymap.set(VIM_MODE_NORMAL, leader('rc'), function()
   vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
 end)
+
+
+local sp = {
+  find_make_targets = function(filter)
+    local targets = {}
+    for line in io.lines('Makefile') do
+      local target = line:match('^([%w_-]+):')
+      if target and (not filter or target:find(filter)) then
+        targets[#targets+1] = target
+      end
+    end
+
+    table.sort(targets)
+    return targets
+  end
+}
 
 
 -- ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
@@ -108,18 +133,6 @@ require("lazy").setup({
         'rafamadriz/friendly-snippets'
       },
       opts = {
-        -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
-        -- 'super-tab' for mappings similar to vscode (tab to accept)
-        -- 'enter' for enter to accept
-        -- 'none' for no mappings
-        --
-        -- All presets have the following mappings:
-        -- C-space: Open menu or open docs if already open
-        -- C-n/C-p or Up/Down: Select next/previous item
-        -- C-e: Hide menu
-        -- C-k: Toggle signature help (if signature.enabled = true)
-        --
-        -- See :h blink-cmp-config-keymap for defining your own keymap
         keymap = {
           preset = 'super-tab'
         },
@@ -285,73 +298,82 @@ require("lazy").setup({
       build = 'make'
     },
 
-{
-  'mfussenegger/nvim-dap',
-  dependencies = {
-    'rcarriga/nvim-dap-ui',  -- UI for debugging
-    'nvim-neotest/nvim-nio', -- dependency for dap-ui
-  },
-  config = function()
-    local dap = require('dap')
-    local dapui = require('dapui')
+    {
+      'mfussenegger/nvim-dap',
+      dependencies = {
+        'rcarriga/nvim-dap-ui',
+        'nvim-neotest/nvim-nio',
+      },
+      config = function()
+        local dap = require('dap')
+        local dapui = require('dapui')
 
-    -- Setup UI
-    dapui.setup()
+        dapui.setup()
 
-    -- C/C++ with gdb
-    dap.adapters.gdb = {
-      type = "executable",
-      command = "gdb",
-      args = { "-i", "dap" }  -- requires gdb 14+
-    }
+        dap.adapters.gdb = {
+          type = "executable",
+          command = "gdb",
+          args = { "-i", "dap" }
+        }
 
-dap.configurations.c = {
-  {
-    name = "Debug (make)",
-    type = "gdb",
-    request = "launch",
-    program = function()
-      vim.cmd('!make')  -- or whatever target builds debug
-      return vim.fn.input('Executable: ', './build/bin', 'file')
-    end,
-    cwd = "${workspaceFolder}",
-    stopAtBeginningOfMainSubprogram = true,
-  },
-}
+        dap.configurations.c = {
+          {
+            name = "make + debug",
+            type = "gdb",
+            request = "launch",
+            program = function()
+              local targets = sp.find_make_targets('dap')
 
-    -- Keymaps
-    vim.keymap.set('n', leader('dc'), dap.continue)
-    vim.keymap.set('n', leader('ds'), dap.step_over)
-    vim.keymap.set('n', leader('di'), dap.step_into)
-    vim.keymap.set('n', leader('do'), dap.step_out)
-    vim.keymap.set('n', leader('db'), dap.toggle_breakpoint)
-    vim.keymap.set('n', leader('do'), dap.repl.open)
-    vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
-      require('dap.ui.widgets').hover()
-    end)
-    vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
-      require('dap.ui.widgets').preview()
-    end)
-    vim.keymap.set('n', '<Leader>df', function()
-      local widgets = require('dap.ui.widgets')
-      widgets.centered_float(widgets.frames)
-    end)
-    vim.keymap.set('n', '<Leader>ds', function()
-      local widgets = require('dap.ui.widgets')
-      widgets.centered_float(widgets.scopes)
-    end)
+              local co = coroutine.running()
+              local executable = nil
+              vim.ui.select(targets, { prompt = 'program' }, vim.schedule_wrap(function(choice)
+                local command = 'make -S ' .. choice
+                executable = vim.fn.system(command)
+                coroutine.resume(co)
+              end))
 
-    -- Auto open/close UI
-    dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-    dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-  end
-},
+              coroutine.yield()
+              return executable
+            end,
+            args = function()
+              local targets = sp.find_make_targets('dap')
 
+              local co = coroutine.running()
+              local result = nil
+              vim.ui.select(targets, { prompt = 'flags' }, vim.schedule_wrap(function(choice)
+                local command = 'make -S ' .. choice
+                result = vim.fn.system(command)
+                coroutine.resume(co)
+              end))
+
+              coroutine.yield()
+              return vim.split(vim.trim(result), ' ')
+            end,
+            cwd = "${workspaceFolder}",
+            stopAtBeginningOfMainSubprogram = true,
+          },
+        }
+
+        vim.keymap.set('n', f(5), dap.continue)
+        vim.keymap.set('n', f(10), dap.step_over)
+        vim.keymap.set('n', leader('dn'), dap.step_over)
+        vim.keymap.set('n', f(11), dap.step_into)
+        vim.keymap.set('n', leader('di'), dap.step_into)
+        vim.keymap.set('n', leader('do'), dap.step_out)
+        vim.keymap.set('n', leader('db'), dap.toggle_breakpoint)
+        vim.keymap.set('n', leader('do'), dap.repl.open)
+
+        dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+        dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+      end
+    },
 
     {
       "nvim-telescope/telescope.nvim",
       dependencies = {
-        "nvim-lua/plenary.nvim"
+        "nvim-lua/plenary.nvim",
+        "jmacadie/telescope-hierarchy.nvim",
+        "nvim-telescope/telescope-ui-select.nvim"
       },
       opts = {
         defaults = {
@@ -363,10 +385,18 @@ dap.configurations.c = {
           find_files = {
             follow = true
           },
+        },
+        extensions = {
+          hierarchy = {
+            initial_multi_expand = true,
+            layout_strategy = 'horizontal'
+          }
         }
       },
       config = function(_, opts)
         require('telescope').setup(opts)
+        local hierarchy = require("telescope").load_extension("hierarchy")
+        local ui_select require("telescope").load_extension("ui-select")
 
         local builtin = require('telescope.builtin')
         local pickers = require('telescope.pickers')
@@ -392,12 +422,12 @@ dap.configurations.c = {
         vim.keymap.set('n', leader('fs'), builtin.current_buffer_fuzzy_find)
         vim.keymap.set('n', leader('fc'), function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end)
 
+        vim.keymap.set('n', leader('li'), hierarchy.incoming_calls)
+        vim.keymap.set('n', leader('lo'), hierarchy.outgoing_calls)
         vim.keymap.set('n', leader('ld'), builtin.lsp_definitions)
         vim.keymap.set('n', leader('lt'), builtin.lsp_type_definitions)
         vim.keymap.set('n', leader('lr'), builtin.lsp_references)
         vim.keymap.set('n', leader('lc'), builtin.lsp_implementations)
-        vim.keymap.set('n', leader('li'), builtin.lsp_incoming_calls)
-        vim.keymap.set('n', leader('lo'), builtin.lsp_outgoing_calls)
         vim.keymap.set('n', leader('lb'), builtin.diagnostics)
         vim.keymap.set('n', leader('lu'), vim.lsp.buf.rename)
         vim.keymap.set('n', leader('lf'), vim.lsp.buf.format)
@@ -412,11 +442,11 @@ dap.configurations.c = {
         vim.keymap.set('n', leader('le'), function()
           require('telescope.builtin').diagnostics({
             severity = vim.diagnostic.severity.ERROR,
-    layout_strategy = 'vertical',
-    layout_config = {
-      width = 0.6,
-      preview_cutoff = 0,  -- always show preview
-    },
+            layout_strategy = 'vertical',
+            layout_config = {
+              width = 0.6,
+              preview_cutoff = 0,
+            },
           })
         end)
         vim.keymap.set('n', leader('lw'), function()
@@ -426,36 +456,9 @@ dap.configurations.c = {
         end)
 
         vim.keymap.set('n', leader('mm'), function()
-          local targets = {}
-          local phonies = {}
-          local makefile = io.open('Makefile', 'r')
-          if not makefile then return end
-
-          -- First pass: collect phony targets
-          for line in makefile:lines() do
-            local phony_match = line:match('^%.PHONY:%s*(.*)')
-            if phony_match then
-              for target in phony_match:gmatch('[%w_-]+') do
-                phonies[target] = true
-              end
-            end
-          end
-
-          -- Second pass: get targets that are phony
-          makefile:seek("set", 0)
-          for line in makefile:lines() do
-            local target = line:match('^([%w_-]+):')
-            if target and phonies[target] then
-              table.insert(targets, target)
-            end
-          end
-
-          makefile:close()
-
-          table.sort(targets)
-
+          local targets = sp.find_make_targets()
           local picker = pickers.new({}, {
-            prompt_title = 'Makefile',
+            prompt_title = 'make',
             finder = finders.new_table {
               results = targets
             },
