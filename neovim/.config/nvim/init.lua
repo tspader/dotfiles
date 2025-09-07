@@ -39,6 +39,7 @@ vim.opt.cursorline = true
 vim.opt.autoread = true
 vim.opt.updatetime = 250
 vim.opt.signcolumn = 'yes'
+vim.opt.fillchars:append("diff: ")
 vim.diagnostic.config({
   signs = true,
   underline = true,
@@ -70,6 +71,7 @@ vim.g.maplocalleader = "\\"
 -- ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
 VIM_MODE_NORMAL = 'n'
 VIM_MODE_VISUAL = 'v'
+NVIM_HL_GLOBAL = 0
 
 function leader(c)
   return '<leader>' .. c
@@ -118,11 +120,79 @@ local sp = {
 require("lazy").setup({
   spec = {
     {
+      'ggandor/leap.nvim',
+      config = function ()
+        require('leap').set_default_mappings()
+      end
+    },
+
+    {
+      "chentoast/marks.nvim",
+      event = "VeryLazy",
+      opts = {},
+    },
+
+    {
+      'nvim-tree/nvim-tree.lua',
+      dependencies = {
+        "nvim-tree/nvim-web-devicons",
+      },
+      opts = {
+        sort = {
+          sorter = "case_sensitive",
+        },
+        view = {
+          width = 30,
+        },
+        renderer = {
+          group_empty = true,
+          icons = {
+            show = {
+              file = false
+            },
+            glyphs = {
+              git = {
+                unstaged = 'M',
+                staged = 'S',
+                untracked = 'U'
+              }
+            }
+          }
+        },
+        filters = {
+          dotfiles = true,
+        },
+      },
+      keys = {
+        { leader('ft'), function() vim.cmd('NvimTreeToggle') end, mode = { VIM_MODE_NORMAL } },
+      }
+    },
+
+    {
+      'sindrets/diffview.nvim',
+      opts = {
+        diff_binaries = false,
+        use_icons = true,
+        view = {
+          default = {
+            layout = "diff2_horizontal",  -- side by side
+          },
+        },
+      },
+      keys = {
+        { leader('gf'), function() vim.cmd('DiffviewToggleFiles') end, mode = { VIM_MODE_NORMAL } },
+        { leader('go'), function() vim.cmd('DiffviewOpen') end, mode = { VIM_MODE_NORMAL } },
+        { leader('gc'), function() vim.cmd('DiffviewClose') end, mode = { VIM_MODE_NORMAL } },
+      }
+    },
+
+    {
       'neovim/nvim-lspconfig',
       config = function()
         vim.lsp.enable('clangd')
         vim.lsp.enable('ty')
         vim.lsp.enable('ruff')
+        vim.lsp.enable('lua_ls')
       end
     },
 
@@ -265,6 +335,7 @@ require("lazy").setup({
       "LunarVim/darkplus.nvim",
       config = function()
         vim.cmd.colorscheme("darkplus")
+        local palette = require('darkplus.palette')
 
         vim.cmd([[
           highlight TelescopeNormal guibg=#161616
@@ -308,7 +379,24 @@ require("lazy").setup({
         local dap = require('dap')
         local dapui = require('dapui')
 
-        dapui.setup()
+        dapui.setup({
+          layouts = {
+            {
+              elements = {
+                { id = "breakpoints", size = 0.1 },
+                { id = "stacks", size = 0.2 },
+                { id = "watches", size = 0.3 },
+                { id = "scopes", size = 0.4 },
+              },
+              size = 50,
+              position = "left",
+            },
+          },
+          controls = {
+            enabled = true,
+            element = 'scopes'
+          }
+         })
 
         dap.adapters.gdb = {
           type = "executable",
@@ -321,33 +409,10 @@ require("lazy").setup({
             name = "make + debug",
             type = "gdb",
             request = "launch",
-            program = function()
-              local targets = sp.find_make_targets('dap')
-
-              local co = coroutine.running()
-              local executable = nil
-              vim.ui.select(targets, { prompt = 'program' }, vim.schedule_wrap(function(choice)
-                local command = 'make -S ' .. choice
-                executable = vim.fn.system(command)
-                coroutine.resume(co)
-              end))
-
-              coroutine.yield()
-              return executable
-            end,
+            program = "build/bin/spn",
             args = function()
-              local targets = sp.find_make_targets('dap')
-
-              local co = coroutine.running()
-              local result = nil
-              vim.ui.select(targets, { prompt = 'flags' }, vim.schedule_wrap(function(choice)
-                local command = 'make -S ' .. choice
-                result = vim.fn.system(command)
-                coroutine.resume(co)
-              end))
-
-              coroutine.yield()
-              return vim.split(vim.trim(result), ' ')
+              local input = vim.fn.input("[args] ")
+              return vim.split(vim.trim(input), ' ')
             end,
             cwd = "${workspaceFolder}",
             stopAtBeginningOfMainSubprogram = true,
@@ -356,15 +421,25 @@ require("lazy").setup({
 
         vim.keymap.set('n', f(5), dap.continue)
         vim.keymap.set('n', f(10), dap.step_over)
-        vim.keymap.set('n', leader('dn'), dap.step_over)
         vim.keymap.set('n', f(11), dap.step_into)
+        vim.keymap.set('n', leader('dc'), dap.continue)
+        vim.keymap.set('n', leader('dn'), dap.step_over)
         vim.keymap.set('n', leader('di'), dap.step_into)
         vim.keymap.set('n', leader('do'), dap.step_out)
         vim.keymap.set('n', leader('db'), dap.toggle_breakpoint)
         vim.keymap.set('n', leader('do'), dap.repl.open)
+        vim.keymap.set('n', leader('dd'), function() vim.cmd('DapNew') end)
+        vim.keymap.set('n', leader('dx'), function()
+          dap.terminate()
+          dapui.close()
+        end)
 
         dap.listeners.after.event_initialized["dapui_config"] = dapui.open
         dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+
+        --vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
+       vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = '#2e4057' })
+        vim.fn.sign_define('DapStopped', { text='>', texthl='DapStopped', linehl='DapStoppedLine', numhl='DapStopped' })
       end
     },
 
@@ -426,7 +501,7 @@ require("lazy").setup({
         vim.keymap.set('n', leader('lo'), hierarchy.outgoing_calls)
         vim.keymap.set('n', leader('ld'), builtin.lsp_definitions)
         vim.keymap.set('n', leader('lt'), builtin.lsp_type_definitions)
-        vim.keymap.set('n', leader('lr'), builtin.lsp_references)
+        vim.keymap.set('n', leader('lr'), function() builtin.lsp_references({ initial_mode = 'normal' }) end)
         vim.keymap.set('n', leader('lc'), builtin.lsp_implementations)
         vim.keymap.set('n', leader('lb'), builtin.diagnostics)
         vim.keymap.set('n', leader('lu'), vim.lsp.buf.rename)
@@ -440,7 +515,8 @@ require("lazy").setup({
           end
         end)
         vim.keymap.set('n', leader('le'), function()
-          require('telescope.builtin').diagnostics({
+          builtin.diagnostics({
+            initial_mode = 'normal',
             severity = vim.diagnostic.severity.ERROR,
             layout_strategy = 'vertical',
             layout_config = {
@@ -488,7 +564,9 @@ require("lazy").setup({
             "lua",
             "python",
             "javascript",
-            "typescript"
+            "typescript",
+            "vim",
+            "vimdoc"
           },
           highlight = {
             enable = true
@@ -525,9 +603,9 @@ require("lazy").setup({
 
     {
       "kdheepak/lazygit.nvim",
-      config = function()
-        vim.keymap.set('n', '<leader>gg', ':LazyGit<CR>')
-      end
+      keys = {
+        { leader('gg'), function() vim.cmd('LazyGit') end, mode = { VIM_MODE_NORMAL } }
+      },
     }
   },
   checker = {

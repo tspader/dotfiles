@@ -1,5 +1,6 @@
 #!/bin/bash
 pacman -S --needed \
+  avahi \
   base-devel \
   cifs-utils \
   cmake \
@@ -18,8 +19,10 @@ pacman -S --needed \
   linux-headers \
   lsof \
   luajit \
+  lua-language-server \
   neovim \
   nodejs \
+  nss-mdns \
   openssh \
   ouch \
   python \
@@ -93,7 +96,8 @@ systemctl enable --now \
   bluetooth \
   sshd \
   tailscaled \
-  docker
+  docker \
+  avahi-daemon
 
 systemctl --user enable --now \
   pipewire \
