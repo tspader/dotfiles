@@ -1,3 +1,5 @@
+local vim = vim or {}
+
 -- ██╗      █████╗ ███████╗██╗   ██╗
 -- ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝
 -- ██║     ███████║  ███╔╝  ╚████╔╝
@@ -73,11 +75,11 @@ VIM_MODE_NORMAL = 'n'
 VIM_MODE_VISUAL = 'v'
 NVIM_HL_GLOBAL = 0
 
-function leader(c)
+local leader = function(c)
   return '<leader>' .. c
 end
 
-function f(n, shift)
+local f = function(n, shift)
   local id = 'F' .. tostring(n)
   if shift then
     id = 'S-' .. id
@@ -86,7 +88,7 @@ function f(n, shift)
 end
 
 
-function command(chord_key, command_key)
+local command = function(chord_key, command_key)
   return string.format('<C-%s>%s', chord_key, command_key)
 end
 
@@ -119,13 +121,6 @@ local sp = {
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
-    {
-      'ggandor/leap.nvim',
-      config = function ()
-        require('leap').set_default_mappings()
-      end
-    },
-
     {
       "chentoast/marks.nvim",
       event = "VeryLazy",
@@ -409,15 +404,16 @@ require("lazy").setup({
             name = "make + debug",
             type = "gdb",
             request = "launch",
-            program = "build/bin/spn",
+            program = './build/bin/space',
             args = function()
-              local input = vim.fn.input("[args] ")
+              local input = vim.fn.input("[args]: ")
               return vim.split(vim.trim(input), ' ')
             end,
             cwd = "${workspaceFolder}",
             stopAtBeginningOfMainSubprogram = true,
           },
         }
+        dap.configurations.cpp = dap.configurations.c
 
         vim.keymap.set('n', f(5), dap.continue)
         vim.keymap.set('n', f(10), dap.step_over)
@@ -454,7 +450,16 @@ require("lazy").setup({
         defaults = {
           prompt_title = false,
           results_title = false,
-          dynamic_preview_title = true
+          dynamic_preview_title = true,
+          layout_strategy = 'vertical',
+          layout_config = {
+            vertical = {
+              width = 0.95,
+              height = 0.95,
+              preview_cutoff = 0,
+              prompt_position = "bottom",
+            }
+          },
         },
         pickers = {
           find_files = {
@@ -464,19 +469,25 @@ require("lazy").setup({
         extensions = {
           hierarchy = {
             initial_multi_expand = true,
-            layout_strategy = 'horizontal'
+            layout_strategy = 'vertical',
+            layout_config = {
+              vertical = {
+                width = 0.95,
+                height = 0.95,
+                preview_cutoff = 0,
+                prompt_position = "bottom",
+              }
+            },
           }
         }
       },
       config = function(_, opts)
         require('telescope').setup(opts)
         local hierarchy = require("telescope").load_extension("hierarchy")
-        local ui_select require("telescope").load_extension("ui-select")
 
         local builtin = require('telescope.builtin')
         local pickers = require('telescope.pickers')
         local finders = require('telescope.finders')
-        local actions = require('telescope.actions')
 
         local ff = {
           'rg',
@@ -485,7 +496,9 @@ require("lazy").setup({
           '--follow', '--files', '--trim', '--smart-case'
         }
         local fF = {}
-        for index, arg in pairs(ff) do table.insert(fF, arg) end
+        for _, value in pairs(ff) do
+          table.insert(fF, value)
+        end
         table.insert(fF, '--no-ignore')
 
         vim.keymap.set('n', leader('ff'), function() builtin.find_files({ find_command = ff }) end)

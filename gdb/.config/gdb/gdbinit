@@ -2,6 +2,7 @@ set debuginfod enabled off
 set history filename ~/.config/gdb/.gdb_history
 
 source ~/.config/gdb/dashboard.gdb
+source ~/.config/gdb/sp_str_t.py
 
 dashboard -style style_low "38;5;239"
 dashboard -style style_high "38;5;220"
@@ -30,4 +31,4 @@ dashboard stack -style compact False
 dashboard source -style height 30
 dashboard source -style highlight-line True
 
-dashboard -layout source breakpoints stack variables 
+dashboard -layout source breakpoints stack variables
