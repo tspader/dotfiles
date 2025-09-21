@@ -120,21 +120,19 @@ if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'
 fi
 
-# ls aliases with color - use lsd if available, fallback to ls
 if command -v lsd >/dev/null 2>&1; then
-    alias ls='lsd'
+    alias ls='lsd -A'
+    alias l='lsd'
     alias ll='lsd -alF'
-    alias la='lsd -A'
-    alias l='lsd -F'
-    alias lt='lsd --tree'
-    alias lh='lsd -ld .??*'  # Show hidden files only
+    alias lt='lsd --tree --depth 2'
+    alias lh='lsd -ld .??*'
 else
     alias ls='ls --color=auto'
     alias ll='ls -alF --color=auto'
     alias la='ls -A --color=auto'
     alias l='ls -CF --color=auto'
     alias lt='ls --human-readable --size -1 -S --classify --color=auto'
-    alias lh='ls -ld .??* --color=auto'  # Show hidden files only
+    alias lh='ls -ld .??* --color=auto'
 fi
 
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
@@ -350,7 +348,6 @@ bind '"\C-r": reverse-search-history'
 # ============================================
 # Check if fzf is installed
 if command -v fzf >/dev/null 2>&1; then
-    # Better history search with fzf
     __fzf_history__() {
         local output
         output=$(
@@ -359,27 +356,14 @@ if command -v fzf >/dev/null 2>&1; then
                 --preview 'echo {}' \
                 --preview-window down:3:wrap \
                 --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort' \
-                --scheme=history |
+                --exact |
             sed 's/^ *[0-9]* *//'
         ) || return
         READLINE_LINE="$output"
         READLINE_POINT=${#READLINE_LINE}
     }
 
-    # Bind Ctrl+R to fzf history search
     bind -x '"\C-r": __fzf_history__'
-
-    # FZF default options for better appearance
-    export FZF_DEFAULT_OPTS='
-        --height 75%
-        --layout=reverse
-        --pointer=">"
-        --info=hidden
-        --color=fg:#c0c0c0,bg:-1,hl:#5f87af
-        --color=fg+:#ffffff,bg+:#262626,hl+:#5fd7ff
-        --color=info:#afaf87,prompt:#5f87af,pointer:#af5fff
-        --color=marker:#87ff00,spinner:#af5fff,header:#87afaf
-    '
 fi
 
 # ============================================

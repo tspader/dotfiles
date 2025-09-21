@@ -16,5 +16,3 @@ import = [
     "./themes/dark_plus.toml",
     "./alacritty.local.toml"
 ]
-
-
