@@ -35,6 +35,7 @@ sudo pacman -S --verbose --needed --noconfirm \
   gdb \
   httpie \
   lazygit \
+  lsd \
   luajit \
   lua-language-server \
   neovim \

@@ -120,13 +120,22 @@ if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'
 fi
 
-# ls aliases with color
-alias ls='ls --color=auto'
-alias ll='ls -alF --color=auto'
-alias la='ls -A --color=auto'
-alias l='ls -CF --color=auto'
-alias lt='ls --human-readable --size -1 -S --classify --color=auto'
-alias lh='ls -ld .??* --color=auto'  # Show hidden files only
+# ls aliases with color - use lsd if available, fallback to ls
+if command -v lsd >/dev/null 2>&1; then
+    alias ls='lsd'
+    alias ll='lsd -alF'
+    alias la='lsd -A'
+    alias l='lsd -F'
+    alias lt='lsd --tree'
+    alias lh='lsd -ld .??*'  # Show hidden files only
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -alF --color=auto'
+    alias la='ls -A --color=auto'
+    alias l='ls -CF --color=auto'
+    alias lt='ls --human-readable --size -1 -S --classify --color=auto'
+    alias lh='ls -ld .??* --color=auto'  # Show hidden files only
+fi
 
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
