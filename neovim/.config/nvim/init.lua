@@ -1,3 +1,4 @@
+---@diagnostic disable-next-line: undefined-global
 local vim = vim or {}
 
 -- ██╗      █████╗ ███████╗██╗   ██╗
@@ -85,11 +86,6 @@ local f = function(n, shift)
     id = 'S-' .. id
   end
   return '<' .. id .. '>'
-end
-
-
-local command = function(chord_key, command_key)
-  return string.format('<C-%s>%s', chord_key, command_key)
 end
 
 vim.keymap.set(VIM_MODE_NORMAL, leader('rc'), function()
@@ -188,6 +184,7 @@ require("lazy").setup({
         vim.lsp.enable('ty')
         vim.lsp.enable('ruff')
         vim.lsp.enable('lua_ls')
+        vim.lsp.enable('ts_ls')
       end
     },
 
@@ -330,7 +327,6 @@ require("lazy").setup({
       "LunarVim/darkplus.nvim",
       config = function()
         vim.cmd.colorscheme("darkplus")
-        local palette = require('darkplus.palette')
 
         vim.cmd([[
           highlight TelescopeNormal guibg=#161616
@@ -552,7 +548,7 @@ require("lazy").setup({
               results = targets
             },
             sorter = require('telescope.config').values.generic_sorter({}),
-            attach_mappings = function(buffer_index, map)
+            attach_mappings = function(buffer_index, _)
               require('telescope.actions').select_default:replace(function()
                 require('telescope.actions').close(buffer_index)
                 local selection = require('telescope.actions.state').get_selected_entry()
@@ -578,6 +574,7 @@ require("lazy").setup({
             "python",
             "javascript",
             "typescript",
+            "tsx",
             "vim",
             "vimdoc"
           },
