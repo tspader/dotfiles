@@ -395,7 +395,7 @@ fi
 
 
 # uv
-export PATH="/Users/spader/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
