@@ -50,6 +50,7 @@ vim.diagnostic.config({
   update_in_insert = true,
 })
 
+
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI", "FocusGained" }, {
   command = "if mode() != 'c' | checktime | endif",
   pattern = { "*" },
@@ -117,6 +118,27 @@ local sp = {
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
+    {
+      'MeanderingProgrammer/render-markdown.nvim',
+      dependencies = {
+        'nvim-treesitter/nvim-treesitter',
+        'nvim-mini/mini.icons'
+      },
+      opts = {
+        completions = {
+          blink = {
+            enabled = true
+          },
+          filter = {
+            checkbox = function() return true end
+          }
+        },
+    checkbox = {
+        unchecked = { icon = '. ' },
+        checked = { icon = '+ ' },
+    },
+      }
+    },
     {
       "chentoast/marks.nvim",
       event = "VeryLazy",
@@ -576,7 +598,8 @@ require("lazy").setup({
             "typescript",
             "tsx",
             "vim",
-            "vimdoc"
+            "vimdoc",
+            "markdown"
           },
           highlight = {
             enable = true
@@ -626,3 +649,4 @@ require("lazy").setup({
 vim.cmd([[
   highlight! link CursorLineNr Type
 ]])
+
