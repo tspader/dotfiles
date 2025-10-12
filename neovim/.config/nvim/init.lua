@@ -249,7 +249,13 @@ require("lazy").setup({
       opts = {
         enablefocusfading = true,
         ncmode = 'buffers',
-        fadelevel = 0.7
+        fadelevel = 0.75,
+        tint = {
+          bg = {
+            rgb = {0, 0, 0},
+            intensity = 0.25
+          }
+        }
       },
     },
 
