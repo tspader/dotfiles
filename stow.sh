@@ -10,4 +10,7 @@ stow neovim
 stow opencode
 stow ssh
 stow tmux
+
 stow --target / keyd
+
+[[ -f "$HOME/.config/alacritty/alacritty.local.toml" ]] && cp "$HOME/.config/alacritty/alacritty.local.toml.template" "$HOME/.config/alacritty/alacritty.local.toml"
