@@ -12,18 +12,23 @@ if platform.system() == 'Windows':
   local_appdata = os.getenv('LOCALAPPDATA')
   appdata = os.getenv('APPDATA')
   home = os.getenv('USERPROFILE')
+  config = os.path.join(home, '.config')
   powershell = os.path.join(home, 'Documents', 'WindowsPowerShell', 'Modules')
+  profile = subprocess.run(["powershell.exe", "-Command", "$profile"], capture_output=True, text=True).stdout.strip()
 
   symlinks = {
     'bash': {
-      '.bashrc': os.path.expanduser('~'),
-      '.profile': os.path.expanduser('~')
+      '.bashrc': home,
+      '.profile': home,
     },
     'cmd.exe': {
-      '.cmd.bat': os.path.expanduser('~'),
+      '.cmd.bat': home,
     },
     'powershell': {
-      'profile.ps1': os.path.dirname(subprocess.run(["powershell.exe", "-Command", "$profile"], capture_output=True, text=True).stdout.strip())
+      'profile.ps1': os.path.dirname(profile),
+    },
+    'wezterm': {
+      '.config/wezterm': config,
     },
     'neovim': {
       '.config/nvim': appdata
