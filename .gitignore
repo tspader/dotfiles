@@ -2,3 +2,4 @@
 secrets
 bash/.profile
 gdb/**/.gdb_history
+**/*.local*
