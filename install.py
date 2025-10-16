@@ -14,7 +14,7 @@ if platform.system() == 'Windows':
   home = os.getenv('USERPROFILE')
   config = os.path.join(home, '.config')
   powershell = os.path.join(home, 'Documents', 'WindowsPowerShell', 'Modules')
-  profile = subprocess.run(["powershell.exe", "-Command", "$profile"], capture_output=True, text=True).stdout.strip()
+  profile = os.path.dirname(subprocess.run(["pwsh.exe", "-Command", "$PROFILE.CurrentUserAllHosts"], capture_output=True, text=True).stdout.strip())
 
   symlinks = {
     'bash': {
@@ -25,7 +25,7 @@ if platform.system() == 'Windows':
       '.cmd.bat': home,
     },
     'powershell': {
-      'profile.ps1': os.path.dirname(profile),
+      'profile.ps1': profile,
     },
     'wezterm': {
       '.config/wezterm': config,

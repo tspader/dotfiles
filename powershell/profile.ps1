@@ -17,11 +17,12 @@ function prompt {
 }
 
 Set-Alias n nvim.exe
+Set-Alias lg lazygit.exe
 function Remove-ForceRecurse { Remove-Item -Force -Recurse @args }; Set-Alias rf Remove-ForceRecurse
 
 function vs {
   & {
-    Import-Module "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\Microsoft.VisualStudio.DevShell.dll";
+    Import-Module "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
     Enter-VsDevShell 661b5f87 -SkipAutomaticLocation -DevCmdArguments "-arch=x64 -host_arch=x64"
   }
 }
