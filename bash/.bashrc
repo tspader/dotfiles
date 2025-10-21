@@ -66,8 +66,12 @@ LIGHT_PURPLE='\[\033[0;95m\]'
 LIGHT_CYAN='\[\033[0;96m\]'
 RESET='\[\033[0m\]'
 
-# Function to get git branch (if in a git repo)
+is_sshfs() {
+    mount | grep -q "$(pwd).*fuse.sshfs"
+}
+
 git_branch() {
+    is_sshfs && return
     git branch 2>/dev/null | grep -e '^*' | sed 's/^..\(.*\)/ (\1)/'
 }
 
