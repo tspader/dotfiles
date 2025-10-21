@@ -294,18 +294,6 @@ require("lazy").setup({
     },
 
     {
-      'NickvanDyke/opencode.nvim',
-      dependencies = {
-        'folke/snacks.nvim',
-      },
-      opts = {},
-      keys = {
-        { leader('ct'), function() require('opencode').toggle() end, mode = { VIM_MODE_NORMAL } },
-        { leader('cc'), function() require('opencode').ask() end,    mode = { VIM_MODE_NORMAL } },
-      },
-    },
-
-    {
       'stevearc/oil.nvim',
       opts = {
         watch_for_changes = true,
