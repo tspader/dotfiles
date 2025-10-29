@@ -517,9 +517,10 @@ require("lazy").setup({
         vim.keymap.set('n', leader('fF'), function() builtin.find_files({ find_command = fF }) end)
         vim.keymap.set('n', leader('fg'), builtin.live_grep)
         vim.keymap.set('n', leader('fG'), function() builtin.live_grep { additional_args = { '--hidden', '--no-ignore' } } end)
+        vim.keymap.set('n', leader('fs'), function() builtin.live_grep({ search_dirs = {vim.fn.expand('%:p')} }) end)
         vim.keymap.set('n', leader('fb'), function() builtin.buffers({ sort_mru  = true, ignore_current_buffer = true }) end)
         vim.keymap.set('n', leader('fh'), builtin.help_tags)
-        vim.keymap.set('n', leader('fs'), builtin.current_buffer_fuzzy_find)
+        vim.keymap.set('n', leader('fz'), builtin.current_buffer_fuzzy_find)
         vim.keymap.set('n', leader('fc'), function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end)
 
         vim.keymap.set('n', leader('li'), hierarchy.incoming_calls)
