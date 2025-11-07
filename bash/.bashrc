@@ -177,7 +177,7 @@ mkcd() {
 }
 
 tmp() {
-  cd "$(mktemp -d)"
+  cd "$(mktemp --directory --tmpdir=/tmp aXXXXXXXX)"
   chmod -R 0700 .
   if [[ $# -eq 1 ]]; then
     \mkdir -p "$1"
