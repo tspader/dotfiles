@@ -1,0 +1,18 @@
+[package]
+name = "sp_gdb"
+version = "1.0.0"
+
+[deps]
+sp = "1.5.1"
+
+[[profile]]
+name = "debug"
+cc = "tcc"
+
+[[bin]]
+name = "sp_ht"
+source = ["sp_ht.c"]
+
+[[bin]]
+name = "sp_da"
+source = ["sp_da.c"]
