@@ -1,0 +1,6 @@
+[metadata]
+description = "Index of all available skills. A skill is a collection of Markdown and scripts that you must use when working on relevant tasks or subjects."
+
+[[skill]]
+name = "sp"
+description = "Guide for sp.h, a single-header C standard library replacement. You must use this guide when using or discussing sp.h in any capacity"
