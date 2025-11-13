@@ -2,5 +2,9 @@
 description = "Index of all available skills. A skill is a collection of Markdown and scripts that you must use when working on relevant tasks or subjects."
 
 [[skill]]
-name = "sp"
+name = "sp.h"
 description = "Guide for sp.h, a single-header C standard library replacement. You must use this guide when using or discussing sp.h in any capacity"
+
+[[skill]]
+name = "c"
+description = "Guide for writing modern C code. Use this any time you deal with C code in any capacity. Always use alongside the sp.h skill, since you should always use sp.h when possible."
