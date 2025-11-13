@@ -33,4 +33,4 @@ dashboard stack -style compact False
 dashboard source -style height 30
 dashboard source -style highlight-line True
 
-dashboard -layout source breakpoints stack variables
+dashboard -layout source stack variables
