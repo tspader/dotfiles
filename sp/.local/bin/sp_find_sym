@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo "Usage: sp_find_sym binary symbol"
+    exit 1
+fi
+
+binary="$1"
+sym="$2"
+
+if nm --defined-only "$binary" | grep -q "$sym"; then
+    echo -e "found \033[36m$sym\033[0m"
+else
+    exit 1
+fi

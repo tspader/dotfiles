@@ -1,0 +1,56 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <archive.a>"
+    exit 1
+fi
+
+archive="$1"
+
+if [ ! -f "$archive" ]; then
+    echo "Error: Archive file '$archive' not found"
+    exit 1
+fi
+
+# Get all defined symbols in the archive
+defined_syms=$(nm -g "$archive" 2>/dev/null | awk '/^[^[:space:]]+[[:space:]]+[TDBS]/ {print $3}' | sort -u)
+
+# Get all undefined symbols with their object files
+temp_file=$(mktemp)
+trap "rm -f $temp_file" EXIT
+
+max_sym_len=0
+
+nm -u "$archive" 2>/dev/null | awk '
+/^[^:]+:$/ {
+    obj = substr($1, 1, length($1)-1)
+    next
+}
+/^[[:space:]]*U/ {
+    sym = $NF
+    if (sym != "" && obj != "") {
+        print sym "\t" obj
+        if (length(sym) > max_len) max_len = length(sym)
+    }
+}
+END {
+    print max_len > "/dev/stderr"
+}' 2>max_len_temp > "$temp_file"
+
+max_sym_len=$(cat max_len_temp)
+rm -f max_len_temp
+
+# Filter out symbols that are defined in the archive, deduplicate by symbol, sort, and print aligned output
+printf "%-${max_sym_len}s  %s\n" "sym" "object_file"
+
+while IFS=$'\t' read -r sym obj; do
+    if ! echo "$defined_syms" | grep -q "^$sym$"; then
+        echo -e "$sym\t$obj"
+    fi
+done < "$temp_file" | sort | awk -F'\t' '
+$1 != prev_sym {
+    print $1 "\t" $2
+    prev_sym = $1
+}' | while IFS=$'\t' read -r sym obj; do
+    printf "%-${max_sym_len}s  %s\n" "$sym" "$obj"
+done

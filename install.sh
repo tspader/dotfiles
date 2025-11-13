@@ -10,6 +10,7 @@ stow lsd
 stow nchat
 stow neovim
 stow opencode
+stow sp
 stow ssh
 stow tmux
 stow wezterm
