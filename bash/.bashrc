@@ -115,6 +115,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
+alias dot='cd ~/.dotfiles'
 
 if command -v trash >/dev/null 2>&1; then
     alias rm='trash'
@@ -149,6 +150,7 @@ alias ~='cd ~'
 alias -- -='cd -'
 
 alias n='nvim'
+alias g='gdb --args'
 alias tree='tree -a -C'  # Colorized tree (if available)
 alias tree3='tree -a -C -L 3'
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
@@ -411,3 +413,4 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias codex='codex --search --model=gpt-5-codex -c model_reasoning_effort="high" --sandbox workspace-write -c sandbox_workspace_write.network_access=true'
+
