@@ -9,6 +9,6 @@
   "permission": {
     "edit": "allow",
     "bash": "allow",
-    "webfetch": "deny"
+    "webfetch": "allow"
   }
 }

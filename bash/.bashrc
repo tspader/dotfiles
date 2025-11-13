@@ -176,6 +176,15 @@ mkcd() {
     mkdir -p "$1" && cd "$1"
 }
 
+tmp() {
+  cd "$(mktemp --directory --tmpdir=/tmp aXXXXXXXX)"
+  chmod -R 0700 .
+  if [[ $# -eq 1 ]]; then
+    \mkdir -p "$1"
+    cd "$1"
+  fi
+}
+
 # Extract archives
 extract() {
     if [ -f "$1" ]; then
@@ -198,28 +207,24 @@ extract() {
     fi
 }
 
-# Find files in current directory
 ff() {
-    find . -type f -name "*$1*"
+  find . -type f -name "*$1*"
 }
 
-# Find directories in current directory
 fd() {
-    find . -type d -name "*$1*"
+  find . -type d -name "*$1*"
 }
 
-# Create backup of file with timestamp
 backup() {
-    cp "$1" "$1.backup-$(date +%Y%m%d-%H%M%S)"
+  cp "$1" "$1.backup-$(date +%Y%m%d-%H%M%S)"
 }
 
-# Show PATH in readable format
 path() {
-    echo -e ${PATH//:/\\n}
+  echo -e ${PATH//:/\\n}
 }
 
 calc() {
-    echo "scale=3; $*" | bc -l
+  echo "scale=3; $*" | bc -l
 }
 
 get_os_type() {
