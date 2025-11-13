@@ -5,12 +5,15 @@
 stow alacritty
 stow bash
 stow gdb
+stow ghostty
 stow lsd
+stow nchat
 stow neovim
 stow opencode
 stow ssh
 stow tmux
+stow wezterm
 
-stow --target / keyd
+#stow --target / keyd
 
 [[ -f "$HOME/.config/alacritty/alacritty.local.toml" ]] && cp "$HOME/.config/alacritty/alacritty.local.toml.template" "$HOME/.config/alacritty/alacritty.local.toml"
