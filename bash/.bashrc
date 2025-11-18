@@ -116,6 +116,7 @@ alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias dot='cd ~/.dotfiles'
+alias uz='ouch decompress'
 
 if command -v trash >/dev/null 2>&1; then
     alias rm='trash'
@@ -150,6 +151,9 @@ alias ~='cd ~'
 alias -- -='cd -'
 
 alias n='nvim'
+alias y='yazi'
+alias o='opencode'
+alias c='claude --dangerously-skip-permissions'
 alias g='gdb --args'
 alias tree='tree -a -C'  # Colorized tree (if available)
 alias tree3='tree -a -C -L 3'
