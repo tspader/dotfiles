@@ -8,14 +8,10 @@
   },
   "permission": {
     "edit": "allow",
-    "bash": "allow",
+    "bash": {
+      "*": "allow",
+      "sudo": "deny"
+    },
     "webfetch": "allow"
-  },
-  "mcp": {
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "@playwright/mcp@latest"],
-      "enabled": true
-    }
   }
 }
