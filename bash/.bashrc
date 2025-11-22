@@ -110,13 +110,12 @@ PROMPT_COMMAND="set_prompt${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 # ============================================
 # Better defaults
 alias mkdir='mkdir -pv'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias grep='rg'
 alias diff='diff --color=auto'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias dot='cd ~/.dotfiles'
 alias uz='ouch decompress'
+alias mk='mkdir -pv'
 
 if command -v trash >/dev/null 2>&1; then
     alias rm='trash'
@@ -409,12 +408,8 @@ if [ -f ~/.bashrc.local ]; then
 fi
 
 
-# uv
 export PATH="$HOME/.local/bin:$PATH"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
 
 alias codex='codex --search --model=gpt-5-codex -c model_reasoning_effort="high" --sandbox workspace-write -c sandbox_workspace_write.network_access=true'
 
