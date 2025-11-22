@@ -12,13 +12,13 @@ class SpPsConfigPrinter:
                 continue
             else:
                 yield (field.name, self.val[field.name])
-        
+
         # Add io modes as separate fields to avoid nested object issues
         try:
             io_val = self.val['io']
-            yield ('io_in_mode', io_val['in']['mode'])
-            yield ('io_out_mode', io_val['out']['mode'])
-            yield ('io_err_mode', io_val['err']['mode'])
+            yield ('stdin', io_val['in']['mode'])
+            yield ('stdout', io_val['out']['mode'])
+            yield ('stderr', io_val['err']['mode'])
         except:
             pass
 
@@ -36,7 +36,7 @@ class SpPsPrinter:
                 continue
             else:
                 yield (field.name, self.val[field.name])
-        
+
         # Add io modes as separate fields to avoid nested object issues
         try:
             io_val = self.val['io']
