@@ -4,6 +4,7 @@
 
 stow alacritty
 stow bash
+stow claude
 stow gdb
 stow ghostty
 stow lsd
@@ -14,6 +15,7 @@ stow sp
 stow ssh
 stow tmux
 stow wezterm
+stow yazi
 
 #stow --target / keyd
 
