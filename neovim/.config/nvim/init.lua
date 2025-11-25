@@ -641,6 +641,12 @@ require("lazy").setup({
   },
 })
 
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    require("lazy").sync({ show = false })
+  end,
+})
+
 vim.cmd([[
   highlight! link CursorLineNr Type
 ]])
