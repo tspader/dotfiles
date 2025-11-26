@@ -112,6 +112,7 @@ PROMPT_COMMAND="set_prompt${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 alias mkdir='mkdir -pv'
 alias grep='rg'
 alias diff='diff --color=auto'
+alias erc='$EDITOR ~/.bashrc'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias dot='cd ~/.dotfiles'
 alias uz='ouch decompress'
