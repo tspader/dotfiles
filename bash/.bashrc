@@ -72,7 +72,7 @@ is_sshfs() {
 
 git_branch() {
     is_sshfs && return
-    git branch 2>/dev/null | grep -e '^*' | sed 's/^..\(.*\)/ (\1)/'
+    git branch 2>/dev/null | command grep '^\*' | sed 's/^..\(.*\)/ (\1)/'
 }
 
 # Function to set prompt based on exit status
