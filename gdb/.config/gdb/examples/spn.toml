@@ -3,7 +3,7 @@ name = "sp_gdb"
 version = "1.0.0"
 
 [deps]
-sp = "1.5.1"
+sp = "1.6.3"
 
 [[profile]]
 name = "debug"
@@ -20,3 +20,7 @@ source = ["sp_da.c"]
 [[bin]]
 name = "sp_ps_test"
 source = ["sp_ps_test.c"]
+
+[[bin]]
+name = "sp_tm"
+source = ["sp_tm.c"]
