@@ -223,13 +223,140 @@ class SpHtPrinter:
         return 'map'
 
 class SpHtDataPrinter:
+    """Simple printer that shows the hash table like a native GDB map"""
     def __init__(self, val):
         self.val = val
 
+    def _format_element(self, val, indent=0):
+        """Format an element, with structs on multiple lines"""
+        if val.type.code == gdb.TYPE_CODE_STRUCT:
+            # Check for sp_str_t first
+            if val.type.name and 'sp_str_t' in val.type.name:
+                try:
+                    data = val['data']
+                    length = val['len']
+                    if int(data) != 0 and int(length) > 0:
+                        char_ptr = data.cast(gdb.lookup_type('char').pointer())
+                        string_val = char_ptr.string(length=int(length))
+                        return f'"{string_val}"'
+                    else:
+                        return '""'
+                except:
+                    pass
+            
+            # For other structs, format with field = value on each line
+            lines = ["{"]
+            for field in val.type.fields():
+                field_name = field.name
+                if field_name is None:
+                    continue
+                field_val = val[field_name]
+                formatted = self._format_element(field_val, indent + 2)
+                lines.append(f"  {field_name} = {formatted},")
+            lines.append("}")
+            return "\n".join(" " * indent + line for line in lines)
+        elif val.type.code == gdb.TYPE_CODE_PTR:
+            if val.type.target().name == 'char':
+                try:
+                    char_ptr = val.cast(gdb.lookup_type('char').pointer())
+                    string_val = char_ptr.string()
+                    return f'"{string_val}"'
+                except:
+                    return hex(int(val))
+            return hex(int(val))
+        elif val.type.code == gdb.TYPE_CODE_INT:
+            return str(int(val))
+        else:
+            return str(val)
+
+    def _format_key(self, val):
+        """Format a key value for display"""
+        if val.type.code == gdb.TYPE_CODE_STRUCT:
+            if val.type.name and 'sp_str_t' in val.type.name:
+                try:
+                    data = val['data']
+                    length = val['len']
+                    if int(data) != 0 and int(length) > 0:
+                        char_ptr = data.cast(gdb.lookup_type('char').pointer())
+                        string_val = char_ptr.string(length=int(length))
+                        return f'"{string_val}"'
+                    else:
+                        return '""'
+                except:
+                    pass
+        elif val.type.code == gdb.TYPE_CODE_PTR:
+            if val.type.target().name == 'char':
+                try:
+                    char_ptr = val.cast(gdb.lookup_type('char').pointer())
+                    string_val = char_ptr.string()
+                    return f'"{string_val}"'
+                except:
+                    return hex(int(val))
+        elif val.type.code == gdb.TYPE_CODE_INT:
+            return str(int(val))
+        return str(val)
+
     def to_string(self):
+        """Return hash table formatted like GDB's native map printing"""
         printer = SpHtPrinter(self.val)
-        serialized = printer._serialize_hash_table(include_metadata=False)
-        return json.dumps(serialized, indent=2)
+        
+        if not printer._is_valid_hash_table_type(self.val.type):
+            return '<invalid hash table>'
+        
+        if int(self.val) == 0:
+            return '<null>'
+        
+        try:
+            ht = self.val.dereference()
+            data_ptr = ht['data']
+            if int(data_ptr) == 0:
+                return '{<empty>}'
+            
+            dyn_array_head_type = gdb.lookup_type('sp_dyn_array')
+            dyn_array_head = (data_ptr.cast(gdb.lookup_type('char').pointer()) -
+                             dyn_array_head_type.sizeof).cast(dyn_array_head_type.pointer()).dereference()
+            
+            size = int(dyn_array_head['size'])
+            capacity = int(dyn_array_head['capacity'])
+            
+            if size == 0:
+                return '{<empty>}'
+            
+            info = ht['info']
+            stride = int(info['stride'])
+            klpvl = int(info['klpvl'])
+            
+            lines = []
+            count = 0
+            for i in range(capacity):
+                entry_ptr = (data_ptr.cast(gdb.lookup_type('char').pointer()) +
+                           i * stride).cast(data_ptr.type)
+                
+                entry_start = entry_ptr.cast(gdb.lookup_type('char').pointer())
+                state_ptr = (entry_start + klpvl).cast(gdb.lookup_type('sp_ht_entry_state').pointer())
+                state = state_ptr.dereference()
+                
+                if int(state) == 1:
+                    key = entry_ptr['key']
+                    val = entry_ptr['val']
+                    
+                    key_str = self._format_key(key)
+                    val_str = self._format_element(val)
+                    
+                    # For multi-line values, indent continuation
+                    if '\n' in val_str:
+                        lines.append(f"[{key_str}] = {val_str}")
+                    else:
+                        lines.append(f"[{key_str}] = {val_str}")
+                    
+                    count += 1
+                    if count >= size:
+                        break
+            
+            return "\n".join(lines)
+            
+        except Exception as e:
+            return f'<error reading hash table: {e}>'
 
     def display_hint(self):
         return 'map'

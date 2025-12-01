@@ -169,16 +169,84 @@ class SpDaPrinter:
         return 'array'
 
 class SpDaDataPrinter:
-    """Simple printer that just shows the dynamic array data"""
+    """Simple printer that shows the dynamic array like a normal GDB array"""
     def __init__(self, val):
         self.val = val
 
+    def _format_element(self, val, indent=0):
+        """Format an element, with structs on multiple lines"""
+        if val.type.code == gdb.TYPE_CODE_STRUCT:
+            # Check for sp_str_t first
+            if val.type.name and 'sp_str_t' in val.type.name:
+                try:
+                    data = val['data']
+                    length = val['len']
+                    if int(data) != 0 and int(length) > 0:
+                        char_ptr = data.cast(gdb.lookup_type('char').pointer())
+                        string_val = char_ptr.string(length=int(length))
+                        return f'"{string_val}"'
+                    else:
+                        return '""'
+                except:
+                    pass
+            
+            # For other structs, format with field = value on each line
+            lines = ["{"]
+            for field in val.type.fields():
+                field_name = field.name
+                if field_name is None:
+                    continue
+                field_val = val[field_name]
+                formatted = self._format_element(field_val, indent + 2)
+                lines.append(f"  {field_name} = {formatted},")
+            lines.append("}")
+            return "\n".join(" " * indent + line for line in lines)
+        elif val.type.code == gdb.TYPE_CODE_PTR:
+            if val.type.target().name == 'char':
+                try:
+                    char_ptr = val.cast(gdb.lookup_type('char').pointer())
+                    string_val = char_ptr.string()
+                    return f'"{string_val}"'
+                except:
+                    return hex(int(val))
+            return hex(int(val))
+        elif val.type.code == gdb.TYPE_CODE_INT:
+            return str(int(val))
+        else:
+            return str(val)
+
     def to_string(self):
-        """Return pretty-printed JSON of data only"""
+        """Return array formatted like GDB's native array printing"""
         printer = SpDaPrinter(self.val)
-        serialized = printer._serialize_dynamic_array(include_metadata=False)
-        # Use json.dumps for proper formatting without double escaping
-        return json.dumps(serialized, separators=(', ', ': '))
+        
+        if not printer._is_valid_dynamic_array_type(self.val.type):
+            return '<invalid dynamic array>'
+        
+        if int(self.val) == 0:
+            return '<null>'
+        
+        try:
+            dyn_array_head_type = gdb.lookup_type('sp_dyn_array')
+            dyn_array_head = (self.val.cast(gdb.lookup_type('char').pointer()) -
+                             dyn_array_head_type.sizeof).cast(dyn_array_head_type.pointer()).dereference()
+            size = int(dyn_array_head['size'])
+        except:
+            return '<error reading array header>'
+        
+        if size == 0:
+            return '{<empty>}'
+        
+        lines = []
+        for i in range(size):
+            element = self.val[i]
+            formatted = self._format_element(element)
+            # For multi-line structs, indent continuation lines
+            if '\n' in formatted:
+                lines.append(f"[{i}] = {formatted}")
+            else:
+                lines.append(f"[{i}] = {formatted}")
+        
+        return "\n".join(lines)
 
     def display_hint(self):
         return 'array'
