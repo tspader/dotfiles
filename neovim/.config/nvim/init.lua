@@ -63,6 +63,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
  end
 })
 
+vim.filetype.add({
+  extension = {
+    c = "c",
+    h = "c"
+  }
+})
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
