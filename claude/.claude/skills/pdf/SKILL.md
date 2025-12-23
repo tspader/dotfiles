@@ -1,6 +1,6 @@
 ---
 name: pdf
-description: Comprehensive PDF manipulation toolkit for extracting text and tables, creating new PDFs, merging/splitting documents, and handling forms. When Claude needs to fill in a PDF form or programmatically process, generate, or analyze PDF documents at scale.
+description: everything claude needs to read, write, and manipulate PDFs
 license: Proprietary. LICENSE.txt has complete terms
 ---
 
@@ -8,7 +8,11 @@ license: Proprietary. LICENSE.txt has complete terms
 
 ## Overview
 
-This guide covers essential PDF processing operations using Python libraries and command-line tools. For advanced features, JavaScript libraries, and detailed examples, see reference.md. If you need to fill out a PDF form, read forms.md and follow its instructions.
+This guide covers essential PDF processing operations using Python libraries and command-line tools.
+
+- For advanced features, JavaScript libraries, and detailed examples, see reference.md.
+- If you need to fill out a PDF form, read forms.md and follow its instructions.
+- ALWAYS use `uv` if you need to run Python code, unless explicitly acting inside an existing project. Use a tempdir.
 
 ## Quick Start
 
