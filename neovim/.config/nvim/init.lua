@@ -141,8 +141,8 @@ require("lazy").setup({
           }
         },
     checkbox = {
-        unchecked = { icon = '. ' },
-        checked = { icon = '+ ' },
+        unchecked = { icon = '\u{2610} ' },
+        checked = { icon = '\u{2611} ' },
     },
       }
     },
@@ -601,7 +601,7 @@ require("lazy").setup({
             "tsx",
             "vim",
             "vimdoc",
-            "markdown"
+            "markdown",
           },
           highlight = {
             enable = true
