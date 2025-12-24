@@ -114,7 +114,6 @@ alias grep='rg'
 alias diff='diff --color=auto'
 alias erc='$EDITOR ~/.bashrc'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
-alias dot='cd ~/.dotfiles'
 alias uz='ouch decompress'
 alias mk='mkdir -pv'
 
@@ -151,6 +150,7 @@ fi
 
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
+alias .='cd ~/.dotfiles'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
