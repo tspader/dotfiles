@@ -2,5 +2,6 @@
 secrets
 bash/.profile
 gdb/**/.gdb_history
+gdb/**/build
 alacritty/.config/alacritty/alacritty.local.toml
 neovim/.config/nvim/lazy-lock.json

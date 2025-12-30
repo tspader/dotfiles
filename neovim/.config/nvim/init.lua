@@ -63,6 +63,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
  end
 })
 
+vim.filetype.add({
+  extension = {
+    c = "c",
+    h = "c"
+  }
+})
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -134,8 +141,8 @@ require("lazy").setup({
           }
         },
     checkbox = {
-        unchecked = { icon = '. ' },
-        checked = { icon = '+ ' },
+        unchecked = { icon = '\u{2610} ' },
+        checked = { icon = '\u{2611} ' },
     },
       }
     },
@@ -207,6 +214,7 @@ require("lazy").setup({
         vim.lsp.enable('ruff')
         vim.lsp.enable('lua_ls')
         vim.lsp.enable('ts_ls')
+        vim.lsp.enable('zls')
       end
     },
 
@@ -594,7 +602,8 @@ require("lazy").setup({
             "tsx",
             "vim",
             "vimdoc",
-            "markdown"
+            "markdown",
+            "zig"
           },
           highlight = {
             enable = true

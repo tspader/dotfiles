@@ -169,16 +169,46 @@ class SpDaPrinter:
         return 'array'
 
 class SpDaDataPrinter:
-    """Simple printer that just shows the dynamic array data"""
+    """Simple printer that shows the dynamic array like a normal GDB array"""
     def __init__(self, val):
         self.val = val
 
+    def _format_element(self, val):
+        """Format an element using GDB's native styling"""
+        try:
+            # Use GDB's native format_string with styling for proper colors
+            return val.format_string(styling=True)
+        except:
+            return str(val)
+
     def to_string(self):
-        """Return pretty-printed JSON of data only"""
+        """Return array formatted like GDB's native array printing"""
         printer = SpDaPrinter(self.val)
-        serialized = printer._serialize_dynamic_array(include_metadata=False)
-        # Use json.dumps for proper formatting without double escaping
-        return json.dumps(serialized, separators=(', ', ': '))
+        
+        if not printer._is_valid_dynamic_array_type(self.val.type):
+            return '<invalid dynamic array>'
+        
+        if int(self.val) == 0:
+            return '<null>'
+        
+        try:
+            dyn_array_head_type = gdb.lookup_type('sp_dyn_array')
+            dyn_array_head = (self.val.cast(gdb.lookup_type('char').pointer()) -
+                             dyn_array_head_type.sizeof).cast(dyn_array_head_type.pointer()).dereference()
+            size = int(dyn_array_head['size'])
+        except:
+            return '<error reading array header>'
+        
+        if size == 0:
+            return '{<empty>}'
+        
+        lines = []
+        for i in range(size):
+            element = self.val[i]
+            formatted = self._format_element(element)
+            lines.append(f"[{i}] = {formatted}")
+        
+        return "\n".join(lines)
 
     def display_hint(self):
         return 'array'

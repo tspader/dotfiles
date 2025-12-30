@@ -114,7 +114,6 @@ alias grep='rg'
 alias diff='diff --color=auto'
 alias erc='$EDITOR ~/.bashrc'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
-alias dot='cd ~/.dotfiles'
 alias uz='ouch decompress'
 alias mk='mkdir -pv'
 
@@ -130,19 +129,28 @@ if command -v lsd >/dev/null 2>&1; then
     alias ls='lsd -A'
     alias l='lsd'
     alias ll='lsd -alF'
-    alias lt='lsd --tree --depth 2'
     alias lh='lsd -ld .??*'
+    lt() {
+        local dir="${1:-.}"
+        local depth="${2:-2}"
+        lsd -A --tree --depth "$depth" --group-dirs first "$dir"
+    }
 else
     alias ls='ls --color=auto'
     alias ll='ls -alF --color=auto'
     alias la='ls -A --color=auto'
     alias l='ls -CF --color=auto'
-    alias lt='ls --human-readable --size -1 -S --classify --color=auto'
     alias lh='ls -ld .??* --color=auto'
+    lt() {
+        local dir="${1:-.}"
+        local depth="${2:-2}"
+        tree -a -C -L "$depth" --dirsfirst "$dir"
+    }
 fi
 
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
+alias .='cd ~/.dotfiles'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -412,5 +420,6 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
 
-alias codex='codex --search --model=gpt-5-codex -c model_reasoning_effort="high" --sandbox workspace-write -c sandbox_workspace_write.network_access=true'
-
+if command -v direnv &> /dev/null; then
+  eval "$(direnv hook bash)"
+fi

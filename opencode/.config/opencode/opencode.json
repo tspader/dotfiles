@@ -10,7 +10,7 @@
     "edit": "allow",
     "bash": {
       "*": "allow",
-      "sudo": "deny"
+      "sudo": "ask"
     },
     "webfetch": "allow"
   }

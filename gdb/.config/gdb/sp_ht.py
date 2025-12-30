@@ -223,13 +223,81 @@ class SpHtPrinter:
         return 'map'
 
 class SpHtDataPrinter:
+    """Simple printer that shows the hash table like a native GDB map"""
     def __init__(self, val):
         self.val = val
 
+    def _format_element(self, val):
+        """Format an element using GDB's native styling"""
+        try:
+            return val.format_string(styling=True)
+        except:
+            return str(val)
+
+    def _format_key(self, val):
+        """Format a key value using GDB's native styling"""
+        try:
+            return val.format_string(styling=True)
+        except:
+            return str(val)
+
     def to_string(self):
+        """Return hash table formatted like GDB's native map printing"""
         printer = SpHtPrinter(self.val)
-        serialized = printer._serialize_hash_table(include_metadata=False)
-        return json.dumps(serialized, indent=2)
+        
+        if not printer._is_valid_hash_table_type(self.val.type):
+            return '<invalid hash table>'
+        
+        if int(self.val) == 0:
+            return '<null>'
+        
+        try:
+            ht = self.val.dereference()
+            data_ptr = ht['data']
+            if int(data_ptr) == 0:
+                return '{<empty>}'
+            
+            dyn_array_head_type = gdb.lookup_type('sp_dyn_array')
+            dyn_array_head = (data_ptr.cast(gdb.lookup_type('char').pointer()) -
+                             dyn_array_head_type.sizeof).cast(dyn_array_head_type.pointer()).dereference()
+            
+            size = int(dyn_array_head['size'])
+            capacity = int(dyn_array_head['capacity'])
+            
+            if size == 0:
+                return '{<empty>}'
+            
+            info = ht['info']
+            stride = int(info['stride'])
+            klpvl = int(info['klpvl'])
+            
+            lines = []
+            count = 0
+            for i in range(capacity):
+                entry_ptr = (data_ptr.cast(gdb.lookup_type('char').pointer()) +
+                           i * stride).cast(data_ptr.type)
+                
+                entry_start = entry_ptr.cast(gdb.lookup_type('char').pointer())
+                state_ptr = (entry_start + klpvl).cast(gdb.lookup_type('sp_ht_entry_state').pointer())
+                state = state_ptr.dereference()
+                
+                if int(state) == 1:
+                    key = entry_ptr['key']
+                    val = entry_ptr['val']
+                    
+                    key_str = self._format_key(key)
+                    val_str = self._format_element(val)
+                    
+                    lines.append(f"[{key_str}] = {val_str}")
+                    
+                    count += 1
+                    if count >= size:
+                        break
+            
+            return "\n".join(lines)
+            
+        except Exception as e:
+            return f'<error reading hash table: {e}>'
 
     def display_hint(self):
         return 'map'
