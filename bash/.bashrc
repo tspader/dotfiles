@@ -150,7 +150,6 @@ fi
 
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
-alias .='cd ~/.dotfiles'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
