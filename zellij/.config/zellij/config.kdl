@@ -152,14 +152,8 @@ keybinds clear-defaults=true {
         bind "Alt l" { GoToNextTab; }
         bind "Alt n" { NewPane; }
         bind "Alt o" { MoveTab "right"; }
-        bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
-        bind "Alt s" {
-            LaunchOrFocusPlugin "session-manager" {
-                floating true
-                move_to_focused_tab true
-            }
-        }
+        bind "Alt s" { SwitchToMode "session"; }
         bind "Ctrl q" { Quit; }
     }
     shared_except "locked" "move" {
@@ -176,9 +170,11 @@ keybinds clear-defaults=true {
         bind "Ctrl s" { SwitchToMode "scroll"; }
     }
     shared_except "locked" "tab" {
-        bind "Ctrl t" { SwitchToMode "tab"; }
+        bind "Alt t" { SwitchToMode "tab"; }
     }
-
+    shared_except "locked" "pane" {
+        bind "Alt p" { SwitchToMode "pane"; }
+    }
     shared_except "normal" "locked" "entersearch" {
         bind "enter" { SwitchToMode "normal"; }
     }
