@@ -158,6 +158,7 @@ alias ~='cd ~'
 alias -- -='cd -'
 
 alias n='nvim'
+alias dot='cd ~/.dotfiles && nvim'
 alias y='yazi'
 alias o='opencode'
 alias c='claude --dangerously-skip-permissions'
