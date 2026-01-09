@@ -14,5 +14,8 @@
       "wrangler": "ask"
     },
     "webfetch": "allow"
-  }
+  },
+  "plugin": [
+    "opencode-anthropic-auth"
+  ]
 }
