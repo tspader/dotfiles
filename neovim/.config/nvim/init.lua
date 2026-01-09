@@ -126,6 +126,32 @@ local sp = {
 require("lazy").setup({
   spec = {
     {
+      "mikavilpas/yazi.nvim",
+      version = "*",
+      event = "VeryLazy",
+      dependencies = {
+        { "nvim-lua/plenary.nvim", lazy = true },
+      },
+      keys = {
+        { leader('fr'), "<cmd>Yazi<cr>" },
+        { leader('fo'), "<cmd>Yazi cwd<cr>" },
+        { leader('ft'), "<cmd>Yazi toggle<cr>" },
+      },
+      opts = {
+        open_for_directories = false,
+        keymaps = {
+          show_help = "<f1>",
+        },
+      },
+      init = function()
+        -- mark netrw as loaded so it's not loaded at all.
+        --
+        -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
+        vim.g.loaded_netrwPlugin = 1
+      end,
+    },
+
+    {
       'MeanderingProgrammer/render-markdown.nvim',
       dependencies = {
         'nvim-treesitter/nvim-treesitter',
@@ -150,42 +176,6 @@ require("lazy").setup({
       "chentoast/marks.nvim",
       event = "VeryLazy",
       opts = {},
-    },
-
-    {
-      'nvim-tree/nvim-tree.lua',
-      dependencies = {
-        "nvim-tree/nvim-web-devicons",
-      },
-      opts = {
-        sort = {
-          sorter = "case_sensitive",
-        },
-        view = {
-          width = 30,
-        },
-        renderer = {
-          group_empty = true,
-          icons = {
-            show = {
-              file = false
-            },
-            glyphs = {
-              git = {
-                unstaged = 'M',
-                staged = 'S',
-                untracked = 'U'
-              }
-            }
-          }
-        },
-        filters = {
-          dotfiles = true,
-        },
-      },
-      keys = {
-        { leader('ft'), function() vim.cmd('NvimTreeToggle') end, mode = { VIM_MODE_NORMAL } },
-      }
     },
 
     {
@@ -299,46 +289,6 @@ require("lazy").setup({
           fast_wrap = {},
         })
       end
-    },
-
-    {
-      'stevearc/oil.nvim',
-      opts = {
-        watch_for_changes = true,
-        skip_confirm_for_simple_edits = true,
-        constrain_cursor = 'editable',
-        columns = {
-          'size',
-          'mtime',
-        },
-        view_options = {
-          show_hidden = true,
-          sort = {
-            { "type", "asc" },
-            { "name", "asc" }
-          }
-        },
-        float = {
-          padding = 2,
-          max_width = 80,
-          max_height = 30,
-          border = 'rounded'
-        },
-        keymaps = {
-          ["<Tab>"] = { "actions.preview" },
-          ["<CR>"]  = { "actions.select" },
-          ["vs"]    = { "actions.select_vsplit" },
-          ["sp"]    = { "actions.select_split" },
-          ["h"]     = { "actions.toggle_hidden" },
-        }
-      },
-      dependencies = {
-        "echasnovski/mini.icons",
-      },
-      keys = {
-        { leader('fo'), function() require('oil').open_float() end, mode = { VIM_MODE_NORMAL } },
-      },
-      lazy = false,
     },
 
     {
