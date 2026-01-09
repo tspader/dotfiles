@@ -125,6 +125,16 @@ local sp = {
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
+  {
+      'MeanderingProgrammer/render-markdown.nvim',
+      dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+      opts = {
+          anti_conceal = {
+              enabled = true,
+          },
+          render_modes = { 'n', 'c', 't', 'i' },
+      },
+    },
     {
       "mikavilpas/yazi.nvim",
       version = "*",
@@ -151,27 +161,6 @@ require("lazy").setup({
       end,
     },
 
-    {
-      'MeanderingProgrammer/render-markdown.nvim',
-      dependencies = {
-        'nvim-treesitter/nvim-treesitter',
-        'nvim-mini/mini.icons'
-      },
-      opts = {
-        completions = {
-          blink = {
-            enabled = true
-          },
-          filter = {
-            checkbox = function() return true end
-          }
-        },
-    checkbox = {
-        unchecked = { icon = '\u{2610} ' },
-        checked = { icon = '\u{2611} ' },
-    },
-      }
-    },
     {
       "chentoast/marks.nvim",
       event = "VeryLazy",
