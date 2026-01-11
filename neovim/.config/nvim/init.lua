@@ -143,8 +143,8 @@ require("lazy").setup({
         { "nvim-lua/plenary.nvim", lazy = true },
       },
       keys = {
-        { leader('fr'), "<cmd>Yazi<cr>" },
-        { leader('fo'), "<cmd>Yazi cwd<cr>" },
+        { leader('fo'), "<cmd>Yazi<cr>" },
+        { leader('fr'), "<cmd>Yazi cwd<cr>" },
         { leader('ft'), "<cmd>Yazi toggle<cr>" },
       },
       opts = {
