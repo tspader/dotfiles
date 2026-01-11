@@ -1,2 +1,3 @@
 [mgr]
 linemode = "mtime_precise"
+show_hidden = true
