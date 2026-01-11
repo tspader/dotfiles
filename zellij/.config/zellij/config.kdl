@@ -154,7 +154,6 @@ keybinds clear-defaults=true {
         bind "Alt o" { MoveTab "right"; }
         bind "Alt Shift p" { ToggleGroupMarking; }
         bind "Alt s" { SwitchToMode "session"; }
-        bind "Ctrl q" { Quit; }
     }
     shared_except "locked" "move" {
         bind "Ctrl h" { SwitchToMode "move"; }
