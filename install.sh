@@ -11,6 +11,7 @@ stow lsd
 stow nchat
 stow neovim
 stow opencode
+stow pass
 stow sp
 stow ssh
 stow tmux
