@@ -3,8 +3,8 @@ set history filename ~/.config/gdb/.gdb_history
 
 source ~/.config/gdb/dashboard.gdb
 source ~/.config/gdb/sp_str_t.py
-source ~/.config/gdb/sp_ht.py
 source ~/.config/gdb/sp_da.py
+source ~/.config/gdb/sp_ht.py
 source ~/.config/gdb/sp_ps.py
 source ~/.config/gdb/sp_tm_epoch_t.py
 
