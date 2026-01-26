@@ -13,7 +13,11 @@
       "sudo": "ask",
       "wrangler": "ask"
     },
-    "webfetch": "allow"
+    "webfetch": "allow",
+    "external_directory": {
+      "*": "ask",
+      "/tmp/*": "allow"
+    }
   },
   "plugin": [
     "opencode-anthropic-auth"
