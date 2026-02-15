@@ -423,3 +423,23 @@ export PATH="$HOME/.bun/bin:$PATH"
 if command -v direnv &> /dev/null; then
   eval "$(direnv hook bash)"
 fi
+
+# Added by flyctl installer
+export FLYCTL_INSTALL="/home/spader/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/spader/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# opencode
+export PATH=/home/spader/.opencode/bin:$PATH
+
+# @spall_canary
+# Installed by the spall CLI
+if command -v spall &> /dev/null; then
+  eval "$(spall hook bash)"
+fi
+
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
