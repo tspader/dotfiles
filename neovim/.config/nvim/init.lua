@@ -66,7 +66,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.filetype.add({
   extension = {
     c = "c",
-    h = "c"
+    h = "c",
+    mdx = "markdown"
   }
 })
 
