@@ -150,7 +150,9 @@ keybinds clear-defaults=true {
         bind "Alt =" { Resize "Increase"; }
         bind "Alt [" { PreviousSwapLayout; }
         bind "Alt ]" { NextSwapLayout; }
-        bind "Alt f" { ToggleFloatingPanes; }
+        // Alt f removed - on macOS, Alt-Right sends \x1bf (Alt f), triggering this unintentionally.
+        // ToggleFloatingPanes still accessible via pane mode (Alt p -> w or e).
+        // bind "Alt f" { ToggleFloatingPanes; }
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Alt h" { GoToPreviousTab; }
         bind "Alt i" { MoveTab "left"; }
@@ -293,17 +295,112 @@ theme "dark-plus"
 
 themes {
     dark-plus {
-        fg 221 221 221
-        bg 31 31 31
-        black 0 0 0
-        red 214 24 27
-        green 106 153 85
-        yellow 228 210 1
-        blue 86 156 214
-        magenta 188 63 188
-        cyan 78 201 176
-        white 229 229 229
-        orange 206 145 120
+        text_unselected {
+            base 229 229 229
+            emphasis_0 206 145 120
+            emphasis_1 78 201 176
+            emphasis_2 106 153 85
+            emphasis_3 188 63 188
+            background 0 0 0
+        }
+        text_selected {
+            base 229 229 229
+            emphasis_0 206 145 120
+            emphasis_1 78 201 176
+            emphasis_2 106 153 85
+            emphasis_3 188 63 188
+            background 60 60 60
+        }
+        ribbon_unselected {
+            base 0 0 0
+            emphasis_0 214 24 27
+            emphasis_1 229 229 229
+            emphasis_2 86 156 214
+            emphasis_3 188 63 188
+            background 221 221 221
+        }
+        ribbon_selected {
+            base 0 0 0
+            emphasis_0 214 24 27
+            emphasis_1 206 145 120
+            emphasis_2 188 63 188
+            emphasis_3 86 156 214
+            background 106 153 85
+        }
+        exit_code_success {
+            base 106 153 85
+            emphasis_0 78 201 176
+            emphasis_1 0 0 0
+            emphasis_2 188 63 188
+            emphasis_3 86 156 214
+        }
+        exit_code_error {
+            base 214 24 27
+            emphasis_0 228 210 1
+            emphasis_1 228 210 1
+            emphasis_2 229 229 229
+            emphasis_3 188 63 188
+        }
+        frame_unselected {
+            base "#555555"
+            emphasis_0 "#555555"
+            emphasis_1 "#555555"
+            emphasis_2 "#555555"
+            emphasis_3 "#555555"
+        }
+        frame_selected {
+            base 106 153 85
+            emphasis_0 206 145 120
+            emphasis_1 78 201 176
+            emphasis_2 188 63 188
+            emphasis_3 188 63 188
+        }
+        frame_highlight {
+            base 206 145 120
+            emphasis_0 188 63 188
+            emphasis_1 188 63 188
+            emphasis_2 206 145 120
+            emphasis_3 206 145 120
+        }
+        table_title {
+            base 106 153 85
+            emphasis_0 206 145 120
+            emphasis_1 78 201 176
+            emphasis_2 106 153 85
+            emphasis_3 188 63 188
+        }
+        table_cell_unselected {
+            base 229 229 229
+            emphasis_0 206 145 120
+            emphasis_1 78 201 176
+            emphasis_2 106 153 85
+            emphasis_3 188 63 188
+            background 0 0 0
+        }
+        table_cell_selected {
+            base 0 0 0
+            emphasis_0 214 24 27
+            emphasis_1 206 145 120
+            emphasis_2 188 63 188
+            emphasis_3 86 156 214
+            background 106 153 85
+        }
+        list_unselected {
+            base 229 229 229
+            emphasis_0 206 145 120
+            emphasis_1 78 201 176
+            emphasis_2 106 153 85
+            emphasis_3 188 63 188
+            background 0 0 0
+        }
+        list_selected {
+            base 0 0 0
+            emphasis_0 214 24 27
+            emphasis_1 206 145 120
+            emphasis_2 188 63 188
+            emphasis_3 86 156 214
+            background 106 153 85
+        }
     }
 }
 
