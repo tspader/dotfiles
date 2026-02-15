@@ -8,3 +8,4 @@ neovim/.config/nvim/lazy-lock.json
 doc/**
 pass/.password-store/.gpg-id
 pass/.password-store/tmp.gpg
+/.llm/reference
