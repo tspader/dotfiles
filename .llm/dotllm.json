@@ -1,0 +1,16 @@
+{
+  "refs": {
+    "ghostty": {
+      "kind": "url",
+      "name": "ghostty",
+      "uri": "git@github.com:ghostty-org/ghostty.git",
+      "description": ""
+    },
+    "zellij": {
+      "kind": "url",
+      "name": "zellij",
+      "uri": "git@github.com:zellij-org/zellij.git",
+      "description": ""
+    }
+  }
+}
