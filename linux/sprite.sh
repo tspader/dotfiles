@@ -15,6 +15,8 @@ sudo apt install -y \
   tree \
   unzip
 
+curl -fsSL https://opencode.ai/install | bash
+
 if [ ! -d "$HOME/.dotfiles" ]; then
   git clone https://github.com/spaderthomas/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles
