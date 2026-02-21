@@ -11,7 +11,8 @@
     "bash": {
       "*": "allow",
       "sudo": "ask",
-      "wrangler": "ask"
+      "wrangler": "ask",
+      "gh": "ask"
     },
     "webfetch": "allow",
     "external_directory": {
