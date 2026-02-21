@@ -163,6 +163,7 @@ alias y='yazi'
 alias o='opencode'
 alias c='claude --dangerously-skip-permissions'
 alias g='gdb --args'
+alias d='direnv allow'
 alias tree='tree -a -C'  # Colorized tree (if available)
 alias tree3='tree -a -C -L 3'
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
