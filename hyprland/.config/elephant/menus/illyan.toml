@@ -1,6 +1,6 @@
-name = "vorkosigan"
-name_pretty = "Vorkosigan Apps"
-description = "Illyan and homelab apps"
+name = "illyan"
+name_pretty = "Illyan"
+description = "Homelab shortcuts"
 icon = "network-server"
 action = "xdg-open %VALUE%"
 search_name = true

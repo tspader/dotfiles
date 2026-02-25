@@ -33,3 +33,8 @@ provider = "clipboard"
 [[providers.prefixes]]
 prefix = "!"
 provider = "menus:screenshots"
+
+[[providers.prefixes]]
+prefix = "#"
+provider = "menus:illyan"
+
