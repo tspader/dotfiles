@@ -1,0 +1,9 @@
+[theme]
+background = "#101418"
+foreground = "#e6edf3"
+muted = "#9ca3af"
+active = "#f8fafc"
+accent = "#7aa2f7"
+warning = "#f9e2af"
+critical = "#f38ba8"
+charging = "#a6e3a1"

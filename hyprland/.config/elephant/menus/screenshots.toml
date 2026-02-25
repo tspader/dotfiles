@@ -1,0 +1,22 @@
+name = "screenshots"
+name_pretty = "Screenshots"
+description = "Capture region, workspace, or window"
+icon = "camera-photo"
+action = "$HOME/.local/bin/dot-screenshot.sh %VALUE%"
+search_name = true
+fixed_order = true
+
+[[entries]]
+text = "Region"
+value = "region"
+keywords = ["screenshot", "region", "select"]
+
+[[entries]]
+text = "Workspace"
+value = "workspace"
+keywords = ["screenshot", "workspace", "monitor"]
+
+[[entries]]
+text = "Window"
+value = "window"
+keywords = ["screenshot", "window", "panel"]

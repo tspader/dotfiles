@@ -1,0 +1,6 @@
+@define-color selected-text {{ theme.accent }};
+@define-color text {{ theme.foreground }};
+@define-color base {{ theme.background }};
+@define-color border {{ theme.foreground }};
+@define-color foreground {{ theme.foreground }};
+@define-color background {{ theme.background }};

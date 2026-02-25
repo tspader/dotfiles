@@ -11,6 +11,66 @@
       "name": "zellij",
       "uri": "git@github.com:zellij-org/zellij.git",
       "description": ""
+    },
+    "omarchy": {
+      "kind": "url",
+      "name": "omarchy",
+      "uri": "git@github.com:basecamp/omarchy.git",
+      "description": "Beautiful, Modern & Opinionated Linux"
+    },
+    "Hyprland": {
+      "kind": "url",
+      "name": "Hyprland",
+      "uri": "git@github.com:hyprwm/Hyprland.git",
+      "description": "Hyprland is an independent, highly customizable, dynamic tiling Wayland compositor that doesn't sacrifice on its looks."
+    },
+    "hyprland-wiki": {
+      "kind": "url",
+      "name": "hyprland-wiki",
+      "uri": "git@github.com:hyprwm/hyprland-wiki.git",
+      "description": "The Hyprland Wiki Pages, automatically synced with the website."
+    },
+    "grim": {
+      "kind": "url",
+      "name": "grim",
+      "uri": "git@github.com:emersion/grim.git",
+      "description": "Grab images from a Wayland compositor"
+    },
+    "slurp": {
+      "kind": "url",
+      "name": "slurp",
+      "uri": "git@github.com:emersion/slurp.git",
+      "description": "Select a region in a Wayland compositor"
+    },
+    "hyprlauncher": {
+      "kind": "url",
+      "name": "hyprlauncher",
+      "uri": "git@github.com:hyprwm/hyprlauncher.git",
+      "description": "A multipurpose and versatile launcher / picker for Hyprland"
+    },
+    "hyprlock": {
+      "kind": "url",
+      "name": "hyprlock",
+      "uri": "git@github.com:hyprwm/hyprlock.git",
+      "description": "Hyprland's GPU-accelerated screen locking utility"
+    },
+    "hyprpaper": {
+      "kind": "url",
+      "name": "hyprpaper",
+      "uri": "git@github.com:hyprwm/hyprpaper.git",
+      "description": "Hyprpaper is a wayland wallpaper utility with IPC controls."
+    },
+    "elephant": {
+      "kind": "url",
+      "name": "elephant",
+      "uri": "git@github.com:abenz1267/elephant.git",
+      "description": ""
+    },
+    "walker": {
+      "kind": "url",
+      "name": "walker",
+      "uri": "git@github.com:abenz1267/walker.git",
+      "description": "Multi-Purpose Launcher with a lot of features. Highly Customizable and fast."
     }
   }
 }

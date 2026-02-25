@@ -1,0 +1,67 @@
+name = "vorkosigan"
+name_pretty = "Vorkosigan Apps"
+description = "Illyan and homelab apps"
+icon = "network-server"
+action = "xdg-open %VALUE%"
+search_name = true
+fixed_order = true
+
+[[entries]]
+text = "plex"
+value = "http://illyan:32400/"
+keywords = ["media", "video"]
+icon = "/home/spader/.config/icons/plex.png"
+
+[[entries]]
+text = "transmission"
+value = "http://illyan:9091/transmission/web/"
+keywords = ["torrent", "download"]
+icon = "/home/spader/.config/icons/transmission.png"
+
+[[entries]]
+text = "calibre-web"
+value = "http://illyan:8083/"
+keywords = ["books", "library"]
+icon = "/home/spader/.config/icons/calibre-web.png"
+
+[[entries]]
+text = "sonarr"
+value = "http://illyan:8989/"
+keywords = ["tv", "arr"]
+icon = "/home/spader/.config/icons/sonarr-dark.png"
+
+[[entries]]
+text = "immich"
+value = "http://illyan:8080/photos"
+keywords = ["photos", "gallery"]
+icon = "/home/spader/.config/icons/immich.png"
+
+[[entries]]
+text = "ariel"
+value = "https://192.168.0.6/"
+keywords = ["host", "nas"]
+icon = "/home/spader/.config/icons/unifi-dark.png"
+
+[[entries]]
+text = "pihole"
+value = "http://192.168.0.7/admin/"
+keywords = ["dns", "adblock"]
+icon = "/home/spader/.config/icons/pihole.png"
+
+[[entries]]
+text = "illyan"
+value = "http://illyan/Main"
+keywords = ["server", "dashboard"]
+icon = "/home/spader/.config/icons/unraid.png"
+
+[[entries]]
+text = "grafana"
+value = "http://illyan:3000/"
+keywords = ["metrics", "monitoring"]
+icon = "/home/spader/.config/icons/grafana.png"
+
+[[entries]]
+text = "calibre"
+value = "https://illyan:8001/"
+keywords = ["books", "reader"]
+icon = "/home/spader/.config/icons/calibre.png"

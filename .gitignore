@@ -9,3 +9,4 @@ doc/**
 pass/.password-store/.gpg-id
 pass/.password-store/tmp.gpg
 /.llm/reference
+/dottpl/node_modules
