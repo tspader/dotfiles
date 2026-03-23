@@ -117,10 +117,6 @@ alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias uz='ouch decompress'
 alias mk='mkdir -pv'
 
-if command -v trash >/dev/null 2>&1; then
-    alias rm='trash'
-fi
-
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'
 fi
