@@ -1,0 +1,16 @@
+[user]
+	email = thomas.spader@gmail.com
+	name = Thomas Spader
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[credential]
+  helper = store
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[delta]
+syntax-theme = "Visual Studio Dark+"

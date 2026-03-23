@@ -71,6 +71,12 @@
       "name": "walker",
       "uri": "git@github.com:abenz1267/walker.git",
       "description": "Multi-Purpose Launcher with a lot of features. Highly Customizable and fast."
+    },
+    "delta": {
+      "kind": "url",
+      "name": "delta",
+      "uri": "git@github.com:dandavison/delta.git",
+      "description": "A syntax-highlighting pager for git, diff, grep, and blame output"
     }
   }
 }
