@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Miles
+GenericName=Remote Desktop
+Comment=VNC connection to miles
+Exec=vncviewer -DesktopSize 1920x1080 miles::5900
+Terminal=false
+Categories=Network;RemoteAccess;
+Icon=/home/spader/.local/share/icons/apple.svg
