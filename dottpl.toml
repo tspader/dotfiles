@@ -1,9 +1,51 @@
+[font]
+family = "Iosevka Nerd Font Mono"
+size = 16
+
 [theme]
-background = "#101418"
-foreground = "#e6edf3"
-muted = "#9ca3af"
+# Backgrounds
+background = "#1F1F1F"
+background_dark = "#161616"
+background_elevated = "#262626"
+background_status = "#3F3F3F"
+
+# Foregrounds
+foreground = "#DDDDDD"
+foreground_secondary = "#CCCCCC"
+foreground_bright = "#e5e5e5"
+muted = "#666666"
+
+# Borders
+border = "#3a3a3a"
+border_inactive = "#555555"
+
+# Terminal normals
+black = "#000000"
+red = "#d6181b"
+green = "#6A9955"
+yellow = "#e4d201"
+blue = "#569cd6"
+magenta = "#bc3fbc"
+cyan = "#4EC9B0"
+white = "#e5e5e5"
+
+# Terminal brights
+bright_black = "#666666"
+bright_red = "#ce9178"
+bright_green = "#b5cea8"
+bright_yellow = "#DCDCAA"
+bright_blue = "#9cdcfe"
+bright_magenta = "#d670d6"
+bright_cyan = "#9cdcfe"
+bright_white = "#e5e5e5"
+
+# Semantic (backward compat with existing .tpl files)
+accent = "#569cd6"
+warning = "#e4d201"
+critical = "#d6181b"
+charging = "#6A9955"
 active = "#f8fafc"
-accent = "#7aa2f7"
-warning = "#f9e2af"
-critical = "#f38ba8"
-charging = "#a6e3a1"
+
+# Specialty
+list_highlight = "#a2dbe0"
+debug_stopped = "#2e4057"

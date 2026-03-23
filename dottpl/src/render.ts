@@ -93,9 +93,25 @@ function getPathValue(data: unknown, keyPath: string): unknown {
   return cur;
 }
 
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace(/^#/, "");
+  return [
+    parseInt(h.slice(0, 2), 16),
+    parseInt(h.slice(2, 4), 16),
+    parseInt(h.slice(4, 6), 16),
+  ];
+}
+
+const builtinFilters: Record<string, (v: string) => string> = {
+  strip: (v) => v.replace(/^#/, ""),
+  rgb: (v) => hexToRgb(v).join(" "),
+  rgb_comma: (v) => hexToRgb(v).join(", "),
+};
+
 export function renderTemplate(template: string, data: JsonLike): string {
-  return template.replaceAll(/{{\s*([^{}]+?)\s*}}/g, (_full, rawExpr: string) => {
+  return template.replaceAll(/{{\s*([^|{}]+?)\s*(?:\|\s*([^|{}]+?))?\s*}}/g, (_full, rawExpr: string, rawFilter?: string) => {
     const expr = rawExpr.trim();
+    const filterName = rawFilter?.trim();
     const value = getPathValue(data, expr);
 
     if (value === undefined) {
@@ -103,10 +119,19 @@ export function renderTemplate(template: string, data: JsonLike): string {
     }
 
     if (value === null) return "";
-    if (typeof value === "string") return value;
-    if (typeof value === "number" || typeof value === "boolean") return String(value);
 
-    throw new Error(`Template value must be scalar: ${expr}`);
+    let result: string;
+    if (typeof value === "string") result = value;
+    else if (typeof value === "number" || typeof value === "boolean") result = String(value);
+    else throw new Error(`Template value must be scalar: ${expr}`);
+
+    if (filterName) {
+      const filter = builtinFilters[filterName];
+      if (!filter) throw new Error(`Unknown filter: ${filterName}`);
+      result = filter(result);
+    }
+
+    return result;
   });
 }
 
