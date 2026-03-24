@@ -1,0 +1,65 @@
+[env]
+appdata = "${APPDATA}"
+localappdata = "${LOCALAPPDATA}"
+home = "${USERPROFILE}"
+config = "${USERPROFILE}/.config"
+
+[alacritty]
+source = "alacritty/.config/alacritty"
+target = "${env.appdata}/alacritty"
+
+[lsd]
+source = "lsd/.config/lsd"
+target = "${env.appdata}/lsd"
+
+[yazi]
+source = "yazi/.config/yazi"
+target = "${env.appdata}/yazi/config"
+
+[zellij]
+source = "zellij/.config/zellij"
+target = "${env.appdata}/zellij"
+
+[neovim]
+source = "neovim/.config/nvim"
+target = "${env.localappdata}/nvim"
+
+[lazygit]
+source = "lazygit/.config/lazygit"
+target = "${env.localappdata}/lazygit"
+
+[bash-bashrc]
+source = "bash/.bashrc"
+target = "${env.home}/.bashrc"
+
+[bash-profile]
+source = "bash/.profile"
+target = "${env.home}/.profile"
+
+[claude]
+source = "claude/.claude/skills"
+target = "${env.home}/.claude/skills"
+
+[codex]
+source = "codex/.codex/skills"
+target = "${env.home}/.codex/skills"
+
+[pass]
+source = "pass/.password-store"
+target = "${env.home}/.password-store"
+
+[ssh]
+source = "ssh/.ssh/authorized_keys"
+target = "${env.home}/.ssh/authorized_keys"
+
+[gdb]
+source = "gdb/.config/gdb"
+target = "${env.config}/gdb"
+
+[opencode]
+source = "opencode/.config/opencode"
+target = "${env.config}/opencode"
+
+[wezterm]
+source = "wezterm/.config/wezterm"
+target = "${env.config}/wezterm"

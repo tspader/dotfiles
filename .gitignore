@@ -19,3 +19,4 @@ wezterm/.config/wezterm/theme.lua
 neovim/.config/nvim/lua/theme.lua
 hyprland/.config/waybar/theme.css
 hyprland/.config/walker/themes/dotfiles/theme.css
+installer/node_modules
