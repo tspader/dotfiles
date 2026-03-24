@@ -31,7 +31,7 @@ if platform.system() == 'Windows':
       '.config/wezterm': config,
     },
     'neovim': {
-      '.config/nvim': appdata
+      '.config/nvim': local_appdata
     },
     'alacritty': {
       '.config/alacritty': appdata
