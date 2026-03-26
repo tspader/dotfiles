@@ -1,5 +1,3 @@
-# Yazi theme matching Alacritty Dark+ theme
-
 [mgr]
 cwd = { fg = "#DDDDDD" }
 hovered = { fg = "#DDDDDD", bg = "#569cd6", bold = true }

@@ -24,8 +24,8 @@ bind-key M-r source-file "~/.tmux.conf"
 
 setw -g mouse on
 set  -g focus-events on
-set  -g pane-border-style fg="#3a3a3a"
-set  -g pane-active-border-style fg="#6A9955"
+set  -g pane-border-style fg="{{ theme.border }}"
+set  -g pane-active-border-style fg="{{ theme.green }}"
 set  -g status off
 set -g set-clipboard external
 set -g allow-passthrough on

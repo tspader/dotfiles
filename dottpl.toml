@@ -8,6 +8,7 @@ background = "#1F1F1F"
 background_dark = "#161616"
 background_elevated = "#262626"
 background_status = "#3F3F3F"
+background_selected = "#3C3C3C"
 
 # Foregrounds
 foreground = "#DDDDDD"

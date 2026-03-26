@@ -20,3 +20,8 @@ neovim/.config/nvim/lua/theme.lua
 hyprland/.config/waybar/theme.css
 hyprland/.config/walker/themes/dotfiles/theme.css
 installer/node_modules
+yazi/.config/yazi/theme.toml
+zellij/.config/zellij/themes/dark-plus.kdl
+nchat/.config/nchat/color.conf
+tmux/.tmux.conf
+lazygit/.config/lazygit/config.yml
