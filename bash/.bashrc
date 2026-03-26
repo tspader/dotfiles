@@ -434,13 +434,35 @@ export PATH="$PATH:/home/spader/.lmstudio/bin"
 export PATH=/home/spader/.opencode/bin:$PATH
 
 # @spall_canary
-# Installed by the spall CLI
-if command -v spall &> /dev/null; then
-  eval "$(spall hook bash)"
-fi
+spall() {
+  unset -f spall
+  eval "$(command spall hook bash)"
+  spall "$@"
+}
 
 CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+nvm() {
+  unset -f nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
+
+fuck() {
+  unset -f thefuck fuck
+  eval "$(command thefuck --alias)"
+  thefuck "$@"
+}
+
+dc() { cd "$(dotllm which "$1")"; }
+_dc() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  COMPREPLY=( $(compgen -W "$(dotllm completions --names 2>/dev/null)" -- "${cur}") )
+}
+complete -F _dc dc
+
+# @dotllm_completions
+# Installed by the dotllm CLI
+[ -f "/home/spader/.local/share/dotllm/completions.bash" ] && source "/home/spader/.local/share/dotllm/completions.bash"

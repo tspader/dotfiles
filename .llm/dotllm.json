@@ -77,6 +77,12 @@
       "name": "delta",
       "uri": "git@github.com:dandavison/delta.git",
       "description": "A syntax-highlighting pager for git, diff, grep, and blame output"
+    },
+    "wezterm": {
+      "kind": "url",
+      "name": "wezterm",
+      "uri": "git@github.com:wezterm/wezterm.git",
+      "description": "A GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust"
     }
   }
 }
