@@ -193,6 +193,7 @@ require("lazy").setup({
         vim.lsp.enable('ruff')
         vim.lsp.enable('lua_ls')
         vim.lsp.enable('ts_ls')
+        vim.lsp.enable('sourcekit')
         vim.lsp.enable('zls')
       end
     },
