@@ -1,0 +1,66 @@
+@import "theme.css";
+
+* {
+  background-color: @background;
+  color: @foreground;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  font-family: "Iosevka Nerd Font Mono", "Iosevka", monospace;
+  font-size: 20px;
+}
+
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
+#workspaces button {
+  all: initial;
+  padding: 0 6px;
+  margin: 0 2px;
+  min-width: 9px;
+  color: @muted;
+}
+
+#workspaces button,
+#cpu,
+#battery,
+#pulseaudio,
+#bluetooth,
+#network,
+#custom-expand-icon,
+#custom-session {
+  font-family: "Symbols Nerd Font Mono", "Iosevka Nerd Font Mono", "Iosevka", monospace;
+  font-size: 24px;
+}
+
+#workspaces button.empty {
+  opacity: 0.6;
+}
+
+#workspaces button.active {
+  color: @active;
+}
+
+#cpu,
+#battery,
+#pulseaudio,
+#bluetooth,
+#network,
+#custom-expand-icon,
+#custom-session {
+  min-width: 12px;
+  margin: 0 8px;
+}
+
+#tray {
+  margin-right: 14px;
+}
+
+#clock {
+  margin-left: 8px;
+}

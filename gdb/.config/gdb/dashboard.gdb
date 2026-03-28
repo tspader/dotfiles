@@ -603,6 +603,7 @@ class Dashboard(gdb.Command):
     @staticmethod
     def get_term_size(fd=1):  # defaults to the main terminal
         try:
+            return 80, 24
             if sys.platform == 'win32':
                 import curses
                 # XXX always neglects the fd parameter

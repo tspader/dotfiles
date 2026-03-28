@@ -1,0 +1,22 @@
+@define-color accent        #569cd6;
+@define-color main-br       alpha(#DDDDDD, 0.70);
+@define-color main-bg       shade(#1F1F1F, 0.85);
+@define-color main-fg       #DDDDDD;
+@define-color hover-bg      shade(#1F1F1F, 1.10);
+@define-color hover-fg      alpha(@main-fg, 0.75);
+@define-color outline       shade(@main-bg, 0.5);
+
+@define-color workspaces    shade(#1F1F1F, 0.90);
+@define-color temperature   shade(#1F1F1F, 0.90);
+@define-color memory        shade(#1F1F1F, 1.00);
+@define-color cpu           shade(#1F1F1F, 1.10);
+@define-color time          shade(#1F1F1F, 1.10);
+@define-color date          shade(#1F1F1F, 1.00);
+@define-color tray          shade(#1F1F1F, 0.90);
+@define-color volume        shade(#1F1F1F, 0.90);
+@define-color backlight     shade(#1F1F1F, 1.00);
+@define-color battery       shade(#1F1F1F, 1.10);
+
+@define-color warning       #e4d201;
+@define-color critical      #d6181b;
+@define-color charging      #6A9955;

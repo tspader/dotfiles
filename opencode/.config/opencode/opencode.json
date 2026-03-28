@@ -11,9 +11,14 @@
     "bash": {
       "*": "allow",
       "sudo": "ask",
-      "wrangler": "ask"
+      "wrangler": "ask",
+      "gh": "ask"
     },
-    "webfetch": "allow"
+    "webfetch": "allow",
+    "external_directory": {
+      "*": "ask",
+      "/tmp/*": "allow"
+    }
   },
   "plugin": [
     "opencode-anthropic-auth"

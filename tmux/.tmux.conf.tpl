@@ -1,0 +1,31 @@
+unbind-key -a
+set-option -g prefix M-a
+bind-key M-a send-prefix
+
+bind-key '$' command-prompt -I "#S" "rename-session '%%'"
+bind-key '(' switch-client -p
+bind-key ')' switch-client -n
+bind-key ',' command-prompt -I "#W" "rename-window '%%'"
+bind-key a   attach
+bind-key c   new-window
+bind-key d   detach-client
+bind-key n   next-window
+bind-key o   select-pane -t :.+
+bind-key p   previous-window
+bind-key s   split-window -v
+bind-key v   split-window -h
+bind-key :   command-prompt
+bind-key ?   list-keys
+bind-key [   copy-mode
+bind-key ]   paste-buffer
+bind     M-p previous-window
+bind     M-n next-window
+bind-key M-r source-file "~/.tmux.conf"
+
+setw -g mouse on
+set  -g focus-events on
+set  -g pane-border-style fg="{{ theme.border }}"
+set  -g pane-active-border-style fg="{{ theme.green }}"
+set  -g status off
+set -g set-clipboard external
+set -g allow-passthrough on

@@ -117,10 +117,6 @@ alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias uz='ouch decompress'
 alias mk='mkdir -pv'
 
-if command -v trash >/dev/null 2>&1; then
-    alias rm='trash'
-fi
-
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'
 fi
@@ -163,6 +159,7 @@ alias y='yazi'
 alias o='opencode'
 alias c='claude --dangerously-skip-permissions'
 alias g='gdb --args'
+alias d='direnv allow'
 alias tree='tree -a -C'  # Colorized tree (if available)
 alias tree3='tree -a -C -L 3'
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
@@ -423,3 +420,49 @@ export PATH="$HOME/.bun/bin:$PATH"
 if command -v direnv &> /dev/null; then
   eval "$(direnv hook bash)"
 fi
+
+# Added by flyctl installer
+export FLYCTL_INSTALL="/home/spader/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/spader/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# opencode
+export PATH=/home/spader/.opencode/bin:$PATH
+
+# @spall_canary
+spall() {
+  unset -f spall
+  eval "$(command spall hook bash)"
+  spall "$@"
+}
+
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
+export NVM_DIR="$HOME/.nvm"
+nvm() {
+  unset -f nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
+
+fuck() {
+  unset -f thefuck fuck
+  eval "$(command thefuck --alias)"
+  thefuck "$@"
+}
+
+dc() { cd "$(dotllm which "$1")"; }
+_dc() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  COMPREPLY=( $(compgen -W "$(dotllm completions --names 2>/dev/null)" -- "${cur}") )
+}
+complete -F _dc dc
+
+# @dotllm_completions
+# Installed by the dotllm CLI
+[ -f "/home/spader/.local/share/dotllm/completions.bash" ] && source "/home/spader/.local/share/dotllm/completions.bash"

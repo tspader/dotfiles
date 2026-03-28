@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Piotr
+GenericName=Remote Desktop
+Comment=RDP connection to piotr
+Exec=xfreerdp3 /v:piotr /u:spader /cert:ignore /dynamic-resolution /d:. /p:link
+Terminal=false
+Categories=Network;RemoteAccess;
+Icon=$HOME/.local/share/icons/windows.svg

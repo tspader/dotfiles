@@ -1,15 +1,17 @@
 local wezterm = require("wezterm")
+local theme = require("theme")
 
 local config = {
   audible_bell = "Disabled",
   check_for_updates = false,
-  color_scheme = "Dark+",
+  colors = theme.colors,
+  font = wezterm.font(theme.font_family),
+  font_size = theme.font_size,
   inactive_pane_hsb = {
     hue = 1.0,
     saturation = 0.5,
     brightness = 0.75,
   },
-  font_size = 12.0,
   enable_tab_bar = false,
   leader = { key="a", mods="ALT" },
   disable_default_key_bindings = true,

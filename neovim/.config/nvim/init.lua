@@ -1,5 +1,6 @@
 ---@diagnostic disable-next-line: undefined-global
 local vim = vim or {}
+local theme = require("theme")
 
 -- ██╗      █████╗ ███████╗██╗   ██╗
 -- ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝
@@ -66,7 +67,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.filetype.add({
   extension = {
     c = "c",
-    h = "c"
+    h = "c",
+    mdx = "markdown"
   }
 })
 
@@ -292,20 +294,17 @@ require("lazy").setup({
       config = function()
         vim.cmd.colorscheme("darkplus")
 
-        vim.cmd([[
-          highlight TelescopeNormal guibg=#161616
-          highlight TelescopeBorder guibg=#161616 guifg=#161616
-          highlight TelescopePromptNormal guibg=#161616
-          highlight TelescopePromptBorder guibg=#161616 guifg=#161616
-          highlight TelescopeResultsNormal guibg=#161616
-          highlight TelescopePreviewNormal guibg=#161616
-        ]])
+        local bg_dark = theme.background_dark
+        vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = bg_dark })
+        vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = bg_dark, fg = bg_dark })
+        vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = bg_dark })
+        vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = bg_dark, fg = bg_dark })
+        vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = bg_dark })
+        vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = bg_dark })
 
-        vim.cmd([[
-          highlight TreesitterContext guibg=#262626
-          highlight TreesitterContextLineNumber guifg=#569cd6
-          highlight TreesitterContextBottom gui=underline guisp=#3a3a3a
-        ]])
+        vim.api.nvim_set_hl(0, 'TreesitterContext', { bg = theme.background_elevated })
+        vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = theme.blue })
+        vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = theme.border })
        end
     },
 
@@ -394,7 +393,7 @@ require("lazy").setup({
         dap.listeners.before.event_terminated["dapui_config"] = dapui.close
 
         --vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
-       vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = '#2e4057' })
+       vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = theme.debug_stopped })
         vim.fn.sign_define('DapStopped', { text='>', texthl='DapStopped', linehl='DapStoppedLine', numhl='DapStopped' })
       end
     },
@@ -531,7 +530,7 @@ require("lazy").setup({
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
       config = function()
-        require("nvim-treesitter.configs").setup({
+        require("nvim-treesitter.config").setup({
           ensure_installed = {
             "c",
             "cpp",
