@@ -26,3 +26,4 @@ nchat/.config/nchat/color.conf
 tmux/.tmux.conf
 lazygit/.config/lazygit/config.yml
 codex/.codex/skills/.system
+lazygit/.config/lazygit/state.yml
