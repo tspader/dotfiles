@@ -83,6 +83,24 @@
       "name": "wezterm",
       "uri": "git@github.com:wezterm/wezterm.git",
       "description": "A GPU-accelerated cross-platform terminal emulator and multiplexer written by @wez and implemented in Rust"
+    },
+    "nvim-lspconfig": {
+      "kind": "url",
+      "name": "nvim-lspconfig",
+      "uri": "git@github.com:neovim/nvim-lspconfig.git",
+      "description": "Quickstart configs for Nvim LSP"
+    },
+    "nvim-treesitter": {
+      "kind": "url",
+      "name": "nvim-treesitter",
+      "uri": "git@github.com:nvim-treesitter/nvim-treesitter.git",
+      "description": "Nvim Treesitter configurations and abstraction layer"
+    },
+    "neovim": {
+      "kind": "url",
+      "name": "neovim",
+      "uri": "git@github.com:neovim/neovim.git",
+      "description": "Vim-fork focused on extensibility and usability"
     }
   }
 }

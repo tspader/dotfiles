@@ -1,0 +1,14 @@
+{
+  "name": "@spader/tools",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "dottpl",
+    "installer"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.9.2"
+  }
+}

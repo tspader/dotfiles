@@ -116,6 +116,7 @@ alias erc='$EDITOR ~/.bashrc'
 alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias uz='ouch decompress'
 alias mk='mkdir -pv'
+alias rf='rm -rf'
 
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'

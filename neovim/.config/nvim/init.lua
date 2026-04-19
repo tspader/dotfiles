@@ -57,6 +57,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "CursorMo
   pattern = { "*" },
 })
 
+-- Trim trailing whitespace on save. Extremely useful.
 vim.api.nvim_create_autocmd("BufWritePre", {
  pattern = "*",
  callback = function()
@@ -73,15 +74,10 @@ vim.filetype.add({
 })
 
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 
 
--- ██╗  ██╗███████╗██╗   ██╗██████╗ ██╗███╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗ ███████╗
--- ██║ ██╔╝██╔════╝╚██╗ ██╔╝██╔══██╗██║████╗  ██║██╔══██╗██║████╗  ██║██╔════╝ ██╔════╝
--- █████╔╝ █████╗   ╚████╔╝ ██████╔╝██║██╔██╗ ██║██║  ██║██║██╔██╗ ██║██║  ███╗███████╗
--- ██╔═██╗ ██╔══╝    ╚██╔╝  ██╔══██╗██║██║╚██╗██║██║  ██║██║██║╚██╗██║██║   ██║╚════██║
--- ██║  ██╗███████╗   ██║   ██████╔╝██║██║ ╚████║██████╔╝██║██║ ╚████║╚██████╔╝███████║
--- ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+-- A couple helpers to make defining keybindings read a bit more naturally
+-- instead of magic numbers and keys everywhere
 VIM_MODE_NORMAL = 'n'
 VIM_MODE_VISUAL = 'v'
 NVIM_HL_GLOBAL = 0
@@ -90,33 +86,9 @@ local leader = function(c)
   return '<leader>' .. c
 end
 
-local f = function(n, shift)
-  local id = 'F' .. tostring(n)
-  if shift then
-    id = 'S-' .. id
-  end
-  return '<' .. id .. '>'
-end
-
 vim.keymap.set(VIM_MODE_NORMAL, leader('rc'), function()
   vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
 end)
-
-
-local sp = {
-  find_make_targets = function(filter)
-    local targets = {}
-    for line in io.lines('Makefile') do
-      local target = line:match('^([%w_-]+):')
-      if target and (not filter or target:find(filter)) then
-        targets[#targets+1] = target
-      end
-    end
-
-    table.sort(targets)
-    return targets
-  end
-}
 
 
 -- ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
@@ -127,16 +99,6 @@ local sp = {
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
-  {
-      'MeanderingProgrammer/render-markdown.nvim',
-      dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-      opts = {
-          anti_conceal = {
-              enabled = true,
-          },
-          render_modes = { 'n', 'c', 't', 'i' },
-      },
-    },
     {
       "mikavilpas/yazi.nvim",
       version = "*",
@@ -190,6 +152,7 @@ require("lazy").setup({
     {
       'neovim/nvim-lspconfig',
       config = function()
+        vim.lsp.enable('rust_analyzer')
         vim.lsp.enable('clangd')
         vim.lsp.enable('ty')
         vim.lsp.enable('ruff')
@@ -247,18 +210,6 @@ require("lazy").setup({
           }
         }
       },
-    },
-
-    {
-      'echasnovski/mini.tabline',
-      version = '*',
-      config = function()
-        require('mini.tabline').setup({
-          show_icons = true,
-          set_vim_settings = true,
-          tabpage_section = 'right'
-        })
-      end
     },
 
     {
@@ -320,82 +271,7 @@ require("lazy").setup({
 
     {
       'nvim-telescope/telescope-fzf-native.nvim',
-      build = 'make'
-    },
-
-    {
-      'mfussenegger/nvim-dap',
-      dependencies = {
-        'rcarriga/nvim-dap-ui',
-        'nvim-neotest/nvim-nio',
-      },
-      config = function()
-        local dap = require('dap')
-        local dapui = require('dapui')
-
-        dapui.setup({
-          layouts = {
-            {
-              elements = {
-                { id = "breakpoints", size = 0.1 },
-                { id = "stacks", size = 0.2 },
-                { id = "watches", size = 0.3 },
-                { id = "scopes", size = 0.4 },
-              },
-              size = 50,
-              position = "left",
-            },
-          },
-          controls = {
-            enabled = true,
-            element = 'scopes'
-          }
-         })
-
-        dap.adapters.gdb = {
-          type = "executable",
-          command = "gdb",
-          args = { "-i", "dap" }
-        }
-
-        dap.configurations.c = {
-          {
-            name = "make + debug",
-            type = "gdb",
-            request = "launch",
-            program = './build/bin/space',
-            args = function()
-              local input = vim.fn.input("[args]: ")
-              return vim.split(vim.trim(input), ' ')
-            end,
-            cwd = "${workspaceFolder}",
-            stopAtBeginningOfMainSubprogram = true,
-          },
-        }
-        dap.configurations.cpp = dap.configurations.c
-
-        vim.keymap.set('n', f(5), dap.continue)
-        vim.keymap.set('n', f(10), dap.step_over)
-        vim.keymap.set('n', f(11), dap.step_into)
-        vim.keymap.set('n', leader('dc'), dap.continue)
-        vim.keymap.set('n', leader('dn'), dap.step_over)
-        vim.keymap.set('n', leader('di'), dap.step_into)
-        vim.keymap.set('n', leader('do'), dap.step_out)
-        vim.keymap.set('n', leader('db'), dap.toggle_breakpoint)
-        vim.keymap.set('n', leader('do'), dap.repl.open)
-        vim.keymap.set('n', leader('dd'), function() vim.cmd('DapNew') end)
-        vim.keymap.set('n', leader('dx'), function()
-          dap.terminate()
-          dapui.close()
-        end)
-
-        dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-        dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-
-        --vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
-       vim.api.nvim_set_hl(0, 'DapStoppedLine', { bg = theme.debug_stopped })
-        vim.fn.sign_define('DapStopped', { text='>', texthl='DapStopped', linehl='DapStoppedLine', numhl='DapStopped' })
-      end
+      build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
     },
 
     {
@@ -442,6 +318,7 @@ require("lazy").setup({
       },
       config = function(_, opts)
         require('telescope').setup(opts)
+        require('telescope').load_extension('fzf')
         local hierarchy = require("telescope").load_extension("hierarchy")
 
         local builtin = require('telescope.builtin')
@@ -525,57 +402,59 @@ require("lazy").setup({
         end)
       end
     },
-
+    -- {
+    --   'nvim-treesitter/nvim-treesitter',
+    --   lazy = false,
+    --   build = ':TSUpdate',
+    --   config = function()
+    --     require('nvim-treesitter').install { 'c', 'markdown', 'zig' }
+    --   end
+    -- },
     {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
+      branch = "main",
+      lazy = false,
       config = function()
-        require("nvim-treesitter.configs").setup({
-          ensure_installed = {
-            "c",
-            "cpp",
-            "lua",
-            "python",
-            "javascript",
-            "typescript",
-            "tsx",
-            "vim",
-            "vimdoc",
-            "markdown",
-            "zig"
-          },
-          highlight = {
-            enable = true
-          },
-          indent = {
-            enable = true
-          }
+        local parsers = {
+          "c", "cpp", "lua", "python", "javascript", "typescript",
+          "tsx", "vim", "vimdoc", "markdown", "markdown_inline", "zig",
+        }
+
+        require("nvim-treesitter").install(parsers)
+
+        vim.api.nvim_create_autocmd("FileType", {
+          pattern = parsers,
+          callback = function(args)
+            pcall(vim.treesitter.start, args.buf)
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end,
         })
       end
     },
 
-    {
-      'nvim-treesitter/nvim-treesitter-context',
-      opts = {
-        enable = true,
-        max_lines = 4,
-        patterns = {
-          default = {
-            'function',
-            'while',
-            'for',
-            'if',
-            'switch'
-          },
-          c = {
-            'preproc_ifdef',
-            'preproc_if',
-            'preproc_elif',
-            'preproc_else',
-          }
-        }
-      }
-    },
+    -- {
+    --   'nvim-treesitter/nvim-treesitter-context',
+    --   opts = {
+    --     enable = true,
+    --     max_lines = 4,
+    --     patterns = {
+    --       default = {
+    --         'function',
+    --         'while',
+    --         'for',
+    --         'if',
+    --         'switch'
+    --       },
+    --       c = {
+    --         'preproc_ifdef',
+    --         'preproc_if',
+    --         'preproc_elif',
+    --         'preproc_else',
+    --       }
+    --     }
+    --   }
+    -- },
 
     {
       "kdheepak/lazygit.nvim",

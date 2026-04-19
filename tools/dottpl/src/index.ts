@@ -18,7 +18,7 @@ const render: CommandDef = {
       alias: "d",
       type: "string",
       description:
-        "Optional data file (.toml or .json). Defaults to dottpl.toml/dottpl.json in current working directory",
+        "Optional data file (.toml or .json). Defaults to template.toml/template.json in current working directory",
     },
   },
   handler: async (argv) => {

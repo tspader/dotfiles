@@ -75,11 +75,11 @@ if ! command -v bun >/dev/null 2>&1; then
   export PATH="$BUN_INSTALL/bin:$PATH"
 fi
 
-if [[ -d "$repo_dir/dottpl" ]]; then
-  bun install --cwd "$repo_dir/dottpl"
-  bun link --cwd "$repo_dir/dottpl"
+if [[ -d "$repo_dir/tools/dottpl" ]]; then
+  bun install --cwd "$repo_dir/tools"
+  bun link --cwd "$repo_dir/tools/dottpl"
 
-  bun run --cwd "$repo_dir/dottpl" src/index.ts render "$repo_dir/hyprland"
+  bun run --cwd "$repo_dir/tools/dottpl" src/index.ts render "$repo_dir/hyprland"
 fi
 
 mkdir -p "$state_dir"

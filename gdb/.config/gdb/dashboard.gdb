@@ -1568,7 +1568,7 @@ class Variables(Dashboard.Module):
 
     def lines(self, term_width, term_height, style_changed):
         return Variables.format_frame(
-            gdb.selected_frame(), self.show_arguments, self.show_locals, self.compact, self.align, self.sort)
+            gdb.selected_frame(), self.show_arguments, self.show_locals, self.compact, self.align, self.sort, self.limit)
 
     def attributes(self):
         return {
@@ -1598,11 +1598,16 @@ class Variables(Dashboard.Module):
                 'doc': 'Sort variables by name.',
                 'default': False,
                 'type': bool
+            },
+            'limit': {
+                'doc': 'Maximum number of displayed variables (0 means no limit).',
+                'default': 0,
+                'type': int
             }
         }
 
     @staticmethod
-    def format_frame(frame, show_arguments, show_locals, compact, align, sort):
+    def format_frame(frame, show_arguments, show_locals, compact, align, sort, limit=0):
         out = []
         # fetch frame arguments and locals
         decorator = gdb.FrameDecorator.FrameDecorator(frame)
@@ -1631,6 +1636,10 @@ class Variables(Dashboard.Module):
                     out.append(single_line)
                 else:
                     out.extend(map(prefix, locals_lines))
+        if limit > 0 and len(out) > limit:
+            total = len(out)
+            out = out[:limit]
+            out.append(ansi('[{} more]'.format(total - limit), R.style_low))
         return out
 
     @staticmethod

@@ -19,7 +19,7 @@ themes {
         ribbon_unselected {
             base {{ theme.black | rgb }}
             emphasis_0 {{ theme.red | rgb }}
-            emphasis_1 {{ theme.foreground_bright | rgb }}
+            emphasis_1 {{ theme.foreground | rgb }}
             emphasis_2 {{ theme.blue | rgb }}
             emphasis_3 {{ theme.magenta | rgb }}
             background {{ theme.foreground | rgb }}

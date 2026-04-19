@@ -11,7 +11,7 @@ export type Entry = {
 
 export type Config = Entry[];
 
-const CONFIG_FILE = "splink.toml";
+const DEFAULT_CONFIG_FILE = "splink.toml";
 
 function expand(template: string, vars: Record<string, unknown>): string {
   return template.replace(/\$\{([^}]+)\}/g, (_, expr: string) => {
@@ -27,15 +27,15 @@ function expand(template: string, vars: Record<string, unknown>): string {
   });
 }
 
-export function loadConfig(): Config | null {
-  const configPath = resolve(process.cwd(), CONFIG_FILE);
+export function loadConfig(configFile?: string): Config | null {
+  const configPath = resolve(process.cwd(), configFile ?? DEFAULT_CONFIG_FILE);
   if (!existsSync(configPath)) {
-    console.log(`no ${t.link(CONFIG_FILE)} detected`);
+    console.log(`no ${t.link(configPath)} detected`);
     return null;
   }
 
-  const raw = TOML.parse(readFileSync(configPath, "utf-8"));
-  const root = resolve(process.cwd());
+  const raw = TOML.parse(readFileSync(configPath, "utf-8")) as Record<string, any>;
+  const root = resolve(configPath, "..");
 
   // build env: start with process.env, then layer on [env] section
   const envSection = (raw.env ?? {}) as Record<string, string>;

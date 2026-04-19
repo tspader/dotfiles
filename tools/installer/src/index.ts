@@ -5,10 +5,20 @@ import { loadConfig } from "./config";
 import { printStatus } from "./status";
 import { link } from "./link";
 
+const configOption = {
+  alias: "c",
+  type: "string" as const,
+  description: "Path to TOML config file (default: ./splink.toml)",
+};
+
 const status: Command = {
   description: "Show symlink status for all entries",
-  handler: async () => {
-    const config = loadConfig();
+  options: {
+    config: configOption,
+  },
+  handler: async (argv) => {
+    const configFile = typeof argv.config === "string" ? argv.config : undefined;
+    const config = loadConfig(configFile);
     if (!config) return;
     printStatus(config);
   },
@@ -17,6 +27,7 @@ const status: Command = {
 const linkCmd: Command = {
   description: "Symlink dotfiles to their OS-native locations (dry run by default)",
   options: {
+    config: configOption,
     apply: {
       type: "boolean",
       description: "Actually create symlinks",
@@ -28,7 +39,8 @@ const linkCmd: Command = {
     },
   },
   handler: async (argv) => {
-    const config = loadConfig();
+    const configFile = typeof argv.config === "string" ? argv.config : undefined;
+    const config = loadConfig(configFile);
     if (!config) return;
     const force = typeof argv.force === "string" ? argv.force as "unlink" | "delete" : undefined;
     if (force && force !== "unlink" && force !== "delete") {

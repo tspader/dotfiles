@@ -38,7 +38,10 @@ sudo pacman -S --verbose --needed --noconfirm \
   tree \
   usbutils \
   uv \
-  xdg-user-dirs
+  xdg-user-dirs \
+  yazi \
+  zellij
+
 if [ ! -d "$HOME/.dotfiles" ]; then
   git clone https://github.com/tspader/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles

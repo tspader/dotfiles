@@ -30,10 +30,10 @@ function findNearestDataFile(startDir: string): string | null {
   let cur = path.resolve(startDir);
 
   while (true) {
-    const tomlPath = path.join(cur, "dottpl.toml");
+    const tomlPath = path.join(cur, "template.toml");
     if (fs.existsSync(tomlPath)) return tomlPath;
 
-    const jsonPath = path.join(cur, "dottpl.json");
+    const jsonPath = path.join(cur, "template.json");
     if (fs.existsSync(jsonPath)) return jsonPath;
 
     const parent = path.dirname(cur);
@@ -43,10 +43,10 @@ function findNearestDataFile(startDir: string): string | null {
 }
 
 function findDataInDir(dir: string): string | null {
-  const tomlPath = path.join(dir, "dottpl.toml");
+  const tomlPath = path.join(dir, "template.toml");
   if (fs.existsSync(tomlPath)) return tomlPath;
 
-  const jsonPath = path.join(dir, "dottpl.json");
+  const jsonPath = path.join(dir, "template.json");
   if (fs.existsSync(jsonPath)) return jsonPath;
 
   return null;

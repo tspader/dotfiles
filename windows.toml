@@ -28,11 +28,11 @@ target = "${env.localappdata}/nvim"
 source = "lazygit/.config/lazygit"
 target = "${env.localappdata}/lazygit"
 
-[bash-bashrc]
+[bashrc]
 source = "bash/.bashrc"
 target = "${env.home}/.bashrc"
 
-[bash-profile]
+[bashprofile]
 source = "bash/.profile"
 target = "${env.home}/.profile"
 
@@ -62,11 +62,11 @@ target = "${env.config}/opencode"
 
 [powershell]
 source = "powershell/profile.ps1"
-target = "${env.home}/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1"
+target = "${env.home}/Documents/WindowsPowerShell/profile.ps1"
 
 [pwsh]
 source = "powershell/profile.ps1"
-target = "${env.home}/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+target = "${env.home}/Documents/PowerShell/profile.ps1"
 
 [wezterm]
 source = "wezterm/.config/wezterm"
