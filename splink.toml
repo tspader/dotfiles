@@ -60,6 +60,14 @@ target = "${env.config}/gdb"
 source = "opencode/.config/opencode"
 target = "${env.config}/opencode"
 
+[powershell]
+source = "powershell/profile.ps1"
+target = "${env.home}/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1"
+
+[pwsh]
+source = "powershell/profile.ps1"
+target = "${env.home}/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"
+
 [wezterm]
 source = "wezterm/.config/wezterm"
 target = "${env.config}/wezterm"
