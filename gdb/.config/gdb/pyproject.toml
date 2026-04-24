@@ -1,0 +1,13 @@
+[project]
+name = "gdb"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ty>=0.0.32",
+]
+
+[tool.ty.environment]
+extra-paths = ["typings"]

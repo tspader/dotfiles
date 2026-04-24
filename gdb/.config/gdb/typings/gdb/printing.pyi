@@ -1,0 +1,13 @@
+from typing import Any, Callable
+
+class PrettyPrinter:
+    name: str
+    subprinters: list[Any]
+    enabled: bool
+    def __init__(self, name: str, subprinters: list[Any] | None = ...) -> None: ...
+    def __call__(self, val: Any) -> Any: ...
+
+class RegexpCollectionPrettyPrinter(PrettyPrinter):
+    def add_printer(self, name: str, regexp: str, gen_printer: Callable[..., Any]) -> None: ...
+
+def register_pretty_printer(obj: Any, printer: Any, replace: bool = ...) -> None: ...
