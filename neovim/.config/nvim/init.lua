@@ -43,6 +43,7 @@ vim.opt.cursorline = true
 vim.opt.autoread = true
 vim.opt.updatetime = 250
 vim.opt.signcolumn = 'yes'
+vim.opt.swapfile = false
 vim.opt.fillchars:append("diff: ")
 vim.diagnostic.config({
   signs = true,
