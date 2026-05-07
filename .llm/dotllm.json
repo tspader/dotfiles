@@ -101,6 +101,12 @@
       "name": "neovim",
       "uri": "git@github.com:neovim/neovim.git",
       "description": "Vim-fork focused on extensibility and usability"
+    },
+    "telescope-hierarchy.nvim": {
+      "kind": "url",
+      "name": "telescope-hierarchy.nvim",
+      "uri": "git@github.com:jmacadie/telescope-hierarchy.nvim.git",
+      "description": "A Telescope.nvim extension for viewing & navigating the call hierarchy"
     }
   }
 }
