@@ -117,6 +117,7 @@ alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
 alias uz='ouch decompress'
 alias mk='mkdir -pv'
 alias rf='rm -rf'
+alias z='zellij'
 
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'
@@ -384,7 +385,7 @@ if command -v fzf >/dev/null 2>&1; then
         READLINE_POINT=${#READLINE_LINE}
     }
 
-    bind -x '"\C-r": __fzf_history__'
+    # bind -x '"\C-r": __fzf_history__'
 fi
 
 # ============================================
@@ -463,3 +464,14 @@ complete -F _dc dc
 # @dotllm_completions
 # Installed by the dotllm CLI
 [ -f "/home/spader/.local/share/dotllm/completions.bash" ] && source "/home/spader/.local/share/dotllm/completions.bash"
+
+
+. "$HOME/.atuin/bin/env"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
+
+# ZVM
+export ZVM_INSTALL="$HOME/.zvm/self"
+export PATH="$PATH:$HOME/.zvm/bin"
+export PATH="$PATH:$ZVM_INSTALL/"

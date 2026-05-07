@@ -7,3 +7,5 @@ if [ -n "$BASH_VERSION" ]; then
     ;;
   esac
 fi
+
+. "$HOME/.atuin/bin/env"
