@@ -30,7 +30,7 @@ local config = {
     { key = "v", mods = "SHIFT|CTRL", action = wezterm.action.PasteFrom "Clipboard" },
     { key = "c", mods = "SHIFT|CTRL", action = wezterm.action.CopyTo "Clipboard" },
     { key = "+", mods = "SHIFT|CTRL", action = wezterm.action.IncreaseFontSize },
-    { key = "-", mods = "SHIFT|CTRL", action = wezterm.action.DecreaseFontSize },
+    { key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
     { key = "0", mods = "SHIFT|CTRL", action = wezterm.action.ResetFontSize },
     { key = "n", mods = "SHIFT|CTRL", action = wezterm.action.ToggleFullScreen },
   },
