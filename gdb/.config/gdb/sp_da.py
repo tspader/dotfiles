@@ -213,21 +213,6 @@ class SpDaDataPrinter:
     def display_hint(self):
         return 'array'
 
-def build_pretty_printer():
-    pp = gdb.printing.RegexpCollectionPrettyPrinter("sp_da")
-    pp.add_printer('sp_da', r'^.*\*$', SpDaPrinter)
-    pp.add_printer('sp_da_data', r'^.*\*$', SpDaDataPrinter)
-    return pp
-
-try:
-    objfile = gdb.current_objfile()
-    if objfile:
-        gdb.printing.register_pretty_printer(objfile, build_pretty_printer(), replace=True)
-    else:
-        gdb.printing.register_pretty_printer(None, build_pretty_printer(), replace=True)
-except:
-    gdb.printing.register_pretty_printer(None, build_pretty_printer(), replace=True)
-
 def print_sp_da(val):
     if isinstance(val, str):
         val = gdb.parse_and_eval(val)
