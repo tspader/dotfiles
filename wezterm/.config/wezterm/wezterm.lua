@@ -34,7 +34,10 @@ local config = {
     { key = "0", mods = "SHIFT|CTRL", action = wezterm.action.ResetFontSize },
     { key = "n", mods = "SHIFT|CTRL", action = wezterm.action.ToggleFullScreen },
   },
-  set_environment_variables = {},
+  set_environment_variables = {
+    WAYLAND_DISPLAY = os.getenv('WAYLAND_DISPLAY') or 'wayland-0',
+    XDG_SESSION_TYPE = 'wayland',
+  },
 }
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
