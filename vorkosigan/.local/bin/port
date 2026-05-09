@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+kill_mode=0
+port=""
+for arg in "$@"; do
+    case "$arg" in
+        --kill) kill_mode=1 ;;
+        *) port="$arg" ;;
+    esac
+done
+
+if [[ -z "$port" ]]; then
+    echo "usage: $0 <port> [--kill]" >&2
+    exit 2
+fi
+
+pids=$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)
+
+if [[ -z "$pids" ]]; then
+    echo "no process listening on port $port" >&2
+    exit 1
+fi
+
+if (( kill_mode )); then
+    kill $pids && echo "killed: $pids"
+else
+    echo "$pids"
+fi
