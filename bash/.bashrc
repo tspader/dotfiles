@@ -190,7 +190,9 @@ mkcd() {
 }
 
 tmp() {
-  cd "$(mktemp --directory --tmpdir=/tmp aXXXXXXXX)"
+  local base="$HOME/source/.tmp"
+  \mkdir -p "$base"
+  cd "$(mktemp --directory --tmpdir="$base" aXXXXXXXX)"
   chmod -R 0700 .
   if [[ $# -eq 1 ]]; then
     \mkdir -p "$1"
