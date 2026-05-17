@@ -1,6 +1,10 @@
-[font]
+[font.small]
 family = "Iosevka Nerd Font Mono"
 size = 14
+
+[font.medium]
+family = "Iosevka Nerd Font Mono"
+size = 16
 
 [theme]
 # Backgrounds

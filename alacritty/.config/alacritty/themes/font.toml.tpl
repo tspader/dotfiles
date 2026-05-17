@@ -1,5 +1,5 @@
 [font]
-normal =      { family = "{{ font.family }}", style = "Regular"     }
-bold =        { family = "{{ font.family }}", style = "Bold"        }
-italic =      { family = "{{ font.family }}", style = "Italic"      }
-bold_italic = { family = "{{ font.family }}", style = "Bold Italic" }
+normal =      { family = "{{ font.small.family }}", style = "Regular"     }
+bold =        { family = "{{ font.small.family }}", style = "Bold"        }
+italic =      { family = "{{ font.small.family }}", style = "Italic"      }
+bold_italic = { family = "{{ font.small.family }}", style = "Bold Italic" }

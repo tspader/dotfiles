@@ -1,6 +1,6 @@
 return {
-  font_family = "{{ font.family }}",
-  font_size = {{ font.size }},
+  font_family = "{{ font.small.family }}",
+  font_size = {{ font.small.size }},
   colors = {
     foreground = "{{ theme.foreground }}",
     background = "{{ theme.background }}",

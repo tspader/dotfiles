@@ -70,7 +70,7 @@ vim.filetype.add({
   extension = {
     c = "c",
     h = "c",
-    mdx = "markdown"
+    mdx = "markdown",
   }
 })
 
@@ -134,19 +134,35 @@ require("lazy").setup({
 
     {
       'sindrets/diffview.nvim',
-      opts = {
-        diff_binaries = false,
-        use_icons = true,
-        view = {
-          default = {
-            layout = "diff2_horizontal",  -- side by side
+      opts = function()
+        return {
+          diff_binaries = false,
+          use_icons = true,
+          view = {
+            default = {
+              layout = "diff2_horizontal",  -- side by side
+            },
           },
-        },
-      },
+          file_history_panel = {
+            win_config = {
+              position = "right",
+              width = 45,
+            },
+          },
+          keymaps = {
+            file_history_panel = {
+              { "n", leader('gs'), require('diffview.actions').open_in_diffview,
+                { desc = "Open entry in new Diffview" } },
+            },
+          },
+        }
+      end,
       keys = {
         { leader('gf'), function() vim.cmd('DiffviewToggleFiles') end, mode = { VIM_MODE_NORMAL } },
         { leader('go'), function() vim.cmd('DiffviewOpen') end, mode = { VIM_MODE_NORMAL } },
         { leader('gc'), function() vim.cmd('DiffviewClose') end, mode = { VIM_MODE_NORMAL } },
+        { leader('gh'), function() vim.cmd('DiffviewFileHistory') end, mode = { VIM_MODE_NORMAL } },
+        { leader('gr'), function() vim.cmd('DiffviewOpen HEAD~1..HEAD') end, mode = { VIM_MODE_NORMAL } },
       }
     },
 
@@ -161,6 +177,7 @@ require("lazy").setup({
         vim.lsp.enable('ts_ls')
         vim.lsp.enable('sourcekit')
         vim.lsp.enable('zls')
+        vim.lsp.enable('gopls')
       end
     },
 
@@ -186,7 +203,7 @@ require("lazy").setup({
           default = { 'lsp', 'path', 'snippets', 'buffer' },
         },
         fuzzy = {
-          implementation = "prefer_rust_with_warning"
+          implementation = "prefer_rust"
         },
         signature = {
           enabled = true,
@@ -305,6 +322,7 @@ require("lazy").setup({
         extensions = {
           hierarchy = {
             initial_multi_expand = true,
+            multi_depth = 1,
             layout_strategy = 'vertical',
             layout_config = {
               vertical = {
@@ -323,8 +341,6 @@ require("lazy").setup({
         local hierarchy = require("telescope").load_extension("hierarchy")
 
         local builtin = require('telescope.builtin')
-        local pickers = require('telescope.pickers')
-        local finders = require('telescope.finders')
 
         local ff = {
           'rg',
@@ -381,36 +397,8 @@ require("lazy").setup({
             severity = vim.diagnostic.severity.WARNING
           })
         end)
-
-        vim.keymap.set('n', leader('mm'), function()
-          local targets = sp.find_make_targets()
-          local picker = pickers.new({}, {
-            prompt_title = 'make',
-            finder = finders.new_table {
-              results = targets
-            },
-            sorter = require('telescope.config').values.generic_sorter({}),
-            attach_mappings = function(buffer_index, _)
-              require('telescope.actions').select_default:replace(function()
-                require('telescope.actions').close(buffer_index)
-                local selection = require('telescope.actions.state').get_selected_entry()
-                vim.cmd('!make ' .. selection[1])
-              end)
-              return true
-            end,
-          })
-          picker:find()
-        end)
       end
     },
-    -- {
-    --   'nvim-treesitter/nvim-treesitter',
-    --   lazy = false,
-    --   build = ':TSUpdate',
-    --   config = function()
-    --     require('nvim-treesitter').install { 'c', 'markdown', 'zig' }
-    --   end
-    -- },
     {
       "nvim-treesitter/nvim-treesitter",
       build = ":TSUpdate",
@@ -420,6 +408,7 @@ require("lazy").setup({
         local parsers = {
           "c", "cpp", "lua", "python", "javascript", "typescript",
           "tsx", "vim", "vimdoc", "markdown", "markdown_inline", "zig",
+          "go", "gomod", "gosum", "gowork",
         }
 
         require("nvim-treesitter").install(parsers)
