@@ -146,6 +146,12 @@ else
     }
 fi
 
+if command -v sqlit >/dev/null 2>&1; then
+  sqlite() {
+    sqlit --file-path $1 --db-type sqlite
+  }
+fi
+
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:"
 
 alias ..='cd ..'
