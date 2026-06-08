@@ -37,6 +37,7 @@ vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.scrolloff = 8
+vim.g.clipboard = 'osc52'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.fileformat = "unix"
 vim.opt.cursorline = true

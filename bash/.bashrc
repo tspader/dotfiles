@@ -426,6 +426,7 @@ fi
 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
 
 if command -v direnv &> /dev/null; then
   eval "$(direnv hook bash)"
