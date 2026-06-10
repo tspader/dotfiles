@@ -179,6 +179,10 @@ require("lazy").setup({
     {
       'neovim/nvim-lspconfig',
       config = function()
+        vim.lsp.config('*', {
+          capabilities = require('blink.cmp').get_lsp_capabilities(),
+        })
+
         vim.lsp.enable('rust_analyzer')
         vim.lsp.enable('clangd')
         vim.lsp.enable('ty')
