@@ -37,7 +37,7 @@ vim.opt.expandtab = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.scrolloff = 8
-vim.g.clipboard = 'osc52'
+-- vim.g.clipboard = 'osc52'
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.fileformat = "unix"
 vim.opt.cursorline = true
@@ -101,6 +101,15 @@ end)
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
+    {
+      'stevearc/overseer.nvim',
+      opts = {},
+      keys = {
+        { leader('or'), '<cmd>OverseerRun<cr>',     desc = 'Run task' },
+        { leader('ot'), '<cmd>OverseerToggle<cr>',  desc = 'Toggle task list' },
+      },
+    },
+
     {
       "mikavilpas/yazi.nvim",
       version = "*",
@@ -337,8 +346,14 @@ require("lazy").setup({
         }
       },
       config = function(_, opts)
+        opts.extensions["ui-select"] = {
+          require("telescope.themes").get_dropdown({
+            layout_config = { width = 0.7, height = 0.6 },
+          }),
+        }
         require('telescope').setup(opts)
         require('telescope').load_extension('fzf')
+        require('telescope').load_extension('ui-select')
         local hierarchy = require("telescope").load_extension("hierarchy")
 
         local builtin = require('telescope.builtin')
