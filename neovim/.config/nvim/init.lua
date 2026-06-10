@@ -83,8 +83,6 @@ vim.g.mapleader = " "
 -- A couple helpers to make defining keybindings read a bit more naturally
 -- instead of magic numbers and keys everywhere
 VIM_MODE_NORMAL = 'n'
-VIM_MODE_VISUAL = 'v'
-NVIM_HL_GLOBAL = 0
 
 local leader = function(c)
   return '<leader>' .. c
