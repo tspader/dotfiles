@@ -10,7 +10,7 @@ buffer = "replace-pane"
 
 [font]
 family = "Iosevka Nerd Font Mono"
-size = 14
+size = 18
 
 [servers.libera]
 nickname = "spader"

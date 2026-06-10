@@ -10,7 +10,7 @@ buffer = "replace-pane"
 
 [font]
 family = "{{ font.small.family }}"
-size = {{ font.small.size }}
+size = {{ font.large.size }}
 
 [servers.libera]
 nickname = "spader"
