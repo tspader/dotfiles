@@ -1,0 +1,4 @@
+[mgr]
+prepend_keymap = [
+	{ on = [ "m", "t" ], run = "plugin toggle-linemode", desc = "Linemode: toggle none/precise" },
+]
