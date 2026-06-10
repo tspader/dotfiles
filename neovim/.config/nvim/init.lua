@@ -105,8 +105,8 @@ require("lazy").setup({
       'stevearc/overseer.nvim',
       opts = {},
       keys = {
-        { leader('or'), '<cmd>OverseerRun<cr>',     desc = 'Run task' },
-        { leader('ot'), '<cmd>OverseerToggle<cr>',  desc = 'Toggle task list' },
+        { leader('or'), function() vim.cmd('OverseerRun') end,    desc = 'Run task' },
+        { leader('ot'), function() vim.cmd('OverseerToggle') end, desc = 'Toggle task list' },
       },
     },
 
@@ -118,9 +118,9 @@ require("lazy").setup({
         { "nvim-lua/plenary.nvim", lazy = true },
       },
       keys = {
-        { leader('fo'), "<cmd>Yazi<cr>" },
-        { leader('fr'), "<cmd>Yazi cwd<cr>" },
-        { leader('ft'), "<cmd>Yazi toggle<cr>" },
+        { leader('fo'), function() vim.cmd('Yazi') end },
+        { leader('fr'), function() vim.cmd('Yazi cwd') end },
+        { leader('ft'), function() vim.cmd('Yazi toggle') end },
       },
       opts = {
         open_for_directories = false,
