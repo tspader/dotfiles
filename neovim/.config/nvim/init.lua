@@ -63,7 +63,9 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "FocusGained" }, {
 vim.api.nvim_create_autocmd("BufWritePre", {
  pattern = "*",
  callback = function()
-   vim.cmd([[%s/\s\+$//e]])
+   local view = vim.fn.winsaveview()
+   vim.cmd([[keeppatterns %s/\s\+$//e]])
+   vim.fn.winrestview(view)
  end
 })
 
