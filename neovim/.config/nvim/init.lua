@@ -155,7 +155,7 @@ require("lazy").setup({
           },
           file_history_panel = {
             win_config = {
-              position = "right",
+              position = "left",
               width = 45,
             },
           },
@@ -432,7 +432,7 @@ require("lazy").setup({
         local parsers = {
           "c", "cpp", "lua", "python", "javascript", "typescript",
           "tsx", "vim", "vimdoc", "markdown", "markdown_inline", "zig",
-          "go", "gomod", "gosum", "gowork",
+          "go", "gomod", "gosum", "gowork", "snakemake",
         }
 
         require("nvim-treesitter").install(parsers)
