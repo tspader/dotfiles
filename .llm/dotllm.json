@@ -24,6 +24,12 @@
       "uri": "git@github.com:abenz1267/walker.git",
       "description": "Multi-Purpose Launcher with a lot of features. Highly Customizable and fast."
     },
+    "telescope.nvim": {
+      "kind": "url",
+      "name": "telescope.nvim",
+      "uri": "git@github.com:nvim-telescope/telescope.nvim.git",
+      "description": "Find, Filter, Preview, Pick. All lua, all the time."
+    },
     "telescope-hierarchy.nvim": {
       "kind": "url",
       "name": "telescope-hierarchy.nvim",
@@ -35,6 +41,12 @@
       "name": "slurp",
       "uri": "git@github.com:emersion/slurp.git",
       "description": "Select a region in a Wayland compositor"
+    },
+    "overseer.nvim": {
+      "kind": "url",
+      "name": "overseer.nvim",
+      "uri": "git@github.com:stevearc/overseer.nvim.git",
+      "description": "A task runner and job management plugin for Neovim"
     },
     "omarchy": {
       "kind": "url",
@@ -59,6 +71,12 @@
       "name": "neovim",
       "uri": "git@github.com:neovim/neovim.git",
       "description": "Vim-fork focused on extensibility and usability"
+    },
+    "lualine.nvim": {
+      "kind": "url",
+      "name": "lualine.nvim",
+      "uri": "git@github.com:nvim-lualine/lualine.nvim.git",
+      "description": "A blazing fast and easy to configure neovim statusline plugin written in pure lua."
     },
     "hyprpaper": {
       "kind": "url",
@@ -108,17 +126,23 @@
       "uri": "git@github.com:abenz1267/elephant.git",
       "description": ""
     },
+    "diffview.nvim": {
+      "kind": "url",
+      "name": "diffview.nvim",
+      "uri": "git@github.com:sindrets/diffview.nvim.git",
+      "description": "Single tabpage interface for easily cycling through diffs for all modified files for any git rev."
+    },
     "delta": {
       "kind": "url",
       "name": "delta",
       "uri": "git@github.com:dandavison/delta.git",
       "description": "A syntax-highlighting pager for git, diff, grep, and blame output"
     },
-    "diffview.nvim": {
+    "snakemake": {
       "kind": "url",
-      "name": "diffview.nvim",
-      "uri": "git@github.com:sindrets/diffview.nvim.git",
-      "description": "Single tabpage interface for easily cycling through diffs for all modified files for any git rev."
+      "name": "snakemake",
+      "uri": "git@github.com:snakemake/snakemake.git",
+      "description": "This is the development home of the workflow management system Snakemake. For general information, see"
     }
   }
 }
