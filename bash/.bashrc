@@ -23,8 +23,6 @@ export HISTCONTROL=ignoreboth:erasedups
 # Add timestamp to history
 export HISTTIMEFORMAT="%F %T "
 
-# Store history immediately after each command
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # ============================================
 # COLORED PROMPT CONFIGURATION
@@ -67,17 +65,30 @@ LIGHT_CYAN='\[\033[0;96m\]'
 RESET='\[\033[0m\]'
 
 is_sshfs() {
-    mount | grep -q "$(pwd).*fuse.sshfs"
+    if [[ "$PWD" != "$_sshfs_cache_pwd" ]]; then
+        _sshfs_cache_pwd="$PWD"
+        if mount | command grep -q "$(pwd).*fuse.sshfs"; then
+            _sshfs_cache_result=0
+        else
+            _sshfs_cache_result=1
+        fi
+    fi
+    return "$_sshfs_cache_result"
 }
 
 git_branch() {
     is_sshfs && return
-    git branch 2>/dev/null | command grep '^\*' | sed 's/^..\(.*\)/ (\1)/'
+    local branch
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return
+    [[ -n "$branch" ]] && printf ' (%s)' "$branch"
 }
 
 # Function to set prompt based on exit status
 set_prompt() {
     local EXIT="$?"
+
+    history -a
+
     PS1=""
 
     # Show exit status if non-zero
@@ -102,8 +113,8 @@ set_prompt() {
     PS1+=" > "
 }
 
-# Set PROMPT_COMMAND to update prompt
-PROMPT_COMMAND="set_prompt${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+PROMPT_COMMAND="set_prompt"
+export -n PROMPT_COMMAND 2>/dev/null
 
 # ============================================
 # USEFUL ALIASES
@@ -454,8 +465,17 @@ spall() {
 CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    _load_nvm() {
+        unset -f nvm node npm npx _load_nvm
+        \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    }
+    for _cmd in nvm node npm npx; do
+        eval "${_cmd}() { _load_nvm; ${_cmd} \"\$@\"; }"
+    done
+    unset _cmd
+fi
 
 fuck() {
   unset -f thefuck fuck
