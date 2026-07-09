@@ -29,3 +29,5 @@ codex/.codex/skills/.system
 lazygit/.config/lazygit/state.yml
 /gdb/.config/gdb/examples
 /aconfmgr/tmp
+/gdb/.config/gdb/.llm
+/neovim/.config/nvim/nvim.log
