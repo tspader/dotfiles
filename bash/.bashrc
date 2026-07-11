@@ -119,17 +119,6 @@ export -n PROMPT_COMMAND 2>/dev/null
 # ============================================
 # USEFUL ALIASES
 # ============================================
-# Better defaults
-alias mkdir='mkdir -pv'
-alias grep='rg'
-alias diff='diff --color=auto'
-alias erc='$EDITOR ~/.bashrc'
-alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
-alias uz='ouch decompress'
-alias mk='mkdir -pv'
-alias rf='rm -rf'
-alias z='zellij'
-
 if command -v lazygit >/dev/null 2>&1; then
     alias lg='lazygit'
 fi
@@ -172,11 +161,22 @@ alias .....='cd ../../../..'
 alias ~='cd ~'
 alias -- -='cd -'
 
+alias mkdir='mkdir -pv'
+alias grep='rg'
+alias diff='diff --color=auto'
+alias erc='$EDITOR ~/.bashrc'
+alias rc='source ~/.bashrc && echo "sourced ~/.bashrc"'
+alias mk='mkdir -pv'
+alias rf='rm -rf'
+alias uz='ouch decompress'
+alias z='zellij'
+alias za='zellij a'
 alias n='nvim'
 alias dot='cd ~/.dotfiles && nvim'
 alias y='yazi'
 alias o='opencode'
 alias c='claude --dangerously-skip-permissions'
+alias co='codex --dangerously-bypass-approvals-and-sandbox'
 alias g='gdb --args'
 alias d='direnv allow'
 alias tree='tree -a -C'  # Colorized tree (if available)
@@ -202,7 +202,7 @@ alias today='date +"%Y-%m-%d"'
 # USEFUL FUNCTIONS
 # ============================================
 # Create directory and cd into it
-mkcd() {
+m() {
     mkdir -p "$1" && cd "$1"
 }
 
