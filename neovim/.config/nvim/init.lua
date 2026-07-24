@@ -433,46 +433,62 @@ require("lazy").setup({
       branch = "main",
       lazy = false,
       config = function()
-        local parsers = {
-          "c", "cpp", "lua", "python", "javascript", "typescript",
-          "tsx", "vim", "vimdoc", "markdown", "markdown_inline", "zig",
-          "go", "gomod", "gosum", "gowork", "snakemake",
-        }
+        local ts = require("nvim-treesitter")
 
-        require("nvim-treesitter").install(parsers)
+        local available = {}
+        for _, lang in ipairs(ts.get_available()) do
+          available[lang] = true
+        end
+
+        local installed = {}
+        for _, lang in ipairs(ts.get_installed()) do
+          installed[lang] = true
+        end
+
+        local function ensure(lang)
+          if not lang or installed[lang] or not available[lang] then
+            return
+          end
+          installed[lang] = true
+          vim.schedule(function()
+            ts.install(lang):await(function()
+              vim.schedule(function()
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                  if vim.api.nvim_buf_is_loaded(buf) then
+                    if vim.treesitter.highlighter.active[buf] then
+                      vim.treesitter.stop(buf)
+                      vim.treesitter.start(buf)
+                    elseif vim.treesitter.language.get_lang(vim.bo[buf].filetype) == lang then
+                      pcall(vim.treesitter.start, buf)
+                    end
+                  end
+                end
+              end)
+            end)
+          end)
+        end
+
+        -- Monkey patch language.add(), which is how injected languages (e.g.
+        -- Markdown code fences) resolve their parser
+        local add = vim.treesitter.language.add
+        vim.treesitter.language.add = function(lang, opts)
+          ensure(lang)
+          return add(lang, opts)
+        end
 
         vim.api.nvim_create_autocmd("FileType", {
-          pattern = parsers,
           callback = function(args)
-            pcall(vim.treesitter.start, args.buf)
+            local lang = vim.treesitter.language.get_lang(args.match)
+            if not (lang and available[lang]) then
+              return
+            end
+            ensure(lang)
+            pcall(vim.treesitter.start, args.buf, lang)
             vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end,
         })
       end
     },
-
-    -- {
-    --   'nvim-treesitter/nvim-treesitter-context',
-    --   opts = {
-    --     enable = true,
-    --     max_lines = 4,
-    --     patterns = {
-    --       default = {
-    --         'function',
-    --         'while',
-    --         'for',
-    --         'if',
-    --         'switch'
-    --       },
-    --       c = {
-    --         'preproc_ifdef',
-    --         'preproc_if',
-    --         'preproc_elif',
-    --         'preproc_else',
-    --       }
-    --     }
-    --   }
-    -- },
 
     {
       "kdheepak/lazygit.nvim",
