@@ -277,17 +277,17 @@ require("lazy").setup({
       config = function()
         vim.cmd.colorscheme("darkplus")
 
-        local bg_dark = theme.background_dark
-        vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = bg_dark, fg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = bg_dark, fg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = bg_dark })
-
-        vim.api.nvim_set_hl(0, 'TreesitterContext', { bg = theme.background_elevated })
-        vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = theme.blue })
-        vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = theme.border })
+        local overrides = {
+          { id = 'TelescopeNormal', values = { bg = theme.background }},
+          { id = 'TelescopePromptNormal', values = { bg = theme.background }},
+          { id = 'TelescopeResultsNormal', values = { bg = theme.background }},
+          { id = 'TelescopePreviewNormal', values = { bg = theme.background }},
+          { id = 'TelescopeBorder', values = { bg = theme.background, fg = theme.border }},
+          { id = 'TelescopePromptBorder', values = { bg = theme.background, fg = theme.border }},
+        }
+        for override in vim.iter(overrides) do
+          vim.api.nvim_set_hl(0, override.id, override.values)
+        end
        end
     },
 
