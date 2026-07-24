@@ -363,16 +363,6 @@ require("lazy").setup({
           }),
         }
 
-        -- Send any Telescope picker's results into Trouble with <c-t>.
-        -- Wrapped in a function so trouble stays lazy until first used.
-        local open_with_trouble = function(...)
-          return require("trouble.sources.telescope").open(...)
-        end
-        opts.defaults.mappings = {
-          i = { ["<c-t>"] = open_with_trouble },
-          n = { ["<c-t>"] = open_with_trouble },
-        }
-
         require('telescope').setup(opts)
         require('telescope').load_extension('fzf')
         require('telescope').load_extension('ui-select')
@@ -488,20 +478,6 @@ require("lazy").setup({
       "kdheepak/lazygit.nvim",
       keys = {
         { leader('gg'), function() vim.cmd('LazyGit') end, mode = { VIM_MODE_NORMAL } }
-      },
-    },
-
-    {
-      "folke/trouble.nvim",
-      cmd = "Trouble",
-      opts = {},
-      keys = {
-        { leader('xx'), '<cmd>Trouble diagnostics toggle<cr>',                     desc = 'Diagnostics (Trouble)' },
-        { leader('xX'), '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',        desc = 'Buffer Diagnostics (Trouble)' },
-        { leader('xs'), '<cmd>Trouble symbols toggle focus=false<cr>',             desc = 'Symbols (Trouble)' },
-        { leader('xl'), '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP Definitions / references / ... (Trouble)' },
-        { leader('xL'), '<cmd>Trouble loclist toggle<cr>',                         desc = 'Location List (Trouble)' },
-        { leader('xq'), '<cmd>Trouble qflist toggle<cr>',                          desc = 'Quickfix List (Trouble)' },
       },
     }
   },
