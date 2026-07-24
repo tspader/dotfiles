@@ -1,0 +1,15 @@
+[package]
+name = "spot"
+version = "0.1.0"
+
+[[bin]]
+name = "spot"
+source = ["main.c"]
+
+[[test]]
+name = "spot_test"
+source = ["test/spot.c"]
+include = [".", "test/tools"]
+
+[deps.package]
+"spader/sp" = "3.2.0"

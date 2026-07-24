@@ -206,6 +206,18 @@ m() {
     mkdir -p "$1" && cd "$1"
 }
 
+spot() {
+  case "$1" in
+    new|go|keep)
+      local out
+      out="$(command spot path "$@")" || return
+      if [[ -n "$out" ]]; then
+        cd "$out"
+      fi
+      ;;
+    *) command spot "$@" ;;
+  esac
+}
 tmp() {
   local base="$HOME/source/.tmp"
   \mkdir -p "$base"
