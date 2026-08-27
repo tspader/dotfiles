@@ -74,6 +74,7 @@ vim.filetype.add({
     c = "c",
     h = "c",
     mdx = "markdown",
+    dsc = "typescript",
   }
 })
 
@@ -101,7 +102,28 @@ end)
 -- ╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝
 require("lazy").setup({
   spec = {
-    { 'tspader/friends.nvim', opts = {} },
+    {
+      'axkirillov/unified.nvim',
+      cmd = 'Unified',
+      opts = {
+        -- your configuration comes here
+      },
+      keys = {
+        { leader('ud'), function() require('unified').toggle() end,                    desc = 'Toggle unified diff' },
+        { ']h',         function() require('unified.navigation').next_hunk() end,      desc = 'Unified: Next hunk' },
+        { '[h',         function() require('unified.navigation').previous_hunk() end,  desc = 'Unified: Previous hunk' },
+        { 'gs',         function() require('unified.hunk_actions').stage_hunk() end,   desc = 'Unified: Stage hunk' },
+        { 'gu',         function() require('unified.hunk_actions').unstage_hunk() end, desc = 'Unified: Unstage hunk' },
+        { 'gr',         function() require('unified.hunk_actions').revert_hunk() end,  desc = 'Unified: Revert hunk' },
+      },
+      config = function(_, opts)
+        require('unified').setup(opts)
+      end,
+    },
+    {
+      'tspader/friends.nvim',
+      opts = {}
+    },
     {
       'stevearc/overseer.nvim',
       opts = {},
@@ -188,7 +210,7 @@ require("lazy").setup({
         vim.lsp.enable('ty')
         vim.lsp.enable('ruff')
         vim.lsp.enable('lua_ls')
-        vim.lsp.enable('ts_ls')
+        vim.lsp.enable('tsc')
         vim.lsp.enable('sourcekit')
         vim.lsp.enable('zls')
         vim.lsp.enable('gopls')
