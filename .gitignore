@@ -31,3 +31,4 @@ lazygit/.config/lazygit/state.yml
 /aconfmgr/tmp
 /gdb/.config/gdb/.llm
 /neovim/.config/nvim/nvim.log
+/tools/spot/compile_commands.json

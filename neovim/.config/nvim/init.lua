@@ -113,7 +113,6 @@ require("lazy").setup({
 
     {
       "mikavilpas/yazi.nvim",
-      version = "*",
       event = "VeryLazy",
       dependencies = {
         { "nvim-lua/plenary.nvim", lazy = true },
@@ -278,17 +277,17 @@ require("lazy").setup({
       config = function()
         vim.cmd.colorscheme("darkplus")
 
-        local bg_dark = theme.background_dark
-        vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = bg_dark, fg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = bg_dark, fg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = bg_dark })
-        vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = bg_dark })
-
-        vim.api.nvim_set_hl(0, 'TreesitterContext', { bg = theme.background_elevated })
-        vim.api.nvim_set_hl(0, 'TreesitterContextLineNumber', { fg = theme.blue })
-        vim.api.nvim_set_hl(0, 'TreesitterContextBottom', { underline = true, sp = theme.border })
+        local overrides = {
+          { id = 'TelescopeNormal', values = { bg = theme.background }},
+          { id = 'TelescopePromptNormal', values = { bg = theme.background }},
+          { id = 'TelescopeResultsNormal', values = { bg = theme.background }},
+          { id = 'TelescopePreviewNormal', values = { bg = theme.background }},
+          { id = 'TelescopeBorder', values = { bg = theme.background, fg = theme.border }},
+          { id = 'TelescopePromptBorder', values = { bg = theme.background, fg = theme.border }},
+        }
+        for override in vim.iter(overrides) do
+          vim.api.nvim_set_hl(0, override.id, override.values)
+        end
        end
     },
 
@@ -364,16 +363,6 @@ require("lazy").setup({
           }),
         }
 
-        -- Send any Telescope picker's results into Trouble with <c-t>.
-        -- Wrapped in a function so trouble stays lazy until first used.
-        local open_with_trouble = function(...)
-          return require("trouble.sources.telescope").open(...)
-        end
-        opts.defaults.mappings = {
-          i = { ["<c-t>"] = open_with_trouble },
-          n = { ["<c-t>"] = open_with_trouble },
-        }
-
         require('telescope').setup(opts)
         require('telescope').load_extension('fzf')
         require('telescope').load_extension('ui-select')
@@ -444,65 +433,67 @@ require("lazy").setup({
       branch = "main",
       lazy = false,
       config = function()
-        local parsers = {
-          "c", "cpp", "lua", "python", "javascript", "typescript",
-          "tsx", "vim", "vimdoc", "markdown", "markdown_inline", "zig",
-          "go", "gomod", "gosum", "gowork", "snakemake",
-        }
+        local ts = require("nvim-treesitter")
 
-        require("nvim-treesitter").install(parsers)
+        local available = {}
+        for _, lang in ipairs(ts.get_available()) do
+          available[lang] = true
+        end
+
+        local installed = {}
+        for _, lang in ipairs(ts.get_installed()) do
+          installed[lang] = true
+        end
+
+        local function ensure(lang)
+          if not lang or installed[lang] or not available[lang] then
+            return
+          end
+          installed[lang] = true
+          vim.schedule(function()
+            ts.install(lang):await(function()
+              vim.schedule(function()
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                  if vim.api.nvim_buf_is_loaded(buf) then
+                    if vim.treesitter.highlighter.active[buf] then
+                      vim.treesitter.stop(buf)
+                      vim.treesitter.start(buf)
+                    elseif vim.treesitter.language.get_lang(vim.bo[buf].filetype) == lang then
+                      pcall(vim.treesitter.start, buf)
+                    end
+                  end
+                end
+              end)
+            end)
+          end)
+        end
+
+        -- Monkey patch language.add(), which is how injected languages (e.g.
+        -- Markdown code fences) resolve their parser
+        local add = vim.treesitter.language.add
+        vim.treesitter.language.add = function(lang, opts)
+          ensure(lang)
+          return add(lang, opts)
+        end
 
         vim.api.nvim_create_autocmd("FileType", {
-          pattern = parsers,
           callback = function(args)
-            pcall(vim.treesitter.start, args.buf)
+            local lang = vim.treesitter.language.get_lang(args.match)
+            if not (lang and available[lang]) then
+              return
+            end
+            ensure(lang)
+            pcall(vim.treesitter.start, args.buf, lang)
             vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
           end,
         })
       end
     },
 
-    -- {
-    --   'nvim-treesitter/nvim-treesitter-context',
-    --   opts = {
-    --     enable = true,
-    --     max_lines = 4,
-    --     patterns = {
-    --       default = {
-    --         'function',
-    --         'while',
-    --         'for',
-    --         'if',
-    --         'switch'
-    --       },
-    --       c = {
-    --         'preproc_ifdef',
-    --         'preproc_if',
-    --         'preproc_elif',
-    --         'preproc_else',
-    --       }
-    --     }
-    --   }
-    -- },
-
     {
       "kdheepak/lazygit.nvim",
       keys = {
         { leader('gg'), function() vim.cmd('LazyGit') end, mode = { VIM_MODE_NORMAL } }
-      },
-    },
-
-    {
-      "folke/trouble.nvim",
-      cmd = "Trouble",
-      opts = {},
-      keys = {
-        { leader('xx'), '<cmd>Trouble diagnostics toggle<cr>',                     desc = 'Diagnostics (Trouble)' },
-        { leader('xX'), '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',        desc = 'Buffer Diagnostics (Trouble)' },
-        { leader('xs'), '<cmd>Trouble symbols toggle focus=false<cr>',             desc = 'Symbols (Trouble)' },
-        { leader('xl'), '<cmd>Trouble lsp toggle focus=false win.position=right<cr>', desc = 'LSP Definitions / references / ... (Trouble)' },
-        { leader('xL'), '<cmd>Trouble loclist toggle<cr>',                         desc = 'Location List (Trouble)' },
-        { leader('xq'), '<cmd>Trouble qflist toggle<cr>',                          desc = 'Quickfix List (Trouble)' },
       },
     }
   },

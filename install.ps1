@@ -1,1 +1,1 @@
-bun run .\tools\installer\src\index.ts link --config windows.toml
+bun run .\tools\installer\src\index.ts link --config windows.toml --apply
