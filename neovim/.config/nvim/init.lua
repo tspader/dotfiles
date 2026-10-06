@@ -89,6 +89,18 @@ local leader = function(c)
   return '<leader>' .. c
 end
 
+local function diffview_pick_commit()
+  local lines = vim.fn.systemlist({ 'git', 'log', '-n', '200', '--format=%h  %s  (%ar, %an)' })
+  if vim.v.shell_error ~= 0 or #lines == 0 then
+    return vim.notify('No commits', vim.log.levels.WARN)
+  end
+  vim.ui.select(lines, { prompt = 'Diffview against commit:' }, function(choice)
+    if choice then
+      vim.cmd('DiffviewOpen ' .. choice:match('^(%x+)'))
+    end
+  end)
+end
+
 vim.keymap.set(VIM_MODE_NORMAL, leader('rc'), function()
   vim.cmd('e ' .. vim.fn.stdpath('config') .. '/init.lua')
 end)
@@ -103,7 +115,7 @@ end)
 require("lazy").setup({
   spec = {
     {
-      'axkirillov/unified.nvim',
+      'tspader/unified.nvim',
       cmd = 'Unified',
       opts = {
         -- your configuration comes here
@@ -177,8 +189,8 @@ require("lazy").setup({
           },
           file_history_panel = {
             win_config = {
-              position = "left",
-              width = 45,
+              position = "bottom",
+              height = 8,
             },
           },
           keymaps = {
@@ -195,6 +207,7 @@ require("lazy").setup({
         { leader('gc'), function() vim.cmd('DiffviewClose') end, mode = { VIM_MODE_NORMAL } },
         { leader('gh'), function() vim.cmd('DiffviewFileHistory') end, mode = { VIM_MODE_NORMAL } },
         { leader('gr'), function() vim.cmd('DiffviewOpen HEAD~1..HEAD') end, mode = { VIM_MODE_NORMAL } },
+        { leader('gp'), diffview_pick_commit, mode = { VIM_MODE_NORMAL } },
       }
     },
 
@@ -390,6 +403,28 @@ require("lazy").setup({
         require('telescope').load_extension('ui-select')
         local hierarchy = require("telescope").load_extension("hierarchy")
 
+        -- telescope-hierarchy makes one node per call site (fromRanges). When collapsing,
+        -- keep only the first so each caller/callee shows up once. The flag holds for the
+        -- whole picker session, since expanding nodes calls find_children again
+        local collapse_calls = false
+        local CacheEntry = require('telescope-hierarchy.cache.entry')
+        local find_children = CacheEntry.find_children
+        CacheEntry.find_children = function(self, each_cb, final_cb)
+          if not collapse_calls then
+            return find_children(self, each_cb, final_cb)
+          end
+          return find_children(self, function(call, entry)
+            each_cb(vim.tbl_extend('force', call, { fromRanges = { call.fromRanges[1] } }), entry)
+          end, final_cb)
+        end
+
+        local calls = function(fn, collapse)
+          return function()
+            collapse_calls = collapse
+            fn()
+          end
+        end
+
         local builtin = require('telescope.builtin')
 
         local ff = {
@@ -414,8 +449,10 @@ require("lazy").setup({
         vim.keymap.set('n', leader('fz'), builtin.current_buffer_fuzzy_find)
         vim.keymap.set('n', leader('fc'), function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end)
 
-        vim.keymap.set('n', leader('li'), hierarchy.incoming_calls)
-        vim.keymap.set('n', leader('lo'), hierarchy.outgoing_calls)
+        vim.keymap.set('n', leader('li'), calls(hierarchy.incoming_calls, false))
+        vim.keymap.set('n', leader('lI'), calls(hierarchy.incoming_calls, true))
+        vim.keymap.set('n', leader('lo'), calls(hierarchy.outgoing_calls, false))
+        vim.keymap.set('n', leader('lO'), calls(hierarchy.outgoing_calls, true))
         vim.keymap.set('n', leader('ld'), builtin.lsp_definitions)
         vim.keymap.set('n', leader('lt'), builtin.lsp_type_definitions)
         vim.keymap.set('n', leader('lr'), function() builtin.lsp_references({ initial_mode = 'normal' }) end)

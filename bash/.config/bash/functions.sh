@@ -83,7 +83,8 @@ get_os_type() {
 clip() {
     local os_type=$(get_os_type)
 
-    case "$os_type" in
+    # $(cat) strips trailing newlines
+    printf '%s' "$(cat)" | case "$os_type" in
         "macos")
             pbcopy
             ;;

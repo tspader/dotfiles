@@ -22,3 +22,6 @@ source "$BASH_CONFIG/direnv.sh"
 source "$BASH_CONFIG/nvm.sh"
 source "$BASH_CONFIG/dotllm.sh"
 source "$BASH_CONFIG/atuin.sh"
+
+# lazydiff
+export PATH=/home/spader/.lazydiff/bin:$PATH

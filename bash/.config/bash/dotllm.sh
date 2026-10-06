@@ -1,9 +1,9 @@
-ref() { cd "$(dotllm which "$1")"; }
-_ref() {
+dc() { cd "$(dotllm which "$1")"; }
+_dc() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   COMPREPLY=( $(compgen -W "$(dotllm completions --names 2>/dev/null)" -- "${cur}") )
 }
-complete -F _ref ref
+complete -F _dc dc
 
 # @dotllm_completions
 # Installed by the dotllm CLI

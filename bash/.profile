@@ -9,3 +9,7 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 . "$HOME/.atuin/bin/env"
+
+. "$HOME/.spn/env"
+
+. "$HOME/.spn/env"

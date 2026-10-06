@@ -1,4 +1,8 @@
 [mgr]
 prepend_keymap = [
 	{ on = [ "m", "t" ], run = "plugin toggle-linemode", desc = "Linemode: toggle none/precise" },
+	{ on = [ "m", "p" ], run = "plugin zellij-nvim -- toggle-preview", desc = "Preview: toggle the preview column" },
+
+	{ on = "e", run = "plugin zellij-nvim -- open",  desc = "Edit in the nvim pane" },
+	{ on = "E", run = "plugin zellij-nvim -- close", desc = "Close the nvim pane" },
 ]

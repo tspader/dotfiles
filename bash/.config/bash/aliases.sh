@@ -54,12 +54,20 @@ alias n='nvim'
 alias dot='cd ~/.dotfiles && nvim'
 alias y='yazi'
 alias o='opencode'
-alias c='claude --dangerously-skip-permissions'
+c() {
+  local sp=~/.claude/system.md
+  if [[ -f $sp ]]; then
+    claude --dangerously-skip-permissions --system-prompt-file "$sp" "$@"
+  else
+    claude --dangerously-skip-permissions "$@"
+  fi
+}
 alias co='codex --dangerously-bypass-approvals-and-sandbox'
 alias g='gdb --args'
 alias e='direnv allow'
 alias d='dotllm'
 alias dl='dotllm link'
+dw() { dotllm which "$1" | tr -d '\n' | clip; }
 alias tree='tree -a -C'  # Colorized tree (if available)
 alias tree3='tree -a -C -L 3'
 alias dus='du -sh * | sort -h'  # Directory sizes, sorted
